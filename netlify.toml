@@ -1,0 +1,7 @@
+# Deployment config for Netlify / Cloudflare Pages style static hosts.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"

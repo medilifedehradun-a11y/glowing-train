@@ -1,0 +1,53 @@
+---
+import Icon from './Icon.astro';
+import { contact } from '../data/site';
+---
+
+<div class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3 print:hidden">
+  <a
+    href={contact.whatsappHref}
+    target="_blank"
+    rel="noopener"
+    aria-label="Chat on WhatsApp"
+    class="group grid h-13 w-13 place-items-center rounded-full bg-[#25D366] text-white shadow-lg ring-4 ring-[#25D366]/20 transition hover:scale-105"
+    style="height:3.25rem;width:3.25rem"
+  >
+    <Icon name="whatsapp" class="h-7 w-7" />
+  </a>
+  <a
+    href={contact.phoneHref}
+    aria-label="Call the hospital"
+    class="grid place-items-center rounded-full bg-brand-600 text-white shadow-lg ring-4 ring-brand-600/20 transition hover:scale-105 hover:bg-brand-700"
+    style="height:3.25rem;width:3.25rem"
+  >
+    <Icon name="phone" class="h-6 w-6" />
+  </a>
+  <button
+    id="back-to-top"
+    type="button"
+    aria-label="Back to top"
+    class="pointer-events-none grid translate-y-2 place-items-center rounded-full bg-white text-ink-700 opacity-0 shadow-lg ring-1 ring-ink-200 transition-all hover:bg-ink-50"
+    style="height:3.25rem;width:3.25rem"
+  >
+    <Icon name="chevronDown" class="h-6 w-6 rotate-180" />
+  </button>
+</div>
+
+<script>
+  function initFloating() {
+    const btn = document.getElementById('back-to-top');
+    if (!btn) return;
+    const onScroll = () => {
+      const show = window.scrollY > 600;
+      btn.classList.toggle('opacity-0', !show);
+      btn.classList.toggle('translate-y-2', !show);
+      btn.classList.toggle('pointer-events-none', !show);
+    };
+    btn.addEventListener('click', () =>
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    );
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+  document.addEventListener('astro:page-load', initFloating);
+</script>

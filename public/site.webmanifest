@@ -1,0 +1,14 @@
+{
+  "name": "Medilife Superspeciality Hospital",
+  "short_name": "Medilife",
+  "description": "Best urology & superspeciality hospital in Dehradun.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#098a74",
+  "icons": [
+    { "src": "/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

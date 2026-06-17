@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { departments } from '../data/departments';
+import { contact } from '../data/site';
+---
+
+<BaseLayout title="Page Not Found" noindex={true}>
+  <section class="section">
+    <div class="container-x">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="font-display text-7xl font-extrabold text-brand-600 sm:text-8xl">404</p>
+        <h1 class="mt-4 text-3xl font-bold text-ink-900 sm:text-4xl">We couldn't find that page</h1>
+        <p class="mt-4 text-lg text-ink-600">
+          The page you are looking for may have moved or no longer exists. Let's get you back on track.
+        </p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a href="/" class="btn btn-primary"><Icon name="arrowLeft" class="h-5 w-5" /> Back to Home</a>
+          <a href={contact.phoneHref} class="btn btn-ghost"><Icon name="phone" class="h-5 w-5" /> {contact.phoneDisplay}</a>
+        </div>
+      </div>
+
+      <div class="mx-auto mt-14 max-w-4xl">
+        <p class="text-center text-sm font-semibold uppercase tracking-wider text-ink-600">Explore our departments</p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {departments.map((d) => (
+            <a href={`/${d.slug}`} class="card card-hover flex items-center gap-3 p-4">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg text-white" style={`background:${d.color}`}>
+                <Icon name={d.icon} class="h-5 w-5" />
+              </span>
+              <span class="text-sm font-semibold text-ink-900">{d.name}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

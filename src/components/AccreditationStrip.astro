@@ -1,0 +1,33 @@
+---
+import Img from './Img.astro';
+import nabh from '../assets/badges/nabh.png';
+import abdm from '../assets/badges/abdm.png';
+import pmjay from '../assets/badges/pmjay.png';
+
+const badges = [
+  { src: nabh, alt: 'NABH accredited hospital', label: 'NABH Accredited' },
+  { src: pmjay, alt: 'Ayushman Bharat PM-JAY empanelled', label: 'Ayushman Bharat (PM-JAY)' },
+  { src: abdm, alt: 'Ayushman Bharat Digital Mission (ABDM) enabled', label: 'ABDM Enabled' },
+];
+---
+
+<section class="border-y border-ink-100 bg-white">
+  <div class="container-x py-12">
+    <p class="text-center text-sm font-semibold uppercase tracking-[0.14em] text-ink-600">
+      Accredited &amp; recognised
+    </p>
+    <div class="mt-7 grid grid-cols-2 items-center gap-6 sm:grid-cols-3 lg:gap-10">
+      {badges.map((b) => (
+        <figure class="flex flex-col items-center gap-3">
+          <span class="flex h-24 w-full items-center justify-center rounded-2xl border border-ink-100 bg-white p-4 shadow-soft">
+            <Img src={b.src} alt={b.alt} class="h-16 w-auto max-w-full object-contain" loading="lazy" />
+          </span>
+          <figcaption class="text-center text-xs font-semibold text-ink-600">{b.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+    <p class="mt-7 text-center text-sm text-ink-600">
+      NABL-accredited diagnostics · All major insurance &amp; TPA accepted · ABHA-ready
+    </p>
+  </div>
+</section>

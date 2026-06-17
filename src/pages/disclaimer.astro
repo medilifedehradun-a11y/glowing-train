@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site, contact } from '../data/site';
+
+const updated = 'June 2026';
+---
+
+<BaseLayout
+  title="Medical Disclaimer"
+  description={`Important medical disclaimer for the ${site.name} website.`}
+>
+  <PageHero
+    eyebrow="Legal"
+    title="Medical Disclaimer"
+    subtitle={`Important information about the content on this website. Last updated: ${updated}.`}
+    crumbs={[{ label: 'Medical Disclaimer' }]}
+  />
+
+  <section class="section">
+    <div class="container-x mx-auto max-w-3xl">
+      <div class="flex items-start gap-4 rounded-2xl border border-accent-200 bg-accent-50 p-5">
+        <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-500 text-white">
+          <Icon name="ambulance" class="h-5 w-5" />
+        </span>
+        <p class="text-[0.95rem] leading-relaxed text-ink-800">
+          <strong>In a medical emergency, do not rely on this website.</strong> Call
+          <a href={contact.phoneHref} class="font-semibold text-accent-700">{contact.phoneDisplay}</a>
+          immediately or visit the hospital. We are available 24/7 for emergencies.
+        </p>
+      </div>
+
+      <div class="prose-body mt-8">
+        <h2>General information only</h2>
+        <p>
+          The content on the {site.name} website, including text on conditions, treatments and
+          procedures, is provided for general information and educational purposes only. It is not
+          intended to be, and should not be used as, a substitute for professional medical advice,
+          diagnosis or treatment.
+        </p>
+
+        <h2>No doctor-patient relationship</h2>
+        <p>
+          Reading this website or contacting us through it does not create a doctor-patient
+          relationship. Such a relationship is established only through an in-person consultation and
+          formal registration as a patient.
+        </p>
+
+        <h2>Always consult a professional</h2>
+        <p>
+          Always seek the advice of a qualified physician or other healthcare provider with any
+          questions you may have regarding a medical condition. Never disregard professional medical
+          advice or delay seeking it because of something you have read on this website.
+        </p>
+
+        <h2>Individual results vary</h2>
+        <p>
+          Treatments, procedures and outcomes described on this site are general in nature. Every
+          patient is different, and the right treatment can only be determined after a proper
+          clinical evaluation.
+        </p>
+
+        <h2>Appointment requests</h2>
+        <p>
+          Appointment and enquiry forms on this site are requests only and are not confirmed bookings
+          until our team contacts you.
+        </p>
+
+        <h2>Accuracy and external links</h2>
+        <p>
+          While we strive to keep information accurate and up to date, we make no warranties about its
+          completeness or accuracy. The site may link to external resources whose content we do not
+          control.
+        </p>
+
+        <h2>Questions</h2>
+        <p>
+          For anything relating to your health or care, please contact us at
+          <a href={contact.emailHref}>{contact.email}</a> or
+          <a href={contact.phoneHref}>{contact.phoneDisplay}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

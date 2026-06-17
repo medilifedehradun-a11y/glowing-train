@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import DoctorCard from '../components/DoctorCard.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import { doctors } from '../data/doctors';
+import { site, contact } from '../data/site';
+
+const pageTitle = 'Our Doctors';
+const metaDescription =
+  'Meet the specialists at Medilife Superspeciality Hospital, Dehradun - experienced consultants in urology, ENT, oncology, orthopedics, general medicine, general surgery and plastic surgery, several trained at AIIMS.';
+
+const physicianSchema = doctors.map((d) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Physician',
+  name: d.name,
+  medicalSpecialty: d.specialtyTag,
+  description: d.bio,
+  image: new URL(d.image.src, site.url).href,
+  url: new URL(`/${d.department}`, site.url).href,
+  worksFor: { '@type': 'Hospital', name: site.name, url: site.url },
+}));
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Our Doctors', item: new URL('/doctors', site.url).href },
+  ],
+};
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={metaDescription}
+  jsonLd={[...physicianSchema, breadcrumbSchema]}
+>
+  <PageHero
+    eyebrow="Our Team"
+    title="Meet our specialists"
+    subtitle="A dedicated, expert ensemble of compassionate healers. Several of our consultants bring 30+ years of experience and training from leading institutions including AIIMS."
+    crumbs={[{ label: 'Our Doctors' }]}
+  />
+
+  <!-- Trust strip -->
+  <section class="border-b border-ink-100 bg-white">
+    <div class="container-x py-8">
+      <div class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+        {[
+          { icon: 'users', label: `${doctors.length} specialists`, sub: 'Across 7 departments' },
+          { icon: 'award', label: '30+ years', sub: 'Senior consultant experience' },
+          { icon: 'shield', label: 'AIIMS-trained', sub: 'Leading-institution background' },
+          { icon: 'heartPulse', label: '24×7 care', sub: 'Emergency cover available' },
+        ].map((c) => (
+          <div class="flex items-center gap-3">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={c.icon} class="h-6 w-6" />
+            </span>
+            <div class="leading-tight">
+              <p class="text-sm font-bold text-ink-900">{c.label}</p>
+              <p class="text-xs text-ink-600">{c.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Doctors grid -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Consultants"
+        title="The specialists behind your care"
+        subtitle="Each department at Medilife is led by a senior consultant in that field. Choose a doctor to learn more about their department, or book an appointment directly."
+      />
+      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {doctors.map((d) => <DoctorCard doctor={d} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Help choosing -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x">
+      <div class="grid items-center gap-8 rounded-3xl bg-white p-8 shadow-soft ring-1 ring-ink-100 sm:p-10 lg:grid-cols-[1.4fr_1fr]">
+        <div>
+          <span class="eyebrow">Not sure who to see?</span>
+          <h2 class="mt-4 text-2xl font-bold text-ink-900 sm:text-3xl">
+            Tell us your concern, we will guide you to the right specialist
+          </h2>
+          <p class="mt-3 text-lg leading-relaxed text-ink-600">
+            Our team will help you find the right department and consultant for your needs.
+            We are available round the clock for emergencies.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3">
+          <a href="/book-online" class="btn btn-accent w-full">
+            <Icon name="calendar" class="h-5 w-5" /> Book an Appointment
+          </a>
+          <a href={contact.phoneHref} class="btn btn-ghost w-full">
+            <Icon name="phone" class="h-5 w-5" /> {contact.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

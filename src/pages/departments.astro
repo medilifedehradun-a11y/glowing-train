@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import DepartmentCard from '../components/DepartmentCard.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import { departments } from '../data/departments';
+import { doctors } from '../data/doctors';
+import { facilities } from '../data/content';
+import { site, contact } from '../data/site';
+
+const pageTitle = 'Our Departments';
+const pageDescription =
+  'Explore the 7 superspeciality departments at Medilife Superspeciality Hospital, Dehradun - urology, ENT, surgical oncology, orthopedics, general medicine, general surgery and plastic surgery, each led by experienced specialists.';
+
+const featured = departments.find((d) => d.featured);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Departments',
+        item: new URL('/departments', site.url).href,
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Departments at Medilife Superspeciality Hospital',
+    itemListElement: departments.map((d, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: d.name,
+      url: new URL(`/${d.slug}`, site.url).href,
+    })),
+  },
+];
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} jsonLd={schema}>
+  <PageHero
+    eyebrow="Specialities"
+    title="Our Departments"
+    subtitle="Seven superspeciality departments, one trusted address. From our flagship urology programme to ENT, cancer surgery, orthopedics, medicine, general surgery and plastic surgery - find expert, focused care for every member of your family."
+    crumbs={[{ label: 'Departments' }]}
+  />
+
+  <!-- Intro + department grid -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Comprehensive Care"
+        title="Multi-superspeciality care under one roof"
+        subtitle="Each department brings together experienced consultants, modern operation theatres and dedicated diagnostic support - so you get coordinated, evidence-based treatment without running between hospitals."
+      />
+
+      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {departments.map((d) => <DepartmentCard dept={d} />)}
+
+        <a
+          href="/contact-us"
+          class="card card-hover group flex flex-col items-center justify-center gap-3 bg-brand-700 p-8 text-center text-white"
+        >
+          <span class="grid h-14 w-14 place-items-center rounded-2xl bg-white/15">
+            <Icon name="stethoscope" class="h-7 w-7" />
+          </span>
+          <h3 class="text-xl font-bold text-white">Not sure where to start?</h3>
+          <p class="text-sm text-brand-50/90">
+            Tell us your symptoms and our team will guide you to the right specialist.
+          </p>
+          <span class="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold">
+            Talk to us
+            <Icon name="arrowRight" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flagship department highlight -->
+  {featured && (
+    <section class="section bg-ink-50/50">
+      <div class="container-x">
+        <div class="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-ink-100">
+          <div class="grid items-center gap-0 lg:grid-cols-2">
+            <div class="p-8 sm:p-10 lg:p-12">
+              <span
+                class="eyebrow"
+                style={`color:${featured.colorDark};background:${featured.bg};border-color:${featured.bg}`}
+              >
+                <Icon name={featured.icon} class="h-4 w-4" /> Flagship Department
+              </span>
+              <h2 class="mt-4 text-3xl font-bold leading-tight text-ink-900 sm:text-4xl">
+                {featured.tagline}
+              </h2>
+              <p class="mt-4 text-lg leading-relaxed text-ink-600">
+                {featured.overview[0]}
+              </p>
+              <ul class="mt-7 grid gap-3 sm:grid-cols-2">
+                {featured.highlights.map((h) => (
+                  <li class="flex items-start gap-2.5">
+                    <span
+                      class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-white"
+                      style={`background:${featured.color}`}
+                    >
+                      <Icon name="check" class="h-3.5 w-3.5" />
+                    </span>
+                    <span class="text-[0.95rem] text-ink-700">{h}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href={`/${featured.slug}`} class="btn btn-primary mt-8">
+                Explore {featured.name}
+                <Icon name="arrowRight" class="h-5 w-5" />
+              </a>
+            </div>
+            <div class="relative h-64 lg:h-full lg:min-h-[26rem]">
+              <span
+                class="absolute right-5 top-5 z-10 rounded-full bg-accent-500 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-wide text-white shadow"
+              >
+                Flagship
+              </span>
+              <img
+                src={featured.image.src}
+                width={featured.image.width}
+                height={featured.image.height}
+                alt={`${featured.name} department at ${site.name}`}
+                class="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Specialists by department -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Led by Specialists"
+        title="Every department, an expert consultant"
+        subtitle="Our doctors are a dedicated ensemble of compassionate healers, several trained at leading institutions including AIIMS. Each department is headed by a senior consultant in that field."
+      />
+
+      <div class="reveal mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {departments.map((d) => {
+          const lead = doctors.find((doc) => doc.slug === d.leadDoctor);
+          return (
+            <a
+              href={`/${d.slug}`}
+              class="card card-hover group flex items-center gap-4 p-5"
+            >
+              <span
+                class="grid h-12 w-12 shrink-0 place-items-center rounded-xl text-white"
+                style={`background:${d.color}`}
+              >
+                <Icon name={d.icon} class="h-6 w-6" />
+              </span>
+              <span class="flex min-w-0 flex-col">
+                <span class="font-bold text-ink-900 transition group-hover:text-brand-700">
+                  {d.name}
+                </span>
+                {lead ? (
+                  <span class="truncate text-sm text-ink-600">
+                    {lead.name} - {lead.title}
+                  </span>
+                ) : (
+                  <span class="text-sm text-ink-600">{d.tagline}</span>
+                )}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+
+      <div class="mt-8 text-center">
+        <a href="/about" class="btn btn-ghost">
+          Meet the full medical team <Icon name="arrowRight" class="h-5 w-5" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support services / facilities -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Support Services"
+        title="Backed by 24/7 facilities"
+        subtitle="Every department is supported by round-the-clock emergency response, critical care, diagnostics, pharmacy and insurance assistance - everything your treatment needs, under one roof."
+      />
+
+      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {facilities.map((f) => (
+          <div class="card card-hover flex flex-col p-6">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={f.icon} class="h-6 w-6" />
+            </span>
+            <h3 class="mt-4 text-lg font-bold text-ink-900">{f.name}</h3>
+            <p class="mt-2 text-[0.92rem] leading-relaxed text-ink-600">{f.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 text-center">
+        <a href="/facilities" class="btn btn-ghost">
+          View all facilities <Icon name="arrowRight" class="h-5 w-5" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Help / referral strip -->
+  <section class="section">
+    <div class="container-x">
+      <div class="grid items-center gap-8 rounded-3xl border border-ink-100 bg-white p-8 shadow-soft sm:p-10 lg:grid-cols-[1.4fr_1fr]">
+        <div>
+          <span class="eyebrow">Need Guidance?</span>
+          <h2 class="mt-4 text-2xl font-bold leading-tight text-ink-900 sm:text-3xl">
+            Not sure which department you need?
+          </h2>
+          <p class="mt-4 text-lg leading-relaxed text-ink-600">
+            Describe your symptoms or concern and our team will help you reach the right
+            specialist. We are available 24/7 for emergencies and same-day guidance.
+          </p>
+        </div>
+        <div class="flex flex-col gap-4">
+          <a
+            href={contact.phoneHref}
+            class="flex items-center gap-4 rounded-2xl bg-brand-50/70 p-4 transition hover:bg-brand-50"
+          >
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-600 text-white">
+              <Icon name="phone" class="h-6 w-6" />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold text-ink-600">Call us</span>
+              <span class="block text-lg font-bold text-ink-900">{contact.phoneDisplay}</span>
+            </span>
+          </a>
+          <a
+            href={contact.emailHref}
+            class="flex items-center gap-4 rounded-2xl bg-brand-50/70 p-4 transition hover:bg-brand-50"
+          >
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-600 text-white">
+              <Icon name="mail" class="h-6 w-6" />
+            </span>
+            <span class="min-w-0">
+              <span class="block text-sm font-semibold text-ink-600">Email us</span>
+              <span class="block truncate text-base font-bold text-ink-900">{contact.email}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

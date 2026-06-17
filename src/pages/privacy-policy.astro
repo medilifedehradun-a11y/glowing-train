@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { site, contact } from '../data/site';
+
+const updated = 'June 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description={`How ${site.name} collects, uses and protects your personal information.`}
+>
+  <PageHero
+    eyebrow="Legal"
+    title="Privacy Policy"
+    subtitle={`How we collect, use and protect your information. Last updated: ${updated}.`}
+    crumbs={[{ label: 'Privacy Policy' }]}
+  />
+
+  <section class="section">
+    <div class="container-x prose-body mx-auto max-w-3xl">
+      <p>
+        {site.name} ("we", "us", "our") respects your privacy and is committed to protecting the
+        personal information you share with us. This policy explains what we collect through this
+        website, how we use it, and the choices you have.
+      </p>
+
+      <h2>Information we collect</h2>
+      <ul>
+        <li>
+          <strong>Information you provide.</strong> When you use our appointment or enquiry forms we
+          collect your name, email address, phone number, the department you select and any message
+          you send us.
+        </li>
+        <li>
+          <strong>Information collected automatically.</strong> Like most websites, we may collect
+          standard technical data such as your IP address, browser type, device information and pages
+          visited, through cookies and analytics tools.
+        </li>
+      </ul>
+
+      <h2>How we use your information</h2>
+      <ul>
+        <li>To respond to your enquiries and schedule or confirm appointments.</li>
+        <li>To provide, maintain and improve our website and services.</li>
+        <li>To understand how visitors use our site, with your consent, through analytics.</li>
+        <li>To meet legal, regulatory and record-keeping obligations.</li>
+      </ul>
+
+      <h2>Cookies and analytics</h2>
+      <p>
+        We use cookies and similar technologies. Analytics and marketing tools (such as Google Tag
+        Manager and the Meta Pixel) load only after you accept analytics cookies through our consent
+        banner. You can decline at any time, and declining will not affect your ability to use the
+        site or contact us.
+      </p>
+
+      <h2>How we share information</h2>
+      <p>
+        We do not sell your personal information. We may share it with trusted service providers who
+        help us operate the website and analytics (who process it on our behalf), and where required
+        by law or to protect the rights and safety of our patients and staff.
+      </p>
+
+      <h2>Medical confidentiality</h2>
+      <p>
+        Any clinical or health information shared during your care at the hospital is handled
+        separately and confidentially in accordance with applicable medical confidentiality
+        standards and law. This website policy covers only information submitted through the site.
+      </p>
+
+      <h2>Data security and retention</h2>
+      <p>
+        We take reasonable technical and organisational measures to protect your information and
+        retain it only for as long as necessary for the purposes described above or as required by
+        law.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        Subject to applicable law, including India's Digital Personal Data Protection Act, you may
+        request access to, correction of, or deletion of your personal information. To make a request,
+        contact us using the details below.
+      </p>
+
+      <h2>Children's privacy</h2>
+      <p>
+        Our website is not directed at children, and we do not knowingly collect personal information
+        from children without the involvement of a parent or guardian.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        We may update this policy from time to time. The latest version will always be available on
+        this page with its revision date.
+      </p>
+
+      <h2>Contact us</h2>
+      <p>
+        For any privacy questions or requests, contact us at
+        <a href={contact.emailHref}>{contact.email}</a> or call
+        <a href={contact.phoneHref}>{contact.phoneDisplay}</a>. You can also write to us at
+        {contact.addressFull}.
+      </p>
+
+      <p class="text-sm text-ink-600">
+        This policy is provided for general information and should be reviewed by qualified legal
+        counsel before publication.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

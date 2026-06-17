@@ -1,0 +1,101 @@
+---
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+import { contact } from '../data/site';
+import heroImg from '../assets/hospital/exterior-1.jpg';
+---
+
+<section class="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white">
+  <!-- decorative shapes -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-brand-100/60 blur-3xl"></div>
+    <div class="absolute -left-24 top-40 h-72 w-72 rounded-full bg-azure-100/50 blur-3xl"></div>
+  </div>
+
+  <div class="container-x grid items-center gap-12 py-14 lg:grid-cols-2 lg:py-20">
+    <!-- Copy -->
+    <div class="reveal">
+      <span class="eyebrow">
+        <Icon name="shield" class="h-4 w-4" /> NABH Accredited · Dehradun
+      </span>
+      <h1 class="mt-5 text-4xl font-extrabold leading-[1.08] text-ink-900 sm:text-5xl lg:text-[3.4rem]">
+        Advanced superspeciality care,
+        <span class="bg-gradient-to-r from-brand-600 to-brand-500 bg-clip-text text-transparent">
+          delivered with heart.
+        </span>
+      </h1>
+      <p class="mt-5 max-w-xl text-lg leading-relaxed text-ink-600">
+        Medilife Superspeciality Hospital brings world-class urology, ENT, oncology,
+        orthopedics and surgical care to Dehradun - led by experienced specialists,
+        modern technology and round-the-clock emergency support.
+      </p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href="/book-online" class="btn btn-accent">
+          <Icon name="calendar" class="h-5 w-5" /> Book an Appointment
+        </a>
+        <a href={contact.mapUrl} target="_blank" rel="noopener" class="btn btn-ghost">
+          <Icon name="pin" class="h-5 w-5" /> Visit Us
+        </a>
+      </div>
+
+      <!-- trust row -->
+      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-600"><Icon name="users" class="h-5 w-5" /></span>
+          <div class="leading-tight">
+            <p class="font-display text-lg font-bold text-ink-900">1,00,000+</p>
+            <p class="text-xs text-ink-600">Patients treated</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-600"><Icon name="award" class="h-5 w-5" /></span>
+          <div class="leading-tight">
+            <p class="font-display text-lg font-bold text-ink-900">30+ years</p>
+            <p class="text-xs text-ink-600">Doctor experience</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-600"><Icon name="ambulance" class="h-5 w-5" /></span>
+          <div class="leading-tight">
+            <p class="font-display text-lg font-bold text-ink-900">24×7</p>
+            <p class="text-xs text-ink-600">Emergency care</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image -->
+    <div class="reveal relative lg:pl-6">
+      <div class="relative overflow-hidden rounded-3xl shadow-lift ring-1 ring-ink-100">
+        <Img
+          src={heroImg}
+          alt="Medilife Superspeciality Hospital, Dehradun"
+          width={900}
+          height={563}
+          class="h-full w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-950/30 to-transparent"></div>
+      </div>
+
+      <!-- floating card: emergency -->
+      <div class="absolute -bottom-5 left-4 flex items-center gap-3 rounded-2xl bg-white p-4 shadow-card ring-1 ring-ink-100 sm:left-0">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-accent-50 text-accent-600">
+          <Icon name="phone" class="h-5 w-5" />
+        </span>
+        <div class="leading-tight">
+          <p class="text-xs font-medium uppercase tracking-wide text-ink-600">24×7 Helpline</p>
+          <a href={contact.phoneHref} class="font-display text-base font-bold text-ink-900">{contact.phoneDisplay}</a>
+        </div>
+      </div>
+
+      <!-- floating card: accreditation -->
+      <div class="absolute -right-2 -top-4 hidden items-center gap-2 rounded-2xl bg-brand-700 px-4 py-3 text-white shadow-card sm:flex">
+        <Icon name="shield" class="h-5 w-5" />
+        <span class="text-sm font-semibold">NABH · NABL Certified</span>
+      </div>
+    </div>
+  </div>
+</section>

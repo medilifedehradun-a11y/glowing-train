@@ -1,0 +1,132 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+import { galleryPhotos } from '../data/gallery';
+
+import exterior1 from '../assets/hospital/exterior-1.jpg';
+
+// Curated genuine photographs of the hospital. We reference the imported asset
+// URLs directly with a plain <img> (no on-the-fly transform) so every tile
+// loads reliably in both dev and production, even with many tiles at once.
+const curated = [
+  { img: exterior1, alt: 'Medilife Superspeciality Hospital building, Dehradun' },
+  ...galleryPhotos.map((g) => ({ img: g.src, alt: g.alt })),
+];
+
+const half = Math.ceil(curated.length / 2);
+const rows = [curated.slice(0, half), curated.slice(half)];
+const dirClass = ['marquee-left', 'marquee-right'];
+---
+
+<section class="section overflow-hidden">
+  <div class="container-x">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <SectionHeading
+        eyebrow="Photo Gallery"
+        title="A look inside Medilife"
+        subtitle="Real photos of our hospital, modern theatres, diagnostics and the caring spaces built around our patients."
+        align="left"
+        class="max-w-xl"
+      />
+      <a href="/photo-gallery" class="btn btn-ghost">
+        View full gallery <Icon name="arrowRight" class="h-5 w-5" />
+      </a>
+    </div>
+  </div>
+
+  <!-- Continuous marquee (full-bleed) -->
+  <div class="reveal mt-10 flex flex-col gap-4">
+    {rows.map((row, ri) => (
+      <div class="marquee" tabindex="0" role="group" aria-label={`Medilife hospital photos, row ${ri + 1}`}>
+        <ul class:list={['marquee-track', dirClass[ri]]}>
+          {[...row, ...row].map((it, i) => (
+            <li class="marquee-item">
+              <img
+                src={it.img.src}
+                width={it.img.width}
+                height={it.img.height}
+                alt={i < row.length ? it.alt : ''}
+                class="h-full w-full object-cover"
+                loading="eager"
+                decoding="async"
+                aria-hidden={i >= row.length ? 'true' : undefined}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .marquee-item {
+    flex: 0 0 auto;
+    width: 16rem;
+    height: 11rem;
+    margin-right: 1rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-soft);
+    outline: 1px solid var(--color-ink-100);
+    transition: transform 0.3s ease;
+  }
+  @media (min-width: 640px) {
+    .marquee-item {
+      width: 19rem;
+      height: 13rem;
+    }
+  }
+  .marquee-item:hover {
+    transform: scale(1.03);
+  }
+  .marquee-item img {
+    transition: transform 0.5s ease;
+  }
+  .marquee-item:hover img {
+    transform: scale(1.08);
+  }
+  .marquee-left {
+    animation: marquee-left 55s linear infinite;
+  }
+  .marquee-right {
+    animation: marquee-right 55s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee-left {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      overflow-x: auto;
+    }
+    .marquee-left,
+    .marquee-right {
+      animation: none;
+    }
+  }
+</style>

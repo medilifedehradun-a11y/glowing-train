@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ContactForm from '../components/ContactForm.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import { facilities, accreditations } from '../data/content';
+import { site, contact } from '../data/site';
+
+// Top feature tiles - faithful to the live site's three-column strip.
+const featureTiles = [
+  {
+    title: 'Operating Rooms',
+    caption: 'The Support You Need',
+    description:
+      'Modern, fully-equipped operation theatres with advanced surgical systems, laminar airflow and a skilled OT team supporting every procedure.',
+    icon: 'surgery',
+  },
+  {
+    title: 'Waiting Areas',
+    caption: 'A True Advantage',
+    description:
+      'Comfortable, spacious waiting lounges designed to keep patients and families at ease throughout their visit.',
+    icon: 'users',
+  },
+  {
+    title: 'ICU',
+    caption: '24/7 Intensive Care',
+    description:
+      'Critical care units with round-the-clock monitoring, advanced life support and expert intensivists for the most vulnerable patients.',
+    icon: 'heartPulse',
+  },
+];
+
+// Per-department procedure breakdown, faithful to the scrape of the live
+// Facilities page. Each block keeps the original headings and procedure lists.
+const medicalFacilities: {
+  title: string;
+  icon: string;
+  note?: string;
+  procedures: string[];
+}[] = [
+  {
+    title: 'Ear, Nose & Throat (ENT)',
+    icon: 'ent',
+    procedures: [
+      'Diagnostic Nasal Endoscopy',
+      'Laryngoscopy',
+      'Otoendoscopy',
+      'FESS',
+      'Fracture nasal bone reduction',
+      'Mastoid surgery',
+      'Head and Neck onco-surgery',
+      'Parotid surgery',
+      'Thyroid surgery',
+      'Submandibular gland surgery',
+      'Sialolithiasis',
+      'Foreign body Ear / Nose / Throat',
+      'Tinnitus',
+      'Ear piercing',
+      'Ear lobe repair',
+      'Allergy',
+      'Keloid',
+      'Oral cavity lesion',
+      'Laryngeal endoscopy',
+    ],
+  },
+  {
+    title: 'Oncosurgery',
+    icon: 'oncology',
+    procedures: [
+      'Breast cancer',
+      'Gastrectomy',
+      'Oophorectomy / Hysterectomy',
+      'Esophagectomy',
+      'Pancreatectomy',
+      'Laryngectomy',
+      'Head and Neck cancer surgery',
+    ],
+  },
+  {
+    title: 'Urology',
+    icon: 'urology',
+    procedures: [
+      'Uroflowmetry',
+      'Cystoscopy',
+      'HOLEP',
+      'TURP',
+      'TURBT',
+      'RIRS',
+      'URS',
+      'PCNL',
+      'OIU',
+      'Urethroplasty',
+      'Advanced Laparoscopic Surgery',
+      'AV Fistula',
+      'CAPD',
+    ],
+  },
+  {
+    title: 'General Medicine',
+    icon: 'medicine',
+    procedures: [
+      'Fever',
+      'Blood pressure',
+      'Diabetes',
+      'Thyroid',
+      'Joint pains',
+      'Arthritis',
+      'Whole body checkup',
+    ],
+  },
+  {
+    title: 'General Surgery',
+    icon: 'surgery',
+    procedures: [
+      'Appendectomy (Lap / Open)',
+      'Cholecystectomy (Lap / Open)',
+      'Hernia repair',
+      'Colectomy',
+      'Gastrectomy',
+      'Splenectomy',
+      'Hemorrhoidectomy (Open / Laser)',
+      'Piles and Fistula',
+      'Plastic Surgery',
+    ],
+  },
+  {
+    title: 'Orthopaedics Treatment',
+    icon: 'ortho',
+    procedures: [
+      'Fractured bone nailing / plating',
+      'ORIF',
+      'Total Hip Replacement',
+      'Total Knee Replacement',
+      'Amputation',
+      'Fasciotomy',
+    ],
+  },
+  {
+    title: 'Plastic Surgery',
+    icon: 'plastic',
+    procedures: [
+      'Burn cases',
+      'Rhinoplasty',
+      'Otoplasty',
+      'Scar removal',
+      'Contracture release',
+    ],
+  },
+  {
+    title: 'Pharmacy',
+    icon: 'pill',
+    note: 'A fully-stocked in-house pharmacy is available 24x7 for genuine medicines, surgical supplies and healthcare products.',
+    procedures: [],
+  },
+  {
+    title: 'Pathology Services',
+    icon: 'flask',
+    note: 'All major pathology and diagnostic services are available in-house with accurate results and quick turnaround.',
+    procedures: [],
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Facilities',
+      item: new URL('/facilities', site.url).href,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Our Facilities"
+  description="Explore the facilities at Medilife Superspeciality Hospital, Dehradun: modern operating rooms, comfortable waiting areas, 24/7 ICU, in-house pharmacy and pathology, plus a full range of ENT, urology, oncosurgery, orthopaedics, general medicine, general surgery and plastic surgery procedures."
+  jsonLd={[breadcrumbSchema]}
+>
+  <PageHero
+    eyebrow="Infrastructure & Care"
+    title="Our Facilities"
+    subtitle="Modern infrastructure built around your comfort and safety: from advanced operating rooms and intensive care to in-house diagnostics, pharmacy and a complete range of speciality procedures, all under one roof."
+    crumbs={[{ label: 'Facilities' }]}
+  />
+
+  <!-- Section 1: Feature tiles - Operating Rooms / Waiting Areas / ICU -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="The Medilife Difference"
+        title="Designed for healing, equipped for excellence"
+        subtitle="Every space at Medilife is purpose-built to support better outcomes, whether in the operating room, the waiting lounge or the intensive care unit."
+      />
+
+      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {featureTiles.map((tile) => (
+          <article class="card card-hover relative flex flex-col overflow-hidden p-7">
+            <span class="absolute right-0 top-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-brand-50/70" aria-hidden="true"></span>
+            <span class="relative grid h-14 w-14 place-items-center rounded-2xl bg-brand-600 text-white shadow-md">
+              <Icon name={tile.icon} class="h-7 w-7" />
+            </span>
+            <h3 class="relative mt-5 font-display text-xl font-bold text-ink-900">{tile.title}</h3>
+            <p class="relative mt-1 text-sm font-semibold text-brand-700">{tile.caption}</p>
+            <p class="relative mt-2 flex-1 text-sm leading-relaxed text-ink-600">{tile.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Facilities That Care (24/7 support services) -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Facilities That Care"
+        title="Comprehensive support, available 24/7"
+        subtitle="From emergency response and intensive care to diagnostics, pharmacy and insurance support, everything you need is right here, around the clock."
+      />
+      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {facilities.map((f) => (
+          <div class="card card-hover flex flex-col p-6">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={f.icon} class="h-6 w-6" />
+            </span>
+            <h3 class="mt-4 text-lg font-bold text-ink-900">{f.name}</h3>
+            <p class="mt-2 text-[0.92rem] leading-relaxed text-ink-600">{f.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Medical Facilities - per-department procedure breakdown -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Medical Facilities"
+        title="A complete range of speciality services"
+        subtitle="An overview of the diagnostic, surgical and treatment procedures available across our superspeciality departments at Medilife."
+      />
+
+      <div class="reveal mt-12 grid gap-6 lg:grid-cols-2">
+        {medicalFacilities.map((m) => (
+          <article class="card flex flex-col p-6 sm:p-8">
+            <div class="flex items-center gap-4">
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+                <Icon name={m.icon} class="h-6 w-6" />
+              </span>
+              <h3 class="text-lg font-bold text-ink-900 sm:text-xl">{m.title}</h3>
+            </div>
+
+            {m.procedures.length > 0 ? (
+              <ul class="mt-5 flex flex-wrap gap-2.5">
+                {m.procedures.map((p) => (
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-ink-50 px-3.5 py-1.5 text-sm font-medium text-ink-700 ring-1 ring-ink-100">
+                    <Icon name="check" class="h-3.5 w-3.5 text-brand-600" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-5 flex items-start gap-2.5 text-[0.95rem] leading-relaxed text-ink-600">
+                <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600">
+                  <Icon name="checkCircle" class="h-4 w-4" />
+                </span>
+                {m.note}
+              </p>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <p class="mt-8 text-center text-sm text-ink-600">
+        Looking for a specific treatment? <a href="/departments" class="font-semibold text-brand-700 underline-offset-2 hover:underline">Explore our departments</a> or call us at
+        <a href={contact.phoneHref} class="font-semibold text-brand-700 underline-offset-2 hover:underline">{contact.phoneDisplay}</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Accreditations strip -->
+  <section class="border-y border-ink-100 bg-white">
+    <div class="container-x py-10">
+      <p class="text-center text-xs font-semibold uppercase tracking-wider text-ink-600">
+        Accredited & trusted
+      </p>
+      <div class="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+        {accreditations.map((a) => (
+          <div class="flex items-center gap-3">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={a.icon} class="h-6 w-6" />
+            </span>
+            <div class="leading-tight">
+              <p class="text-sm font-bold text-ink-900">{a.label}</p>
+              <p class="text-xs text-ink-600">{a.detail}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Enquiry -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x grid gap-12 lg:grid-cols-2">
+      <div>
+        <span class="eyebrow">Plan Your Visit</span>
+        <h2 class="mt-4 text-3xl font-bold leading-tight text-ink-900 sm:text-4xl">
+          Want to know more about our facilities?
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-ink-600">
+          Share your details and our team will help you with admissions, procedures, insurance and cashless treatment. For emergencies, we are available 24/7.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-5">
+          <a href={contact.phoneHref} class="flex items-start gap-4">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600"><Icon name="phone" class="h-6 w-6" /></span>
+            <span>
+              <span class="block text-sm font-semibold text-ink-600">Call us</span>
+              <span class="block text-lg font-bold text-ink-900">{contact.phoneDisplay}</span>
+            </span>
+          </a>
+          <a href={contact.emailHref} class="flex items-start gap-4">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600"><Icon name="mail" class="h-6 w-6" /></span>
+            <span>
+              <span class="block text-sm font-semibold text-ink-600">Email us</span>
+              <span class="block text-lg font-bold text-ink-900">{contact.email}</span>
+            </span>
+          </a>
+          <a href={contact.mapUrl} target="_blank" rel="noopener" class="flex items-start gap-4">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600"><Icon name="pin" class="h-6 w-6" /></span>
+            <span>
+              <span class="block text-sm font-semibold text-ink-600">Visit us</span>
+              <span class="block text-base font-bold text-ink-900">{contact.addressLine1}, {contact.addressLine2}, {contact.addressCity}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card p-6 sm:p-8">
+        <ContactForm heading="Request a call back" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

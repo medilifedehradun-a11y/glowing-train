@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import { faqs } from '../data/content';
+import { site, contact } from '../data/site';
+
+const pageTitle = 'Frequently Asked Questions';
+const metaDescription =
+  'Answers to common questions about Medilife Superspeciality Hospital in Dehradun - our specialities, location, contact details, patient care approach, insurance, Ayushman Bharat and more.';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'FAQ', item: new URL('/faq', site.url).href },
+  ],
+};
+
+const topics = [
+  { icon: 'stethoscope', label: 'Specialities & treatments' },
+  { icon: 'pin', label: 'Location & directions' },
+  { icon: 'phone', label: 'Contact & appointments' },
+  { icon: 'heartPulse', label: 'Patient care approach' },
+  { icon: 'shield', label: 'Insurance & Ayushman Bharat' },
+  { icon: 'clock', label: '24/7 emergency support' },
+];
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={metaDescription}
+  jsonLd={[faqSchema, breadcrumbSchema]}
+>
+  <PageHero
+    eyebrow="Patient Help Centre"
+    title="Frequently Asked Questions"
+    subtitle="All your healthcare questions, answered."
+    crumbs={[{ label: 'FAQ' }]}
+  />
+
+  <!-- Topics overview -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Quick Overview"
+        title="Find answers, fast"
+        subtitle="Browse the questions we hear most often from patients and families. If you do not see what you are looking for, our team is just a call away."
+      />
+      <div class="reveal mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {topics.map((t) => (
+          <div class="card flex items-center gap-4 p-5">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={t.icon} class="h-6 w-6" />
+            </span>
+            <span class="font-semibold text-ink-900">{t.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ accordion -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Patient FAQ"
+        title="Questions our patients ask"
+        subtitle="Tap any question to read the full answer."
+      />
+      <div class="reveal mt-10">
+        <FaqAccordion items={faqs} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Still have questions -->
+  <section class="section">
+    <div class="container-x">
+      <div class="overflow-hidden rounded-3xl border border-ink-100 bg-white shadow-card">
+        <div class="grid gap-10 lg:grid-cols-2">
+          <div class="p-8 sm:p-10 lg:p-12">
+            <span class="eyebrow">Still Have Questions?</span>
+            <h2 class="mt-4 text-3xl font-bold leading-tight text-ink-900 sm:text-4xl">
+              We are happy to help, any time
+            </h2>
+            <p class="mt-4 text-lg leading-relaxed text-ink-600">
+              Cannot find the answer you need? Reach out to our team directly. We are
+              available 24/7 for emergencies and ready to guide you through appointments,
+              treatments and admissions.
+            </p>
+
+            <div class="mt-8 flex flex-col gap-5">
+              <a href={contact.phoneHref} class="flex items-start gap-4">
+                <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+                  <Icon name="phone" class="h-6 w-6" />
+                </span>
+                <span>
+                  <span class="block text-sm font-semibold text-ink-600">Call us</span>
+                  <span class="block text-lg font-bold text-ink-900">{contact.phoneDisplay}</span>
+                </span>
+              </a>
+              <a href={contact.emailHref} class="flex items-start gap-4">
+                <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+                  <Icon name="mail" class="h-6 w-6" />
+                </span>
+                <span>
+                  <span class="block text-sm font-semibold text-ink-600">Email us</span>
+                  <span class="block text-lg font-bold text-ink-900">{contact.email}</span>
+                </span>
+              </a>
+              <a href={contact.mapUrl} target="_blank" rel="noopener" class="flex items-start gap-4">
+                <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+                  <Icon name="pin" class="h-6 w-6" />
+                </span>
+                <span>
+                  <span class="block text-sm font-semibold text-ink-600">Visit us</span>
+                  <span class="block text-base font-bold text-ink-900">
+                    {contact.addressLine1}, {contact.addressLine2}, {contact.addressCity}
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="flex flex-col justify-center gap-5 bg-gradient-to-br from-brand-700 to-brand-900 p-8 text-white sm:p-10 lg:p-12">
+            <span class="grid h-14 w-14 place-items-center rounded-2xl bg-white/15">
+              <Icon name="heartPulse" class="h-7 w-7" />
+            </span>
+            <h3 class="text-2xl font-bold text-white">Ready to take the next step?</h3>
+            <p class="text-brand-50/90">
+              Book a consultation with our specialists online, or get in touch with our
+              patient care team to discuss your needs.
+            </p>
+            <div class="mt-2 flex flex-col gap-3">
+              <a href="/book-online" class="btn btn-white w-full">
+                <Icon name="calendar" class="h-5 w-5" /> Book Online
+              </a>
+              <a href="/contact-us" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/30 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                <Icon name="arrowRight" class="h-4 w-4" /> Contact Us
+              </a>
+            </div>
+            <div class="mt-4 flex items-center gap-2 text-sm text-brand-50/80">
+              <Icon name="clock" class="h-4 w-4" />
+              <span>{contact.hoursWeekday}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

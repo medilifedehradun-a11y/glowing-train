@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import type { Faq } from '../data/content';
+
+interface Props {
+  items: Faq[];
+  class?: string;
+}
+const { items, class: className = '' } = Astro.props;
+---
+
+<div class:list={['mx-auto flex max-w-3xl flex-col gap-3', className]}>
+  {items.map((faq, i) => (
+    <details
+      class="group rounded-2xl border border-ink-100 bg-white px-5 shadow-soft open:border-brand-200 open:shadow-card"
+      open={i === 0}
+    >
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left marker:content-none">
+        <span class="font-display text-[1.02rem] font-semibold text-ink-900">{faq.question}</span>
+        <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600 transition-transform duration-300 group-open:rotate-45">
+          <Icon name="plus" class="h-4 w-4" />
+        </span>
+      </summary>
+      <div class="pb-5 pr-10 text-[0.95rem] leading-relaxed text-ink-600">
+        {faq.answer}
+      </div>
+    </details>
+  ))}
+</div>

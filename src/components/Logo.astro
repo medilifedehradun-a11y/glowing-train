@@ -1,0 +1,38 @@
+---
+import Img from './Img.astro';
+import { site } from '../data/site';
+import logo from '../assets/hospital/logo.png';
+
+interface Props {
+  variant?: 'dark' | 'light';
+  class?: string;
+}
+const { variant = 'dark', class: className = '' } = Astro.props;
+const textColor = variant === 'light' ? 'text-white' : 'text-ink-900';
+const subColor = variant === 'light' ? 'text-brand-200' : 'text-brand-700';
+---
+
+<a
+  href="/"
+  class={`group inline-flex items-center gap-3 ${className}`}
+  aria-label={`${site.name} - home`}
+>
+  <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white p-1 shadow-sm ring-1 ring-ink-100 transition-transform duration-200 group-hover:scale-105">
+    <Img
+      src={logo}
+      alt={`${site.name} logo`}
+      width={96}
+      height={96}
+      class="h-full w-full object-contain"
+      loading="eager"
+    />
+  </span>
+  <span class="flex flex-col leading-none">
+    <span class={`font-display text-[1.15rem] font-extrabold tracking-tight ${textColor}`}>
+      Medilife
+    </span>
+    <span class={`text-[0.62rem] font-semibold uppercase tracking-[0.16em] ${subColor}`}>
+      Superspeciality Hospital
+    </span>
+  </span>
+</a>

@@ -1,0 +1,171 @@
+---
+import Img from '../../components/Img.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import Icon from '../../components/Icon.astro';
+import { posts } from '../../data/blog';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+
+const url = new URL(`/blog/${post.slug}`, site.url).href;
+
+const fmtDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+const related = posts.filter((p) => p.slug !== post.slug).slice(0, 2);
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.excerpt,
+  image: new URL(post.image.src, site.url).href,
+  datePublished: post.date,
+  dateModified: post.date,
+  articleSection: post.category,
+  author: { '@type': 'Organization', name: post.author, url: site.url },
+  publisher: {
+    '@type': 'Organization',
+    name: site.name,
+    logo: { '@type': 'ImageObject', url: new URL('/logo.png', site.url).href },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  url,
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog', site.url).href },
+    { '@type': 'ListItem', position: 3, name: post.title, item: url },
+  ],
+};
+---
+
+<BaseLayout
+  title={post.title}
+  description={post.excerpt}
+  jsonLd={[articleSchema, breadcrumbSchema]}
+>
+  <PageHero
+    eyebrow={post.category}
+    title={post.title}
+    crumbs={[{ label: 'Blog', href: '/blog' }, { label: post.title }]}
+  />
+
+  <article class="section">
+    <div class="container-x">
+      <!-- Meta -->
+      <div class="mx-auto flex max-w-3xl flex-wrap items-center gap-x-6 gap-y-3 text-sm text-ink-600">
+        <span class="inline-flex items-center gap-2">
+          <span class="grid h-9 w-9 place-items-center rounded-full bg-brand-50 text-brand-600">
+            <Icon name="user" class="h-4.5 w-4.5" />
+          </span>
+          <span class="font-semibold text-ink-800">{post.author}</span>
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <Icon name="calendar" class="h-4 w-4 text-brand-600" />
+          <time datetime={post.date}>{fmtDate(post.date)}</time>
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <Icon name="clock" class="h-4 w-4 text-brand-600" /> {post.readingTime}
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <Icon name="building" class="h-4 w-4 text-brand-600" /> {post.category}
+        </span>
+      </div>
+
+      <!-- Featured image -->
+      <figure class="mx-auto mt-8 max-w-4xl overflow-hidden rounded-3xl shadow-card ring-1 ring-ink-100">
+        <Img
+          src={post.image}
+          alt={post.imageAlt}
+          width={1000}
+          height={525}
+          class="h-auto w-full object-cover"
+          loading="eager"
+        />
+      </figure>
+
+      <!-- Body -->
+      <div class="prose-body mx-auto mt-12 max-w-3xl">
+        <p class="text-xl font-medium leading-relaxed text-ink-700">
+          Hello, and welcome to the inaugural blog post for Medilife Superspeciality Hospital!
+          We are excited to embark on this journey of dialogue, education, and partnership in health.
+        </p>
+
+        {post.body.map((section) => (
+          <section class="mt-10">
+            <h2 class="text-2xl font-bold leading-snug text-ink-900">{section.heading}</h2>
+            <p class="mt-3 text-lg leading-relaxed text-ink-600">{section.text}</p>
+          </section>
+        ))}
+
+        <!-- Author / closing card -->
+        <div class="mt-12 flex flex-col gap-4 rounded-2xl border border-ink-100 bg-ink-50/60 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-4">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name="heartPulse" class="h-6 w-6" />
+            </span>
+            <div>
+              <p class="text-sm font-semibold text-ink-600">Written by</p>
+              <p class="text-base font-bold text-ink-900">{post.author}</p>
+            </div>
+          </div>
+          <a href="/book-online" class="btn btn-primary">
+            <Icon name="calendar" class="h-5 w-5" /> Book an Appointment
+          </a>
+        </div>
+
+        <!-- Back to blog -->
+        <div class="mt-10">
+          <a href="/blog" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700">
+            <Icon name="arrowLeft" class="h-4 w-4" /> Back to all posts
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Related posts -->
+  {related.length > 0 && (
+    <section class="section bg-ink-50/50">
+      <div class="container-x">
+        <span class="eyebrow">Keep Reading</span>
+        <h2 class="mt-4 text-3xl font-bold text-ink-900">More from the blog</h2>
+        <div class="mt-10 grid gap-6 sm:grid-cols-2">
+          {related.map((p) => (
+            <a href={`/blog/${p.slug}`} class="card card-hover group flex items-center gap-4 p-5">
+              <Img
+                src={p.image}
+                alt={p.imageAlt}
+                width={120}
+                height={120}
+                class="h-20 w-20 shrink-0 rounded-xl object-cover"
+                loading="lazy"
+              />
+              <span class="flex flex-col">
+                <span class="text-xs font-semibold uppercase tracking-wide text-brand-600">{p.category}</span>
+                <span class="mt-1 font-bold leading-snug text-ink-900 group-hover:text-brand-700">{p.title}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CtaBanner />
+</BaseLayout>

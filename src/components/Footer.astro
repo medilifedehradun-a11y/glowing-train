@@ -1,0 +1,91 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site, contact, social, footerNav } from '../data/site';
+const year = 2026;
+---
+
+<footer class="bg-ink-950 text-ink-300">
+  <div class="container-x grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.3fr]">
+    <!-- Brand -->
+    <div>
+      <Logo variant="light" />
+      <p class="mt-5 max-w-xs text-[0.92rem] leading-relaxed text-ink-400">
+        A multi-superspeciality hospital in Dehradun delivering compassionate,
+        advanced and affordable care - led by experienced specialists and modern
+        technology.
+      </p>
+      <div class="mt-6 flex items-center gap-3">
+        <a href={social.facebook} target="_blank" rel="noopener" aria-label="Facebook" class="grid h-9 w-9 place-items-center rounded-lg bg-white/5 transition hover:bg-brand-600 hover:text-white"><Icon name="facebook" class="h-4 w-4" /></a>
+        <a href={social.instagram} target="_blank" rel="noopener" aria-label="Instagram" class="grid h-9 w-9 place-items-center rounded-lg bg-white/5 transition hover:bg-brand-600 hover:text-white"><Icon name="instagram" class="h-4 w-4" /></a>
+        <a href={social.twitter} target="_blank" rel="noopener" aria-label="X (Twitter)" class="grid h-9 w-9 place-items-center rounded-lg bg-white/5 transition hover:bg-brand-600 hover:text-white"><Icon name="twitter" class="h-4 w-4" /></a>
+        <a href={social.youtube} target="_blank" rel="noopener" aria-label="YouTube" class="grid h-9 w-9 place-items-center rounded-lg bg-white/5 transition hover:bg-brand-600 hover:text-white"><Icon name="youtube" class="h-4 w-4" /></a>
+        <a href={social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" class="grid h-9 w-9 place-items-center rounded-lg bg-white/5 transition hover:bg-brand-600 hover:text-white"><Icon name="linkedin" class="h-4 w-4" /></a>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <div>
+      <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white">Quick Links</h3>
+      <ul class="mt-5 flex flex-col gap-2.5 text-[0.92rem]">
+        {footerNav.quickLinks.map((l) => (
+          <li>
+            <a href={l.href} class="inline-flex items-center gap-1.5 text-ink-400 transition hover:text-brand-300">
+              <Icon name="chevronRight" class="h-3.5 w-3.5 text-brand-500" /> {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Departments -->
+    <div>
+      <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white">Departments</h3>
+      <ul class="mt-5 flex flex-col gap-2.5 text-[0.92rem]">
+        {footerNav.departments.map((l) => (
+          <li>
+            <a href={l.href} class="inline-flex items-center gap-1.5 text-ink-400 transition hover:text-brand-300">
+              <Icon name="chevronRight" class="h-3.5 w-3.5 text-brand-500" /> {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white">Get in Touch</h3>
+      <ul class="mt-5 flex flex-col gap-4 text-[0.92rem]">
+        <li class="flex items-start gap-3">
+          <Icon name="pin" class="mt-0.5 h-5 w-5 shrink-0 text-brand-400" />
+          <a href={contact.mapUrl} target="_blank" rel="noopener" class="text-ink-400 transition hover:text-brand-300">
+            {contact.addressLine1}, {contact.addressCity}, {contact.addressState} {contact.addressPostal}
+          </a>
+        </li>
+        <li class="flex items-start gap-3">
+          <Icon name="phone" class="mt-0.5 h-5 w-5 shrink-0 text-brand-400" />
+          <a href={contact.phoneHref} class="text-ink-400 transition hover:text-brand-300">{contact.phoneDisplay}</a>
+        </li>
+        <li class="flex items-start gap-3">
+          <Icon name="mail" class="mt-0.5 h-5 w-5 shrink-0 text-brand-400" />
+          <a href={contact.emailHref} class="break-all text-ink-400 transition hover:text-brand-300">{contact.email}</a>
+        </li>
+        <li class="flex items-start gap-3">
+          <Icon name="clock" class="mt-0.5 h-5 w-5 shrink-0 text-brand-400" />
+          <span class="text-ink-400">{contact.hoursWeekday}<br />{contact.opdHours}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-x flex flex-col items-center gap-4 py-6 text-[0.82rem] text-ink-400 md:flex-row md:justify-between">
+      <p>© {year} {site.name}. All rights reserved.</p>
+      <nav class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2" aria-label="Legal">
+        <a href="/privacy-policy" class="transition hover:text-brand-300">Privacy Policy</a>
+        <a href="/terms" class="transition hover:text-brand-300">Terms of Use</a>
+        <a href="/disclaimer" class="transition hover:text-brand-300">Disclaimer</a>
+      </nav>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,168 @@
+---
+import Img from '../components/Img.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import { site, contact } from '../data/site';
+import { gallery } from '../data/gallery';
+
+const galleryDescription =
+  'Take a visual tour of Medilife Superspeciality Hospital in Dehradun - real photographs of our hospital premises, facilities, medical team and patient care.';
+
+const overview = [
+  { icon: 'building', label: `${gallery.length} photos`, sub: 'Real hospital images' },
+  { icon: 'activity', label: 'Premises', sub: 'Building & interiors' },
+  { icon: 'users', label: 'Our team', sub: 'Doctors & staff' },
+  { icon: 'heartPulse', label: 'Care in action', sub: 'Facilities & events' },
+];
+
+const imageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  name: `Photo Gallery - ${site.name}`,
+  url: new URL('/photo-gallery', site.url).href,
+  description: galleryDescription,
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Photo Gallery', item: new URL('/photo-gallery', site.url).href },
+  ],
+};
+---
+
+<BaseLayout
+  title="Photo Gallery"
+  description={galleryDescription}
+  jsonLd={[imageSchema, breadcrumbSchema]}
+>
+  <PageHero
+    eyebrow="Photo Gallery"
+    title="Photo Gallery"
+    subtitle="A closer look at Medilife Superspeciality Hospital, Dehradun - our premises, facilities, medical team and the care we deliver every day."
+    crumbs={[{ label: 'Photo Gallery' }]}
+  />
+
+  <!-- Overview strip -->
+  <section class="border-b border-ink-100 bg-white">
+    <div class="container-x py-8">
+      <div class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+        {overview.map((c) => (
+          <div class="flex items-center gap-3">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={c.icon} class="h-6 w-6" />
+            </span>
+            <div class="leading-tight">
+              <p class="text-sm font-bold text-ink-900">{c.label}</p>
+              <p class="text-xs text-ink-600">{c.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery grid -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Inside Medilife"
+        title="A visual tour of our hospital"
+        subtitle="Real moments from Medilife - our infrastructure, our people and the calm, caring environment where we deliver advanced treatment every day."
+      />
+
+      <div class="reveal mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+        {gallery.map((item, i) => (
+          <figure class="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-soft ring-1 ring-ink-100">
+            <Img
+              src={item.src}
+              alt={item.alt}
+              width={560}
+              height={420}
+              class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+              loading={i < 4 ? 'eager' : 'lazy'}
+            />
+            <div
+              class="pointer-events-none absolute inset-0 flex items-center justify-center bg-brand-900/0 opacity-0 transition group-hover:bg-brand-900/30 group-hover:opacity-100"
+              aria-hidden="true"
+            >
+              <span class="grid h-11 w-11 place-items-center rounded-full bg-white/90 text-brand-700">
+                <Icon name="plus" class="h-5 w-5" />
+              </span>
+            </div>
+          </figure>
+        ))}
+      </div>
+
+      <p class="mt-8 text-center text-sm text-ink-600">
+        Photographs from Medilife Superspeciality Hospital, Dehradun.
+      </p>
+    </div>
+  </section>
+
+  <!-- Visit / explore strip -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x">
+      <div class="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+        <div class="reveal">
+          <span class="eyebrow">Come See For Yourself</span>
+          <h2 class="mt-4 text-3xl font-bold leading-tight text-ink-900 sm:text-4xl">
+            Photos tell part of the story, your visit tells the rest
+          </h2>
+          <p class="mt-4 text-lg leading-relaxed text-ink-600">
+            We would be glad to welcome you to Medilife Superspeciality Hospital in Dehradun.
+            Explore our departments online, or reach out to plan a consultation with our
+            specialists. Our team is available round the clock for emergencies.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/departments" class="btn btn-primary">
+              Explore Departments <Icon name="arrowRight" class="h-5 w-5" />
+            </a>
+            <a href="/facilities" class="btn btn-ghost">
+              View Facilities <Icon name="arrowRight" class="h-5 w-5" />
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal grid gap-4">
+          <a href={contact.mapUrl} target="_blank" rel="noopener" class="card card-hover flex items-start gap-4 p-5">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name="pin" class="h-6 w-6" />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold text-ink-600">Visit us</span>
+              <span class="block text-base font-bold text-ink-900">
+                {contact.addressLine1}, {contact.addressLine2}, {contact.addressCity}
+              </span>
+            </span>
+          </a>
+          <a href={contact.phoneHref} class="card card-hover flex items-start gap-4 p-5">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name="phone" class="h-6 w-6" />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold text-ink-600">Call us</span>
+              <span class="block text-lg font-bold text-ink-900">{contact.phoneDisplay}</span>
+            </span>
+          </a>
+          <a href={contact.emailHref} class="card card-hover flex items-start gap-4 p-5">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name="mail" class="h-6 w-6" />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold text-ink-600">Email us</span>
+              <span class="block text-base font-bold text-ink-900">{contact.email}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

@@ -1,0 +1,258 @@
+---
+import '@fontsource-variable/inter/index.css';
+import '@fontsource-variable/plus-jakarta-sans/index.css';
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingActions from '../components/FloatingActions.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import { site, contact, social } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path-relative OG image, defaults to the site social card */
+  image?: string;
+  noindex?: boolean;
+  /** Extra JSON-LD objects to inject for this page */
+  jsonLd?: Record<string, unknown>[];
+  /** Optional preconnect to Google fonts already handled globally */
+}
+
+const {
+  title,
+  description = site.description,
+  image = '/og-default.png',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+
+// Sitewide noindex for staging deployments: set NOINDEX=true in the build env.
+const noIndexPage = noindex || process.env.NOINDEX === 'true';
+
+const pageTitle = title
+  ? `${title} | ${site.name}`
+  : `${site.name} - ${site.tagline}`;
+
+const canonical = new URL(Astro.url.pathname, site.url).href.replace(/\/$/, '') || site.url;
+const ogImage = new URL(image, site.url).href;
+
+// Site-wide organization schema (MedicalOrganization / Hospital)
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Hospital',
+  name: site.name,
+  url: site.url,
+  logo: new URL('/logo.png', site.url).href,
+  image: ogImage,
+  description: site.description,
+  telephone: contact.phoneRaw,
+  email: contact.email,
+  medicalSpecialty: [
+    'Urology',
+    'Orthopedic',
+    'Surgical',
+    'Oncologic',
+    'Otolaryngologic',
+    'PlasticSurgery',
+    'PrimaryCare',
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: contact.addressLine1,
+    addressLocality: contact.addressCity,
+    addressRegion: contact.addressState,
+    postalCode: contact.addressPostal,
+    addressCountry: 'IN',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: contact.lat,
+    longitude: contact.lng,
+  },
+  hasMap: contact.mapUrl,
+  areaServed: [
+    { '@type': 'City', name: 'Dehradun' },
+    { '@type': 'State', name: 'Uttarakhand' },
+  ],
+  priceRange: '₹₹',
+  currenciesAccepted: 'INR',
+  isAcceptingNewPatients: true,
+  availableService: [
+    'Urology', 'ENT', 'Surgical Oncology', 'Orthopedics',
+    'General Medicine', 'General Surgery', 'Plastic Surgery',
+    'Emergency Care', 'ICU', 'Pathology', 'Pharmacy', 'Ambulance',
+  ].map((s) => ({ '@type': 'MedicalProcedure', name: s })),
+  openingHours: 'Mo-Su 00:00-23:59',
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '00:00',
+    closes: '23:59',
+  },
+  sameAs: [
+    social.facebook,
+    social.instagram,
+    social.twitter,
+    social.linkedin,
+    social.youtube,
+  ],
+};
+
+const schemas = [orgSchema, ...jsonLd];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Enable scroll-reveal hidden states only when JS runs (no flash, no-JS safe) -->
+    <script is:inline>
+      document.documentElement.classList.add('anim-ready');
+    </script>
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noIndexPage && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="#2461a6" />
+    <meta name="author" content={site.name} />
+    <meta name="geo.region" content="IN-UT" />
+    <meta name="geo.placename" content="Dehradun" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={site.locale} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.name} Blog`}
+      href="/rss.xml"
+    />
+
+    {schemas.map((s) => (
+      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    ))}
+
+    <ClientRouter />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <FloatingActions />
+    <ConsentBanner />
+
+    <script>
+      // Sitewide scroll-reveal: auto-animates almost every fold, staggered,
+      // with per-card stagger inside grids. Progressive enhancement.
+      const setupReveal = () => {
+        const motionOk = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+        const blocks = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            '.reveal, [data-animate], main section:not(.no-reveal) > .container-x > *'
+          )
+        );
+        if (blocks.length === 0) return;
+
+        // Promote multi-child grids so their cards reveal one-by-one.
+        const isGrid = (el: HTMLElement) =>
+          /(^|\s)grid(\s|$)/.test(el.className) && el.children.length > 1;
+        blocks.forEach((el) => {
+          if (isGrid(el)) el.classList.add('reveal-group');
+        });
+
+        if (!motionOk || !('IntersectionObserver' in window)) {
+          blocks.forEach((el) => el.classList.add('is-visible'));
+          return;
+        }
+
+        // Stagger: between sibling blocks, and between a group's children.
+        blocks.forEach((el) => {
+          const parent = el.parentElement;
+          if (parent) {
+            const sibs = Array.from(parent.children).filter((c) =>
+              blocks.includes(c as HTMLElement)
+            );
+            const i = sibs.indexOf(el);
+            if (i > 0) el.style.transitionDelay = Math.min(i, 6) * 0.08 + 's';
+          }
+          if (el.classList.contains('reveal-group')) {
+            Array.from(el.children).forEach((c, ci) => {
+              (c as HTMLElement).style.transitionDelay = Math.min(ci, 10) * 0.07 + 's';
+            });
+          }
+        });
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -6% 0px' }
+        );
+        const vh = window.innerHeight;
+        blocks.forEach((el) => {
+          // Already in view or scrolled past (deep link / refresh / fast scroll):
+          // reveal immediately so content is never left hidden. Only defer
+          // genuinely below-the-fold blocks to the scroll observer.
+          if (el.getBoundingClientRect().top < vh * 0.92) {
+            requestAnimationFrame(() => el.classList.add('is-visible'));
+          } else {
+            io.observe(el);
+          }
+        });
+      };
+      document.addEventListener('astro:page-load', setupReveal);
+    </script>
+
+    <style>
+      .skip-link {
+        position: fixed;
+        left: 1rem;
+        top: -4rem;
+        z-index: 100;
+        background: var(--color-brand-700);
+        color: #fff;
+        padding: 0.65rem 1.1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: top 0.2s ease;
+      }
+      .skip-link:focus {
+        top: 1rem;
+      }
+    </style>
+  </body>
+</html>

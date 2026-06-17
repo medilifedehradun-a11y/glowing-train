@@ -1,0 +1,74 @@
+---
+/**
+ * Cookie-consent banner. Analytics (GTM + Meta Pixel) load ONLY after the
+ * visitor accepts, or automatically on return visits if they accepted before.
+ * Declining keeps tracking off. Choice stored in localStorage ('ml-consent').
+ */
+import Icon from './Icon.astro';
+import { integrations } from '../data/site';
+const { gtmId, metaPixelId } = integrations;
+const enabled = !!(gtmId || metaPixelId);
+
+const gtm = gtmId
+  ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`
+  : '';
+const pixel = metaPixelId
+  ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${metaPixelId}');fbq('track','PageView');`
+  : '';
+
+const loaderJs = `
+window.__mlLoadAnalytics=function(){
+  if(window.__mlAnalyticsLoaded)return; window.__mlAnalyticsLoaded=true;
+  ${gtm}
+  ${pixel}
+};
+try{ if(localStorage.getItem('ml-consent')==='accepted'){ window.__mlLoadAnalytics(); } }catch(e){}
+if(!window.__mlSwapBound){ window.__mlSwapBound=true; document.addEventListener('astro:after-swap',function(){ if(window.__mlAnalyticsLoaded){ if(window.dataLayer)window.dataLayer.push({event:'pageview',page_path:location.pathname}); if(window.fbq)window.fbq('track','PageView'); } }); }
+`;
+
+const bannerJs = `
+(function(){
+  function init(){
+    var bar=document.getElementById('cookie-bar'); if(!bar||bar.dataset.bound)return; bar.dataset.bound='1';
+    var choice=null; try{choice=localStorage.getItem('ml-consent');}catch(e){}
+    if(!choice) bar.removeAttribute('hidden');
+    var accept=bar.querySelector('[data-accept]'), decline=bar.querySelector('[data-decline]');
+    accept&&accept.addEventListener('click',function(){ try{localStorage.setItem('ml-consent','accepted');}catch(e){} if(window.__mlLoadAnalytics)window.__mlLoadAnalytics(); bar.setAttribute('hidden',''); });
+    decline&&decline.addEventListener('click',function(){ try{localStorage.setItem('ml-consent','declined');}catch(e){} bar.setAttribute('hidden',''); });
+  }
+  document.addEventListener('astro:page-load',init);
+})();
+`;
+---
+
+{enabled && (
+  <Fragment>
+    <div
+      id="cookie-bar"
+      hidden
+      role="dialog"
+      aria-label="Cookie consent"
+      class="fixed bottom-4 left-4 z-50 max-w-[calc(100%-5.5rem)] rounded-2xl border border-ink-100 bg-white p-5 shadow-lift sm:max-w-md print:hidden"
+    >
+      <div class="flex items-start gap-3">
+        <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+          <Icon name="shield" class="h-5 w-5" />
+        </span>
+        <div>
+          <p class="text-sm font-bold text-ink-900">We value your privacy</p>
+          <p class="mt-1 text-[0.85rem] leading-relaxed text-ink-600">
+            We use cookies to analyse traffic and improve your experience. You can accept or decline analytics cookies.
+            <a href="/privacy-policy" class="font-semibold text-brand-700 underline">Learn more</a>.
+          </p>
+        </div>
+      </div>
+      <div class="mt-4 flex gap-2.5">
+        <button type="button" data-accept class="btn btn-primary flex-1 py-2.5 text-sm">Accept</button>
+        <button type="button" data-decline class="btn btn-ghost flex-1 py-2.5 text-sm">Decline</button>
+      </div>
+    </div>
+
+    <script is:inline set:html={loaderJs} />
+    <script is:inline set:html={bannerJs} />
+  </Fragment>
+)}

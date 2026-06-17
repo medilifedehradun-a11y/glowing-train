@@ -1,0 +1,204 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { mainNav, contact, social, departmentNav } from '../data/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
+---
+
+<header id="site-header" class="sticky top-0 z-50">
+  <!-- Utility bar -->
+  <div class="hidden bg-brand-800 text-brand-50 lg:block">
+    <div class="container-x flex h-10 items-center justify-between text-[0.82rem]">
+      <div class="flex items-center gap-6">
+        <a href={contact.phoneHref} class="flex items-center gap-1.5 transition hover:text-white">
+          <Icon name="phone" class="h-3.5 w-3.5" /> {contact.phoneDisplay}
+        </a>
+        <a href={contact.emailHref} class="flex items-center gap-1.5 transition hover:text-white">
+          <Icon name="mail" class="h-3.5 w-3.5" /> {contact.email}
+        </a>
+        <span class="flex items-center gap-1.5 text-brand-100/90">
+          <Icon name="clock" class="h-3.5 w-3.5" /> 24×7 Emergency &amp; Ambulance
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-brand-100/80">Follow us</span>
+        <div class="flex items-center gap-2.5">
+          <a href={social.facebook} target="_blank" rel="noopener" aria-label="Facebook" class="transition hover:text-white"><Icon name="facebook" class="h-4 w-4" /></a>
+          <a href={social.instagram} target="_blank" rel="noopener" aria-label="Instagram" class="transition hover:text-white"><Icon name="instagram" class="h-4 w-4" /></a>
+          <a href={social.youtube} target="_blank" rel="noopener" aria-label="YouTube" class="transition hover:text-white"><Icon name="youtube" class="h-4 w-4" /></a>
+          <a href={social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" class="transition hover:text-white"><Icon name="linkedin" class="h-4 w-4" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main bar -->
+  <div id="nav-bar" class="border-b border-ink-100 bg-white/95 backdrop-blur transition-shadow duration-300">
+    <nav class="container-x flex h-[4.5rem] items-center justify-between gap-4" aria-label="Primary">
+      <Logo />
+
+      <!-- Desktop nav -->
+      <ul class="hidden items-center gap-1 xl:flex">
+        {mainNav.map((item) =>
+          item.children ? (
+            <li class="group relative">
+              <a
+                href={item.href}
+                class:list={[
+                  'flex items-center gap-1 rounded-lg px-3 py-2 text-[0.95rem] font-medium transition',
+                  deptActive ? 'text-brand-700' : 'text-ink-700 hover:text-brand-700',
+                ]}
+                aria-haspopup="true"
+              >
+                {item.label}
+                <Icon name="chevronDown" class="h-4 w-4 transition-transform group-hover:rotate-180" />
+              </a>
+              <div class="invisible absolute left-1/2 top-full z-50 w-[34rem] -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <div class="grid grid-cols-2 gap-1 rounded-2xl border border-ink-100 bg-white p-3 shadow-card">
+                  {item.children.map((c) => (
+                    <a href={c.href} class="flex items-center gap-3 rounded-xl p-2.5 transition hover:bg-brand-50">
+                      <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600">
+                        <Icon name={c.icon ?? 'plus'} class="h-5 w-5" />
+                      </span>
+                      <span class="flex flex-col">
+                        <span class="text-[0.92rem] font-semibold text-ink-900">{c.label}</span>
+                        <span class="text-[0.78rem] text-ink-600">View department</span>
+                      </span>
+                    </a>
+                  ))}
+                  <a href="/departments" class="col-span-2 mt-1 flex items-center justify-center gap-1.5 rounded-xl bg-brand-700 px-4 py-2.5 text-[0.9rem] font-semibold text-white transition hover:bg-brand-800">
+                    All Departments <Icon name="arrowRight" class="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'rounded-lg px-3 py-2 text-[0.95rem] font-medium transition',
+                  isActive(item.href) ? 'text-brand-700' : 'text-ink-700 hover:text-brand-700',
+                ]}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
+        )}
+      </ul>
+
+      <div class="flex items-center gap-2.5">
+        <a href={contact.phoneHref} class="hidden shrink-0 items-center gap-2 rounded-xl border border-brand-200 px-3.5 py-2 transition hover:border-brand-300 hover:bg-brand-50 sm:flex xl:hidden 2xl:flex">
+          <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600"><Icon name="phone" class="h-4 w-4" /></span>
+          <span class="flex flex-col leading-tight">
+            <span class="text-[0.68rem] font-medium uppercase tracking-wide text-ink-600">Call now</span>
+            <span class="whitespace-nowrap text-[0.9rem] font-bold text-ink-900">{contact.phoneDisplay}</span>
+          </span>
+        </a>
+        <a href="/book-online" class="btn btn-accent hidden md:inline-flex">
+          <Icon name="calendar" class="h-4 w-4" /> Book Appointment
+        </a>
+
+        <!-- Mobile toggle -->
+        <button
+          id="menu-toggle"
+          type="button"
+          class="grid h-11 w-11 place-items-center rounded-xl border border-ink-200 text-ink-800 xl:hidden"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <Icon name="menu" class="h-6 w-6" id="menu-open-icon" />
+          <Icon name="close" class="hidden h-6 w-6" id="menu-close-icon" />
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="fixed inset-x-0 top-[4.5rem] z-40 hidden max-h-[calc(100vh-4.5rem)] overflow-y-auto border-t border-ink-100 bg-white px-5 pb-8 pt-4 shadow-xl xl:hidden"
+  >
+    <ul class="flex flex-col gap-1">
+      {mainNav.map((item) =>
+        item.children ? (
+          <li>
+            <details class="group">
+              <summary class="flex cursor-pointer items-center justify-between rounded-xl px-4 py-3 text-base font-medium text-ink-800 marker:content-none hover:bg-brand-50">
+                {item.label}
+                <Icon name="chevronDown" class="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <div class="mt-1 grid grid-cols-1 gap-1 pl-2">
+                {item.children.map((c) => (
+                  <a href={c.href} class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-[0.95rem] text-ink-700 hover:bg-brand-50">
+                    <Icon name={c.icon ?? 'plus'} class="h-5 w-5 text-brand-600" /> {c.label}
+                  </a>
+                ))}
+              </div>
+            </details>
+          </li>
+        ) : (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'block rounded-xl px-4 py-3 text-base font-medium transition',
+                isActive(item.href) ? 'bg-brand-50 text-brand-700' : 'text-ink-800 hover:bg-brand-50',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        )
+      )}
+    </ul>
+    <div class="mt-5 flex flex-col gap-3">
+      <a href="/book-online" class="btn btn-accent w-full"><Icon name="calendar" class="h-5 w-5" /> Book Appointment</a>
+      <a href={contact.phoneHref} class="btn btn-ghost w-full"><Icon name="phone" class="h-5 w-5" /> {contact.phoneDisplay}</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const openIcon = document.getElementById('menu-open-icon');
+    const closeIcon = document.getElementById('menu-close-icon');
+    const navBar = document.getElementById('nav-bar');
+
+    if (toggle && menu) {
+      const setOpen = (open: boolean) => {
+        menu.classList.toggle('hidden', !open);
+        openIcon?.classList.toggle('hidden', open);
+        closeIcon?.classList.toggle('hidden', !open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        document.body.style.overflow = open ? 'hidden' : '';
+      };
+      toggle.addEventListener('click', () => {
+        setOpen(menu.classList.contains('hidden'));
+      });
+      menu.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => setOpen(false))
+      );
+    }
+
+    // Elevate nav bar on scroll
+    if (navBar) {
+      const onScroll = () => {
+        navBar.classList.toggle('shadow-md', window.scrollY > 8);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  }
+  document.addEventListener('astro:page-load', initHeader);
+</script>

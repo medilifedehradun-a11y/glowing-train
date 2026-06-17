@@ -1,0 +1,45 @@
+---
+/**
+ * Plain <img> that points directly at an imported asset's static URL.
+ * Drop-in replacement for astro:assets <Image> that avoids the on-the-fly
+ * /_image endpoint, so images load reliably in dev and production alike.
+ * Source assets are pre-sized, so optimization loss is negligible.
+ */
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'eager' | 'lazy';
+  decoding?: 'async' | 'sync' | 'auto';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  [key: string]: unknown;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className,
+  loading = 'lazy',
+  decoding = 'async',
+  fetchpriority,
+  ...rest
+} = Astro.props;
+---
+
+<img
+  src={src.src}
+  alt={alt}
+  width={width ?? src.width}
+  height={height ?? src.height}
+  class={className}
+  loading={loading}
+  decoding={decoding}
+  fetchpriority={fetchpriority}
+  {...rest}
+/>

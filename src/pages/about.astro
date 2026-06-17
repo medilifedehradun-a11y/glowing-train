@@ -1,0 +1,342 @@
+---
+import Img from '../components/Img.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import DoctorCard from '../components/DoctorCard.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import CountUp from '../components/CountUp.astro';
+import AccreditationStrip from '../components/AccreditationStrip.astro';
+import { stats, accreditations, whyChoose, mission } from '../data/content';
+import { doctors } from '../data/doctors';
+import { site, contact } from '../data/site';
+import legacyImg from '../assets/hospital/exterior-1.jpg';
+import whoWeAreImg from '../assets/gallery/g10.jpg';
+
+const pageTitle = 'About Us';
+const metaDescription =
+  'Medilife Superspeciality Hospital is an NABH-accredited multi-speciality hospital in Dehradun, founded in 2023 and committed to world-class, compassionate healthcare for Uttarakhand and beyond.';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'About Us', item: new URL('/about', site.url).href },
+  ],
+};
+---
+
+<BaseLayout title={pageTitle} description={metaDescription} jsonLd={[breadcrumbSchema]}>
+  <PageHero
+    eyebrow="About Medilife"
+    title="About Medilife Superspeciality Hospital"
+    subtitle="Healing with heart, excellence by design. As an NABH-accredited multi-speciality hospital, we combine advanced medical technology with personalized, compassionate care to serve Dehradun and the wider Uttarakhand region."
+    crumbs={[{ label: 'About Us' }]}
+  />
+
+  <!-- Opening / Legacy narrative -->
+  <section class="section">
+    <div class="container-x grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal relative">
+        <div class="overflow-hidden rounded-3xl shadow-card ring-1 ring-ink-100">
+          <Img
+            src={legacyImg}
+            alt="Exterior of Medilife Superspeciality Hospital, Dehradun"
+            width={760}
+            height={560}
+            class="h-full w-full object-cover"
+            loading="eager"
+          />
+        </div>
+        <div class="absolute -bottom-6 -right-4 hidden rounded-2xl bg-white p-5 shadow-card ring-1 ring-ink-100 sm:block">
+          <p class="font-display text-3xl font-extrabold text-brand-700">Since 2023</p>
+          <p class="mt-1 text-sm text-ink-600">Serving Dehradun, Uttarakhand</p>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <span class="eyebrow">A Legacy Built on Care</span>
+        <h2 class="mt-4 text-3xl font-bold leading-tight text-ink-900 sm:text-4xl">
+          A beacon of hope and healing in Dehradun
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-ink-600">
+          Medilife Superspeciality Hospital was founded in 2023 with a singular vision: to make
+          quality, affordable healthcare accessible to every individual in Uttarakhand and beyond.
+          What began as a commitment to serve has evolved into a comprehensive multi-speciality
+          institution trusted by thousands of families across the region.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed text-ink-600">
+          Located on Haridwar Bypass Road, our state-of-the-art facility brings together expert
+          specialists, cutting-edge infrastructure and a patient-first approach to transform lives
+          and restore health, with round-the-clock emergency services, advanced ICU facilities and
+          comprehensive diagnostics under one roof.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/departments" class="btn btn-primary">
+            Explore departments <Icon name="arrowRight" class="h-5 w-5" />
+          </a>
+          <a href={contact.phoneHref} class="btn btn-ghost">
+            <Icon name="phone" class="h-5 w-5" /> {contact.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chairperson's message pull-quote -->
+  <section class="section bg-brand-700">
+    <div class="container-x">
+      <div class="mx-auto max-w-3xl text-center">
+        <Icon name="quote" class="mx-auto h-12 w-12 text-brand-300" />
+        <blockquote class="mt-6 font-display text-2xl font-medium leading-relaxed text-white sm:text-[1.7rem]">
+          "At Medilife, every patient matters, every life is precious, and every moment of care is
+          delivered with the excellence and compassion your family deserves."
+        </blockquote>
+        <div class="mt-8">
+          <p class="font-bold text-white">Dr. Rikta Roy</p>
+          <p class="text-sm text-brand-100/80">Director, Medilife Superspeciality Hospital</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision + Mission -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Vision & Mission"
+        title="Building tomorrow's healthcare, today"
+        subtitle="Committed to care, driven by excellence. Our purpose guides every decision we make and every patient we serve."
+      />
+      <div class="reveal mt-12 grid gap-6 lg:grid-cols-2">
+        <!-- Vision -->
+        <div class="card flex flex-col p-8 sm:p-10">
+          <span class="grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+            <Icon name="scan" class="h-7 w-7" />
+          </span>
+          <h3 class="mt-6 text-2xl font-bold text-ink-900">Our Vision</h3>
+          <p class="mt-4 text-lg leading-relaxed text-ink-600">{mission.vision}</p>
+          <p class="mt-4 text-[0.95rem] leading-relaxed text-ink-600">
+            We envision a future where quality healthcare is accessible to all, where every patient
+            is treated with dignity and respect, and where medical innovation meets human compassion
+            to create healing experiences that go beyond treatment.
+          </p>
+        </div>
+
+        <!-- Mission -->
+        <div class="card flex flex-col bg-brand-700 p-8 text-white sm:p-10">
+          <span class="grid h-14 w-14 place-items-center rounded-2xl bg-white/15 text-white">
+            <Icon name="heartPulse" class="h-7 w-7" />
+          </span>
+          <h3 class="mt-6 text-2xl font-bold text-white">Our Mission</h3>
+          <p class="mt-4 text-lg leading-relaxed text-brand-50/90">{mission.missionIntro}</p>
+          <ul class="mt-5 grid gap-3">
+            {mission.missionPoints.map((point) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/15 text-white">
+                  <Icon name="check" class="h-3.5 w-3.5" />
+                </span>
+                <span class="text-[0.95rem] leading-relaxed text-brand-50/90">{point}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-8 font-display text-xl font-extrabold tracking-wide text-white">
+            {mission.motto}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Medilife -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Why Choose Medilife"
+        title="Reasons families across Uttarakhand trust us"
+        subtitle="From round-the-clock emergency care to advanced technology and transparent pricing, every part of Medilife is designed around the patient."
+      />
+      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {whyChoose.map((w) => (
+          <div class="card card-hover flex flex-col p-6">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={w.icon} class="h-6 w-6" />
+            </span>
+            <h3 class="mt-4 text-lg font-bold text-ink-900">{w.title}</h3>
+            <p class="mt-2 text-[0.92rem] leading-relaxed text-ink-600">{w.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats band -->
+  <section class="bg-gradient-to-br from-brand-700 to-brand-900">
+    <div class="container-x grid grid-cols-2 gap-8 py-14 lg:grid-cols-4">
+      {stats.map((s) => (
+        <div class="text-center">
+          <p class="font-display text-4xl font-extrabold text-white sm:text-5xl">
+            <CountUp value={s.value} to={s.to} prefix={s.prefix} suffix={s.suffix} />
+          </p>
+          <p class="mt-2 text-sm font-medium text-brand-50/80">{s.label}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Who We Are -->
+  <section class="section">
+    <div class="container-x grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal order-2 lg:order-1">
+        <span class="eyebrow">Who We Are</span>
+        <h2 class="mt-4 text-3xl font-bold leading-tight text-ink-900 sm:text-4xl">
+          Comprehensive medical and surgical care, for every age
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-ink-600">
+          We are one of the best hospitals in Dehradun, providing comprehensive medical and surgical
+          care for patients of all ages. Our team of experienced doctors, surgeons and nurses are
+          experts in their fields, offering specialized care across Urology, ENT, Oncology,
+          Orthopedics, General Surgery, Plastic Surgery and General Medicine.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed text-ink-600">
+          Our affiliation with Ayushman Bharat and other healthcare programs ensures that quality
+          treatment is accessible to everyone who walks through our doors.
+        </p>
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+          {[
+            'Urology & Kidney Care: laser stone treatment, prostate and reconstructive surgery',
+            'ENT & Head-Neck Surgery: sinus surgery, voice and throat care, cancer treatment',
+            'Cancer Care: screening, advanced surgical oncology and chemotherapy',
+            'Orthopedics & Joint Replacement: fracture, knee, hip and sports-injury care',
+          ].map((item) => (
+            <li class="flex items-start gap-2.5">
+              <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-600 text-white">
+                <Icon name="check" class="h-3.5 w-3.5" />
+              </span>
+              <span class="text-[0.95rem] leading-relaxed text-ink-700">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="reveal order-1 lg:order-2">
+        <div class="overflow-hidden rounded-3xl shadow-card ring-1 ring-ink-100">
+          <Img
+            src={whoWeAreImg}
+            alt="Medilife Superspeciality Hospital building in Dehradun"
+            width={760}
+            height={560}
+            class="h-full w-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accreditations strip -->
+  <section class="border-y border-ink-100 bg-white">
+    <div class="container-x py-10">
+      <p class="text-center text-sm font-semibold uppercase tracking-wider text-ink-600">
+        Accredited, affordable and accessible care
+      </p>
+      <div class="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+        {accreditations.map((a) => (
+          <div class="flex items-center gap-3">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon name={a.icon} class="h-6 w-6" />
+            </span>
+            <div class="leading-tight">
+              <p class="text-sm font-bold text-ink-900">{a.label}</p>
+              <p class="text-xs text-ink-600">{a.detail}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Doctors preview -->
+  <section class="section bg-ink-50/50">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Meet Our Specialists"
+        title="Dedication. Expertise. Passion."
+        subtitle="Our team is a dedicated, expert ensemble of compassionate healers, several with decades of experience and training at leading institutions including AIIMS."
+      />
+      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {doctors.map((d) => <DoctorCard doctor={d} />)}
+      </div>
+      <div class="mt-10 text-center">
+        <a href="/departments" class="btn btn-ghost">
+          View all departments <Icon name="arrowRight" class="h-5 w-5" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section">
+    <div class="container-x grid items-start gap-12 lg:grid-cols-[1fr_1.4fr]">
+      <div class="reveal">
+        <span class="eyebrow">Values We Are Fueled By</span>
+        <h2 class="mt-4 text-3xl font-bold leading-tight text-ink-900 sm:text-4xl">
+          Integrity, respect and commitment
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-ink-600">
+          Our highest values are dedication, education, empowerment, service and growth. We are
+          committed to a patient experience that is fueled by integrity and respect, ensuring every
+          patient is comfortable and every question is answered.
+        </p>
+      </div>
+      <div class="reveal grid gap-6 sm:grid-cols-2">
+        <div class="card flex flex-col p-6">
+          <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+            <Icon name="award" class="h-6 w-6" />
+          </span>
+          <h3 class="mt-4 text-lg font-bold text-ink-900">Quality Care</h3>
+          <p class="mt-2 text-[0.92rem] leading-relaxed text-ink-600">
+            We go the extra mile to ensure every patient has a satisfying experience, exceeding
+            expectations with guidance and advice at every step.
+          </p>
+        </div>
+        <div class="card flex flex-col p-6">
+          <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+            <Icon name="heartPulse" class="h-6 w-6" />
+          </span>
+          <h3 class="mt-4 text-lg font-bold text-ink-900">Patient-Centric</h3>
+          <p class="mt-2 text-[0.92rem] leading-relaxed text-ink-600">
+            We value the health and comfort of our patients, and strive to make sure each one's
+            interests and well-being are always met.
+          </p>
+        </div>
+        <div class="card flex flex-col p-6">
+          <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+            <Icon name="shield" class="h-6 w-6" />
+          </span>
+          <h3 class="mt-4 text-lg font-bold text-ink-900">Integrity</h3>
+          <p class="mt-2 text-[0.92rem] leading-relaxed text-ink-600">
+            Every interaction is guided by honesty, transparency and respect for the dignity of the
+            people and families we serve.
+          </p>
+        </div>
+        <div class="card flex flex-col p-6">
+          <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+            <Icon name="users" class="h-6 w-6" />
+          </span>
+          <h3 class="mt-4 text-lg font-bold text-ink-900">Commitment</h3>
+          <p class="mt-2 text-[0.92rem] leading-relaxed text-ink-600">
+            From dedication and education to empowerment and growth, we are committed to showing how
+            a hospital should be.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AccreditationStrip />
+
+  <CtaBanner />
+</BaseLayout>

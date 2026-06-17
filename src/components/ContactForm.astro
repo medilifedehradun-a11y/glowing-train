@@ -1,0 +1,183 @@
+---
+import Icon from './Icon.astro';
+import { contact, integrations } from '../data/site';
+import { departments } from '../data/departments';
+
+interface Props {
+  heading?: string;
+  /** Pre-select a department by slug */
+  department?: string;
+  class?: string;
+}
+const { heading, department = '', class: className = '' } = Astro.props;
+---
+
+<form
+  class:list={['contact-form flex flex-col gap-4', className]}
+  action={contact.emailHref}
+  method="post"
+  data-email={contact.email}
+  data-web3key={integrations.web3formsKey}
+>
+  {heading && <h3 class="text-xl font-bold text-ink-900">{heading}</h3>}
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-first" class="text-sm font-semibold text-ink-700">First name *</label>
+      <input id="cf-first" name="first" type="text" required autocomplete="given-name"
+        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+    </div>
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-last" class="text-sm font-semibold text-ink-700">Last name</label>
+      <input id="cf-last" name="last" type="text" autocomplete="family-name"
+        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+    </div>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-email" class="text-sm font-semibold text-ink-700">Email *</label>
+      <input id="cf-email" name="email" type="email" required autocomplete="email"
+        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+    </div>
+    <div class="flex flex-col gap-1.5">
+      <label for="cf-phone" class="text-sm font-semibold text-ink-700">Phone *</label>
+      <input id="cf-phone" name="phone" type="tel" required autocomplete="tel"
+        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="cf-dept" class="text-sm font-semibold text-ink-700">Department</label>
+    <select id="cf-dept" name="department"
+      class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+      <option value="">Select a department (optional)</option>
+      {departments.map((d) => (
+        <option value={d.name} selected={d.slug === department}>{d.name}</option>
+      ))}
+      <option value="General Enquiry">General Enquiry</option>
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="cf-message" class="text-sm font-semibold text-ink-700">Message</label>
+    <textarea id="cf-message" name="message" rows="4"
+      placeholder="Tell us briefly how we can help..."
+      class="resize-y rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200"></textarea>
+  </div>
+
+  {/* Spam honeypot - hidden from real users */}
+  <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <button type="submit" class="btn btn-primary w-full sm:w-auto">
+    <Icon name="mail" class="h-5 w-5" /> <span class="cf-btn-label">Send Enquiry</span>
+  </button>
+
+  <p class="cf-status hidden text-sm font-medium" role="status" aria-live="polite"></p>
+  <p class="text-xs text-ink-600">
+    Prefer to talk? Call <a href={contact.phoneHref} class="font-semibold text-brand-700">{contact.phoneDisplay}</a>
+    - we are available 24/7 for emergencies.
+  </p>
+</form>
+
+<script>
+  function initContactForms() {
+    document.querySelectorAll<HTMLFormElement>('.contact-form').forEach((form) => {
+      if (form.dataset.bound === 'true') return;
+      form.dataset.bound = 'true';
+
+      const email = form.dataset.email || '';
+      const web3key = form.dataset.web3key || '';
+      const status = form.querySelector<HTMLParagraphElement>('.cf-status');
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
+      const btnLabel = form.querySelector<HTMLSpanElement>('.cf-btn-label');
+
+      const setStatus = (msg: string, ok: boolean) => {
+        if (!status) return;
+        status.textContent = msg;
+        status.classList.remove('hidden', 'text-brand-700', 'text-accent-600');
+        status.classList.add(ok ? 'text-brand-700' : 'text-accent-600');
+      };
+
+      const fields = () => {
+        const d = new FormData(form);
+        const g = (k: string) => String(d.get(k) || '').trim();
+        const name = [g('first'), g('last')].filter(Boolean).join(' ');
+        const dept = g('department');
+        return { name, dept, ...{
+          email: g('email'), phone: g('phone'), message: g('message'),
+          botcheck: d.get('botcheck') ? true : false,
+        } };
+      };
+
+      const mailtoFallback = () => {
+        const f = fields();
+        const subject = f.dept ? `Appointment Enquiry - ${f.dept}` : 'Appointment Enquiry';
+        const body = [
+          `Name: ${f.name}`, `Email: ${f.email}`, `Phone: ${f.phone}`,
+          f.dept ? `Department: ${f.dept}` : '', '', f.message || '(no message)',
+        ].filter((l) => l !== '').join('\n');
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setStatus('Opening your email app... if nothing happens, email us directly at ' + email + '.', true);
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+
+        const f = fields();
+        if (f.botcheck) return; // spam bot tripped the honeypot
+
+        const subject = f.dept ? `Appointment Enquiry - ${f.dept}` : 'Appointment Enquiry';
+        const original = btnLabel?.textContent || 'Send Enquiry';
+        if (btn) btn.disabled = true;
+        if (btnLabel) btnLabel.textContent = 'Sending...';
+        setStatus('Sending your enquiry...', true);
+
+        try {
+          let ok = false;
+          if (web3key) {
+            // Optional: Web3Forms (if a key is configured)
+            const res = await fetch('https://api.web3forms.com/post', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({
+                access_key: web3key, from_name: 'Medilife Website', subject,
+                name: f.name, email: f.email, phone: f.phone,
+                department: f.dept || 'Not specified', message: f.message || '(no message)', botcheck: '',
+              }),
+            });
+            ok = !!(await res.json()).success;
+          } else {
+            // Default: FormSubmit.co - no key/signup needed. The first submission
+            // sends a one-time activation email to the hospital inbox to confirm.
+            const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({
+                name: f.name, email: f.email, phone: f.phone,
+                department: f.dept || 'Not specified', message: f.message || '(no message)',
+                _subject: subject, _replyto: f.email, _template: 'table', _captcha: 'false',
+              }),
+            });
+            ok = String((await res.json()).success) === 'true';
+          }
+
+          if (ok) {
+            form.reset();
+            setStatus('Thank you. Your enquiry has been sent - our team will get back to you shortly.', true);
+          } else {
+            mailtoFallback();
+          }
+        } catch {
+          // Network/service issue -> never lose the enquiry: open email app.
+          mailtoFallback();
+        } finally {
+          if (btn) btn.disabled = false;
+          if (btnLabel) btnLabel.textContent = original;
+        }
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initContactForms);
+</script>

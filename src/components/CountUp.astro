@@ -1,0 +1,93 @@
+---
+/**
+ * Animated number that counts up from 0 to `to` when scrolled into view.
+ * Falls back to the static `value` when `to` is not provided or JS/motion is off.
+ */
+interface Props {
+  value: string;
+  to?: number;
+  prefix?: string;
+  suffix?: string;
+  locale?: string;
+  duration?: number;
+  class?: string;
+}
+const {
+  value,
+  to,
+  prefix = '',
+  suffix = '',
+  locale = 'en-IN',
+  duration = 1800,
+  class: className = '',
+} = Astro.props;
+---
+
+{to != null ? (
+  <span
+    class:list={['countup', className]}
+    data-to={to}
+    data-prefix={prefix}
+    data-suffix={suffix}
+    data-locale={locale}
+    data-duration={duration}
+  >{value}</span>
+) : (
+  <span class={className}>{value}</span>
+)}
+
+<script>
+  function runCountUp(el: HTMLElement) {
+    if (el.dataset.counted === 'true') return;
+    el.dataset.counted = 'true';
+    const to = parseFloat(el.dataset.to || '0');
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const locale = el.dataset.locale || 'en-IN';
+    const duration = parseInt(el.dataset.duration || '1800', 10);
+    let fmt: Intl.NumberFormat;
+    try {
+      fmt = new Intl.NumberFormat(locale);
+    } catch {
+      fmt = new Intl.NumberFormat('en-IN');
+    }
+    const render = (n: number) => {
+      el.textContent = prefix + fmt.format(n) + suffix;
+    };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      render(to);
+      return;
+    }
+    const start = performance.now();
+    const step = (now: number) => {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      render(Math.round(to * eased));
+      if (p < 1) requestAnimationFrame(step);
+      else render(to);
+    };
+    requestAnimationFrame(step);
+  }
+
+  function initCountUps() {
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.countup'));
+    if (els.length === 0) return;
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(runCountUp);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            runCountUp(entry.target as HTMLElement);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    els.forEach((el) => io.observe(el));
+  }
+  document.addEventListener('astro:page-load', initCountUps);
+</script>
