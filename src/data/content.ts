@@ -70,6 +70,18 @@ export const facilities: Facility[] = [
       'Hassle-free cashless treatment with all major insurance providers and TPA partners - our team handles the paperwork so you can focus on recovery.',
     icon: 'shield',
   },
+  {
+    name: 'Physiotherapy',
+    description:
+      'In-house physiotherapy and rehabilitation for sciatica, frozen shoulder, arthritis, post-surgery and post-fracture recovery, stroke and sports injuries.',
+    icon: 'activity',
+  },
+  {
+    name: 'Audiometry & Hearing Aids',
+    description:
+      'Audiometry, hearing assessments and hearing-aid fitting for all ages, led by our audiologist.',
+    icon: 'ent',
+  },
 ];
 
 export interface WhyChoose {

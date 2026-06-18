@@ -7,16 +7,19 @@ import narayanJeetSingh from '../assets/doctors/narayan-jeet-singh.jpg';
 import vishnuVajpai from '../assets/doctors/vishnu-vajpai.avif';
 import sanketNarayanSingh from '../assets/doctors/sanket-narayan-singh.avif';
 import shivamDang from '../assets/doctors/shivam-dang.avif';
+import sunnyDua from '../assets/doctors/sunny-dua.png';
+import mohdUwais from '../assets/doctors/mohd-uwais.png';
 
 export interface Doctor {
   slug: string;
   name: string;
   title: string;
   specialtyTag: string;
-  /** related department slug */
-  department: string;
+  /** related department slug, if the person maps to a department page */
+  department?: string;
   bio: string;
-  image: ImageMetadata;
+  /** optional - falls back to an initials avatar when a photo is not available */
+  image?: ImageMetadata;
   linkedin?: string;
   facebook?: string;
 }
@@ -89,6 +92,38 @@ export const doctors: Doctor[] = [
     department: 'plastic-surgery',
     bio: 'Plastic & reconstructive surgeon, Yashoda Hospital & Research Centre, Ghaziabad. Ex-Senior Resident in Plastic Surgery at Army Hospital (R&R), New Delhi and General Surgery at Himalayan Institute of Medical Sciences, Dehradun.',
     image: shivamDang,
+  },
+  {
+    slug: 'dr-sunny-dua',
+    name: 'Dr. Sunny Dua',
+    title: 'Consultant Orthopedic Surgeon | Bone & Joint Replacement',
+    specialtyTag: 'Orthopedics',
+    department: 'orthopedics',
+    bio: 'Consultant Orthopedic and Bone & Joint Replacement Surgeon. Treats fractures and trauma, arthritis, sports injuries and spine disorders, with joint replacement, arthroscopy, PRP therapy and paediatric orthopaedics.',
+    image: sunnyDua,
+  },
+  {
+    slug: 'dr-shah-t-arajman',
+    name: 'Dr. Shah T. Arajman',
+    title: 'Consultant - Laparoscopic & General Surgery',
+    specialtyTag: 'Laparoscopic Surgery',
+    department: 'general-surgery',
+    bio: 'Laparoscopic surgeon specialising in minimally invasive (keyhole) and general surgical procedures for faster recovery and better outcomes.',
+  },
+  {
+    slug: 'mohd-uwais',
+    name: 'Mohd Uwais (PT)',
+    title: 'Consultant Physiotherapist',
+    specialtyTag: 'Physiotherapy',
+    bio: 'BPT, MPT (Neuro). Certified Chiropractor and Wet Cupping Therapist (CMT, CKTI, CDNT, CIASTM, CCT, CSRS, BLS). Treats sciatica, frozen shoulder, arthritis, post-fracture and post-surgery rehabilitation, stroke, spinal cord injury, Bell’s palsy, vertigo, strains and sprains, with postural analysis and correction.',
+    image: mohdUwais,
+  },
+  {
+    slug: 'padma-rawat',
+    name: 'Padma Rawat',
+    title: 'Audiologist',
+    specialtyTag: 'Audiology',
+    bio: 'Audiologist providing audiometry and hearing-aid services. Also associated with Nyra Speech & Hearing Care.',
   },
 ];
 
