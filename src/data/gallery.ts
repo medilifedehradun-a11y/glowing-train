@@ -36,3 +36,27 @@ export const gallery: GalleryImage[] = Object.keys(modules)
 
 /** Only genuine photographs (for the homepage marquee). */
 export const galleryPhotos = gallery.filter((g) => g.kind === 'photo');
+
+/**
+ * Health-awareness campaign creatives (portrait posters). Shown in their own
+ * section on the gallery page so they are not cropped like the 4:3 photo grid,
+ * and kept out of the homepage premises marquee.
+ */
+import awarenessSummerFatigue from '../assets/campaigns/awareness-summer-fatigue.webp';
+import awarenessAcidity from '../assets/campaigns/awareness-acidity.webp';
+import awarenessKneePain from '../assets/campaigns/awareness-knee-pain.webp';
+
+export const campaigns: { src: ImageMetadata; alt: string }[] = [
+  {
+    src: awarenessSummerFatigue,
+    alt: 'Medilife health awareness poster: spotting summer fatigue and weakness, with General Physician OPD timings',
+  },
+  {
+    src: awarenessAcidity,
+    alt: 'Medilife health awareness poster: stomach pain and acidity symptoms, with General Physician OPD timings',
+  },
+  {
+    src: awarenessKneePain,
+    alt: 'Medilife health awareness poster: knee pain and arthritis care by Dr. Sunny Dua, Orthopaedics',
+  },
+];

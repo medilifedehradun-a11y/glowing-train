@@ -6,7 +6,7 @@ import SectionHeading from '../components/SectionHeading.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
 import { site, contact } from '../data/site';
-import { gallery } from '../data/gallery';
+import { gallery, campaigns } from '../data/gallery';
 
 const galleryDescription =
   'Take a visual tour of Medilife Superspeciality Hospital in Dehradun - real photographs of our hospital premises, facilities, medical team and patient care.';
@@ -104,6 +104,34 @@ const breadcrumbSchema = {
       </p>
     </div>
   </section>
+
+  <!-- Health awareness campaigns -->
+  {campaigns.length > 0 && (
+    <section class="section bg-ink-50/50">
+      <div class="container-x">
+        <SectionHeading
+          eyebrow="Health Awareness"
+          title="Awareness campaigns from Medilife"
+          subtitle="Simple, shareable health guidance from our specialists, covering everyday symptoms and when to seek timely care."
+        />
+
+        <div class="reveal mx-auto mt-12 grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {campaigns.map((item) => (
+            <figure class="overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink-100">
+              <Img
+                src={item.src}
+                alt={item.alt}
+                width={800}
+                height={1000}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Visit / explore strip -->
   <section class="section bg-ink-50/50">
