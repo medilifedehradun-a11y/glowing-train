@@ -7,6 +7,8 @@ import orthoImg from '../assets/departments/orthopedics.webp';
 import medicineImg from '../assets/departments/general-medicine.webp';
 import surgeryImg from '../assets/departments/general-surgery.webp';
 import plasticImg from '../assets/departments/plastic-surgery.webp';
+import physiotherapyImg from '../assets/departments/physiotherapy.webp';
+import audiologyImg from '../assets/departments/audiology.webp';
 
 export interface Department {
   slug: string;
@@ -430,6 +432,7 @@ export const departments: Department[] = [
       'Stroke & spinal cord injury',
       'Vertigo & sports injuries',
     ],
+    image: physiotherapyImg,
     leadDoctor: 'mohd-uwais',
     order: 8,
     metaDescription:
@@ -472,6 +475,7 @@ export const departments: Department[] = [
       'Age-related & noise-induced hearing loss',
       'Paediatric hearing concerns',
     ],
+    image: audiologyImg,
     leadDoctor: 'padma-rawat',
     order: 9,
     metaDescription:
