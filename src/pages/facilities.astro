@@ -67,13 +67,13 @@ const medicalFacilities: {
     ],
   },
   {
-    title: 'Oncosurgery',
+    title: 'Onco-Surgery',
     icon: 'oncology',
     procedures: [
       'Breast cancer',
       'Gastrectomy',
       'Oophorectomy / Hysterectomy',
-      'Esophagectomy',
+      'Oesophagectomy',
       'Pancreatectomy',
       'Laryngectomy',
       'Head and Neck cancer surgery',
@@ -121,13 +121,14 @@ const medicalFacilities: {
       'Colectomy',
       'Gastrectomy',
       'Splenectomy',
-      'Hemorrhoidectomy (Open / Laser)',
+      'Haemorrhoidectomy (Open / Laser)',
       'Piles and Fistula',
-      'Plastic Surgery',
+      'Varicose veins',
+      'Circumcision',
     ],
   },
   {
-    title: 'Orthopaedics Treatment',
+    title: 'Orthopaedics',
     icon: 'ortho',
     procedures: [
       'Fractured bone nailing / plating',
@@ -147,6 +148,30 @@ const medicalFacilities: {
       'Otoplasty',
       'Scar removal',
       'Contracture release',
+    ],
+  },
+  {
+    title: 'Physiotherapy',
+    icon: 'physio',
+    procedures: [
+      'Sciatica & back pain therapy',
+      'Frozen shoulder rehabilitation',
+      'Post-surgery & post-fracture rehab',
+      'Stroke & neuro rehabilitation',
+      'Manual therapy & dry needling',
+      'Postural analysis & correction',
+    ],
+  },
+  {
+    title: 'Audiology',
+    icon: 'hearing',
+    procedures: [
+      'Pure tone audiometry',
+      'Impedance audiometry / tympanometry',
+      'Speech audiometry',
+      'Hearing-aid selection & fitting',
+      'Tinnitus assessment',
+      'Paediatric hearing screening',
     ],
   },
   {
@@ -180,7 +205,7 @@ const breadcrumbSchema = {
 
 <BaseLayout
   title="Our Facilities"
-  description="Explore the facilities at Medilife Superspeciality Hospital, Dehradun: modern operating rooms, comfortable waiting areas, 24/7 ICU, in-house pharmacy and pathology, plus a full range of ENT, urology, oncosurgery, orthopaedics, general medicine, general surgery and plastic surgery procedures."
+  description="Explore the facilities at Medilife Superspeciality Hospital, Dehradun: modern operating rooms, comfortable waiting areas, 24/7 ICU, in-house pharmacy and pathology, plus a full range of ENT, urology, onco-surgery, orthopaedics, general medicine, general surgery, plastic surgery, physiotherapy and audiology procedures."
   jsonLd={[breadcrumbSchema]}
 >
   <PageHero

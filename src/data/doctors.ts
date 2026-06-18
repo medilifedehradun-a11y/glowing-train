@@ -9,6 +9,8 @@ import sanketNarayanSingh from '../assets/doctors/sanket-narayan-singh.avif';
 import shivamDang from '../assets/doctors/shivam-dang.avif';
 import sunnyDua from '../assets/doctors/sunny-dua.png';
 import mohdUwais from '../assets/doctors/mohd-uwais.png';
+import shahArajmand from '../assets/doctors/shah-arajmand.png';
+import padmaRawat from '../assets/doctors/padma-rawat.png';
 
 export interface Doctor {
   slug: string;
@@ -70,8 +72,8 @@ export const doctors: Doctor[] = [
   {
     slug: 'dr-vishnu-vajpai',
     name: 'Dr. Vishnu Vajpai',
-    title: 'Senior Orthopedic Surgeon',
-    specialtyTag: 'Orthopedics',
+    title: 'Senior Orthopaedic Surgeon',
+    specialtyTag: 'Orthopaedics',
     department: 'orthopedics',
     bio: 'Expert in total hip & knee arthroplasty. Ex-Max Super Speciality Hospital, Vaishali and Ex-Park Multi Super Speciality Hospital, Faridabad.',
     image: vishnuVajpai,
@@ -98,10 +100,10 @@ export const doctors: Doctor[] = [
   {
     slug: 'dr-sunny-dua',
     name: 'Dr. Sunny Dua',
-    title: 'Consultant Orthopedic Surgeon | Bone & Joint Replacement',
-    specialtyTag: 'Orthopedics',
+    title: 'Consultant Orthopaedic Surgeon | Bone & Joint Replacement',
+    specialtyTag: 'Orthopaedics',
     department: 'orthopedics',
-    bio: 'Consultant Orthopedic and Bone & Joint Replacement Surgeon. Treats fractures and trauma, arthritis, sports injuries and spine disorders, with joint replacement, arthroscopy, PRP therapy and paediatric orthopaedics.',
+    bio: 'Consultant Orthopaedic and Bone & Joint Replacement Surgeon. Treats fractures and trauma, arthritis, sports injuries and spine disorders, with joint replacement, arthroscopy, PRP therapy and paediatric orthopaedics.',
     image: sunnyDua,
   },
   {
@@ -111,6 +113,7 @@ export const doctors: Doctor[] = [
     specialtyTag: 'Laparoscopic Surgery',
     department: 'general-surgery',
     bio: 'MBBS, MS (General Surgery), FNB (MAS), FMBS. Advanced Laparoscopic & Robotic Surgeon with 12 years of experience. Ex-Consultant at Indraprastha Apollo Hospital, New Delhi. Performs laparoscopic surgery for gallbladder, biliary and hydatid liver disease, hernia (inguinal, abdominal, hiatus), GERD, stomach and intestinal conditions, appendix, rectal prolapse, piles and fistula, plus bariatric (weight-loss) surgery.',
+    image: shahArajmand,
     opd: 'Mon - Fri, 4:00 PM - 6:30 PM',
   },
   {
@@ -129,6 +132,7 @@ export const doctors: Doctor[] = [
     specialtyTag: 'Audiology',
     department: 'audiology',
     bio: 'Audiologist providing audiometry and hearing-aid services. Also associated with Nyra Speech & Hearing Care.',
+    image: padmaRawat,
   },
 ];
 

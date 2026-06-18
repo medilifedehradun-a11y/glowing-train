@@ -153,8 +153,8 @@ export const departments: Department[] = [
   {
     slug: 'oncology',
     name: 'Onco-Surgery',
-    pageTitle: 'Surgical Oncology',
-    shortName: 'Oncology',
+    pageTitle: 'Onco-Surgery',
+    shortName: 'Onco-Surgery',
     icon: 'oncology',
     color: '#e11d48',
     colorDark: '#be123c',
@@ -179,7 +179,7 @@ export const departments: Department[] = [
       'Gastrectomy',
       'Colectomy & colorectal resections',
       'Whipple Procedure (Pancreaticoduodenectomy)',
-      'Esophagectomy',
+      'Oesophagectomy',
       'Hysterectomy & Oophorectomy (gynae-oncology)',
       'Nephrectomy, Cystectomy & Prostatectomy',
       'Laryngectomy & thoracic cancer surgery',
@@ -202,9 +202,9 @@ export const departments: Department[] = [
   },
   {
     slug: 'orthopedics',
-    name: 'Orthopedics',
-    pageTitle: 'Orthopedics & Joint Replacement',
-    shortName: 'Orthopedics',
+    name: 'Orthopaedics',
+    pageTitle: 'Orthopaedics & Joint Replacement',
+    shortName: 'Orthopaedics',
     icon: 'ortho',
     color: '#d97706',
     colorDark: '#b45309',
@@ -213,7 +213,7 @@ export const departments: Department[] = [
     excerpt:
       'Fracture care, bone nailing & plating, ORIF, total hip and knee replacement, amputations and fasciotomies.',
     overview: [
-      'Our orthopedics department offers complete musculoskeletal care - from trauma and fracture management to advanced joint replacement.',
+      'Our orthopaedics department offers complete musculoskeletal care - from trauma and fracture management to advanced joint replacement.',
       'Led by a surgeon specialising in total hip & knee arthroplasty, we treat fractures, joint disease and sports injuries using modern implants and techniques for a quicker return to active life.',
     ],
     highlights: [
@@ -248,7 +248,7 @@ export const departments: Department[] = [
     leadDoctor: 'dr-vishnu-vajpai',
     order: 4,
     metaDescription:
-      'Orthopedics & joint replacement in Dehradun - fracture care, ORIF, total hip and knee replacement and sports injury management at Medilife Superspeciality Hospital.',
+      'Orthopaedics & joint replacement in Dehradun - fracture care, ORIF, total hip and knee replacement and sports injury management at Medilife Superspeciality Hospital.',
   },
   {
     slug: 'general-medicine',

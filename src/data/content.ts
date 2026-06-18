@@ -14,7 +14,7 @@ export interface Stat {
 export const stats: Stat[] = [
   { value: '1,00,000+', to: 100000, suffix: '+', label: 'Patients treated' },
   { value: '30+', to: 30, suffix: '+', label: 'Years of doctor experience' },
-  { value: '7', to: 7, label: 'Superspeciality departments' },
+  { value: '9', to: 9, label: 'Clinical departments' },
   { value: '24×7', label: 'Emergency & ambulance' },
 ];
 
@@ -112,7 +112,7 @@ export const whyChoose: WhyChoose[] = [
   {
     title: 'Patient-Centric Care',
     description:
-      'Compassionate staff focusing on comfort, dignity and personalized treatment plans for every patient.',
+      'Compassionate staff focusing on comfort, dignity and personalised treatment plans for every patient.',
     icon: 'heartPulse',
   },
   {
@@ -124,7 +124,7 @@ export const whyChoose: WhyChoose[] = [
   {
     title: 'Multi-Superspeciality Under One Roof',
     description:
-      'Urology, ENT, oncology, orthopedics, surgery and medicine - coordinated care without running between hospitals.',
+      'Urology, ENT, onco-surgery, orthopaedics, surgery, medicine and more - coordinated care without running between hospitals.',
     icon: 'building',
   },
 ];
@@ -154,7 +154,7 @@ export const faqs: Faq[] = [
   {
     question: 'What specialities does Medilife Superspeciality Hospital offer?',
     answer:
-      'Medilife offers comprehensive healthcare services including Urology, ENT, Oncology (Onco-Surgery), General Medicine, General Surgery, Orthopedics, Plastic Surgery, Audiometry, Pharmacy and Pathology.',
+      'Medilife offers comprehensive care including Urology, ENT, Onco-Surgery, General Medicine, General Surgery, Orthopaedics, Plastic Surgery, Physiotherapy and Audiology, supported by an in-house Pharmacy and NABL-accredited Pathology lab.',
   },
   {
     question: 'Where is Medilife Superspeciality Hospital located?',

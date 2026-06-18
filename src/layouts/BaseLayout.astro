@@ -8,6 +8,7 @@ import Footer from '../components/Footer.astro';
 import FloatingActions from '../components/FloatingActions.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { site, contact, social } from '../data/site';
+import { departments } from '../data/departments';
 
 interface Props {
   title?: string;
@@ -50,13 +51,14 @@ const orgSchema = {
   telephone: contact.phoneRaw,
   email: contact.email,
   medicalSpecialty: [
-    'Urology',
-    'Orthopedic',
+    'Urologic',
+    'Musculoskeletal',
     'Surgical',
     'Oncologic',
     'Otolaryngologic',
     'PlasticSurgery',
     'PrimaryCare',
+    'Physiotherapy',
   ],
   address: {
     '@type': 'PostalAddress',
@@ -80,8 +82,7 @@ const orgSchema = {
   currenciesAccepted: 'INR',
   isAcceptingNewPatients: true,
   availableService: [
-    'Urology', 'ENT', 'Surgical Oncology', 'Orthopedics',
-    'General Medicine', 'General Surgery', 'Plastic Surgery',
+    ...departments.map((d) => d.name),
     'Emergency Care', 'ICU', 'Pathology', 'Pharmacy', 'Ambulance',
   ].map((s) => ({ '@type': 'MedicalProcedure', name: s })),
   openingHours: 'Mo-Su 00:00-23:59',
