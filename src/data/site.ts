@@ -72,11 +72,13 @@ export const social = {
 
 /** Department slugs map to /<slug> routes, mirroring the original site. */
 export const departmentNav = [
+  { slug: 'audiology', name: 'Audiology', icon: 'hearing' },
   { slug: 'ent', name: 'ENT', icon: 'ent' },
   { slug: 'general-medicine', name: 'General Medicine', icon: 'medicine' },
   { slug: 'general-surgery', name: 'General Surgery', icon: 'surgery' },
   { slug: 'oncology', name: 'Oncology', icon: 'oncology' },
   { slug: 'orthopedics', name: 'Orthopedics', icon: 'ortho' },
+  { slug: 'physiotherapy', name: 'Physiotherapy', icon: 'physio' },
   { slug: 'plastic-surgery', name: 'Plastic Surgery', icon: 'plastic' },
   { slug: 'urology', name: 'Urology', icon: 'urology' },
 ] as const;

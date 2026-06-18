@@ -31,7 +31,8 @@ export interface Department {
   procedures: string[];
   /** Common conditions treated */
   conditions?: string[];
-  image: ImageMetadata;
+  /** optional - cards/headers fall back to an icon panel when absent */
+  image?: ImageMetadata;
   leadDoctor: string;
   featured?: boolean;
   order: number;
@@ -384,6 +385,97 @@ export const departments: Department[] = [
     order: 7,
     metaDescription:
       'Plastic & reconstructive surgery in Dehradun - gynecomastia, liposuction, hair transplant, facial rejuvenation, burns and scar correction at Medilife Superspeciality Hospital.',
+  },
+  {
+    slug: 'physiotherapy',
+    name: 'Physiotherapy',
+    pageTitle: 'Physiotherapy & Rehabilitation',
+    shortName: 'Physiotherapy',
+    icon: 'physio',
+    color: '#0d9488',
+    colorDark: '#0f766e',
+    bg: '#f0fdfa',
+    tagline: 'Movement, Recovery & Rehabilitation',
+    excerpt:
+      'Physiotherapy and rehabilitation for sciatica, frozen shoulder, arthritis, post-surgery and post-fracture recovery, stroke and sports injuries.',
+    overview: [
+      'Our physiotherapy and rehabilitation department helps patients recover movement, strength and independence after injury, surgery or neurological conditions.',
+      'Led by an experienced consultant physiotherapist, we combine manual therapy, exercise-based rehabilitation, chiropractic and modern techniques with a personalised plan for every patient.',
+    ],
+    highlights: [
+      'Orthopaedic & post-surgery rehabilitation',
+      'Neuro rehabilitation (stroke, Bell’s palsy)',
+      'Sports injury management',
+      'Pain relief & manual therapy',
+      'Postural analysis & correction',
+    ],
+    procedures: [
+      'Sciatica & back pain therapy',
+      'Frozen shoulder rehabilitation',
+      'Arthritis management',
+      'Post-fracture & post-surgery rehabilitation',
+      'Stroke & neuro rehabilitation',
+      'Spinal cord injury rehabilitation',
+      'Bell’s palsy therapy',
+      'Vertigo (BPPV) management',
+      'Strains & sprains care',
+      'Chiropractic & dry needling',
+      'Fitness therapy',
+      'Postural analysis & correction',
+    ],
+    conditions: [
+      'Sciatica & back pain',
+      'Frozen shoulder & arthritis',
+      'Post-surgery & post-fracture recovery',
+      'Stroke & spinal cord injury',
+      'Vertigo & sports injuries',
+    ],
+    leadDoctor: 'mohd-uwais',
+    order: 8,
+    metaDescription:
+      'Physiotherapy & rehabilitation in Dehradun - sciatica, frozen shoulder, arthritis, post-surgery and stroke rehab, sports injuries and manual therapy at Medilife Superspeciality Hospital.',
+  },
+  {
+    slug: 'audiology',
+    name: 'Audiology',
+    pageTitle: 'Audiology & Hearing Care',
+    shortName: 'Audiology',
+    icon: 'hearing',
+    color: '#0369a1',
+    colorDark: '#075985',
+    bg: '#eff6ff',
+    tagline: 'Hearing Assessment & Hearing Aids',
+    excerpt:
+      'Audiometry, hearing assessments and hearing-aid fitting for all ages, with tinnitus and balance support.',
+    overview: [
+      'Our audiology department provides complete hearing care, from diagnostic hearing tests to hearing-aid selection and fitting for children and adults.',
+      'Led by our audiologist, we offer accurate audiometry and personalised hearing solutions, working closely with our ENT team for conditions that need medical or surgical care.',
+    ],
+    highlights: [
+      'Diagnostic audiometry',
+      'Hearing-aid trial & fitting',
+      'Paediatric hearing assessment',
+      'Tinnitus evaluation',
+      'ENT-linked hearing care',
+    ],
+    procedures: [
+      'Pure tone audiometry',
+      'Impedance audiometry / tympanometry',
+      'Speech audiometry',
+      'Hearing-aid selection & fitting',
+      'Tinnitus assessment',
+      'Paediatric hearing screening',
+    ],
+    conditions: [
+      'Hearing loss',
+      'Tinnitus',
+      'Age-related & noise-induced hearing loss',
+      'Paediatric hearing concerns',
+    ],
+    leadDoctor: 'padma-rawat',
+    order: 9,
+    metaDescription:
+      'Audiology & hearing care in Dehradun - audiometry, hearing tests and hearing-aid fitting for all ages at Medilife Superspeciality Hospital.',
   },
 ];
 

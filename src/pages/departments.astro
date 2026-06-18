@@ -12,7 +12,7 @@ import { site, contact } from '../data/site';
 
 const pageTitle = 'Our Departments';
 const pageDescription =
-  'Explore the 7 superspeciality departments at Medilife Superspeciality Hospital, Dehradun - urology, ENT, surgical oncology, orthopedics, general medicine, general surgery and plastic surgery, each led by experienced specialists.';
+  'Explore the departments at Medilife Superspeciality Hospital, Dehradun - urology, ENT, surgical oncology, orthopedics, general medicine, general surgery, plastic surgery, physiotherapy and audiology, each led by experienced specialists.';
 
 const featured = departments.find((d) => d.featured);
 
@@ -48,7 +48,7 @@ const schema = [
   <PageHero
     eyebrow="Specialities"
     title="Our Departments"
-    subtitle="Seven superspeciality departments, one trusted address. From our flagship urology programme to ENT, cancer surgery, orthopedics, medicine, general surgery and plastic surgery - find expert, focused care for every member of your family."
+    subtitle="Specialist care under one trusted address. From our flagship urology programme to ENT, cancer surgery, orthopedics, surgery and medicine, plus physiotherapy and audiology - expert, focused care for every member of your family."
     crumbs={[{ label: 'Departments' }]}
   />
 
@@ -61,7 +61,7 @@ const schema = [
         subtitle="Each department brings together experienced consultants, modern operation theatres and dedicated diagnostic support - so you get coordinated, evidence-based treatment without running between hospitals."
       />
 
-      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="reveal m-carousel mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
         {departments.map((d) => <DepartmentCard dept={d} />)}
 
         <a
@@ -127,15 +127,21 @@ const schema = [
               >
                 Flagship
               </span>
-              <img
-                src={featured.image.src}
-                width={featured.image.width}
-                height={featured.image.height}
-                alt={`${featured.name} department at ${site.name}`}
-                class="h-full w-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
+              {featured.image ? (
+                <img
+                  src={featured.image.src}
+                  width={featured.image.width}
+                  height={featured.image.height}
+                  alt={`${featured.name} department at ${site.name}`}
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <div class="grid h-full w-full place-items-center" style={`background:${featured.bg}`}>
+                  <Icon name={featured.icon} class="h-24 w-24" style={`color:${featured.color}`} />
+                </div>
+              )}
             </div>
           </div>
         </div>

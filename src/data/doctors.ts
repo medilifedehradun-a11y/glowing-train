@@ -20,6 +20,8 @@ export interface Doctor {
   bio: string;
   /** optional - falls back to an initials avatar when a photo is not available */
   image?: ImageMetadata;
+  /** optional OPD timings shown on the profile card */
+  opd?: string;
   linkedin?: string;
   facebook?: string;
 }
@@ -103,18 +105,20 @@ export const doctors: Doctor[] = [
     image: sunnyDua,
   },
   {
-    slug: 'dr-shah-t-arajman',
-    name: 'Dr. Shah T. Arajman',
-    title: 'Consultant - Laparoscopic & General Surgery',
+    slug: 'dr-shah-t-arajmand',
+    name: 'Dr. Shah T. Arajmand',
+    title: 'Consultant Minimal Access Surgeon | Laparoscopic & Robotic',
     specialtyTag: 'Laparoscopic Surgery',
     department: 'general-surgery',
-    bio: 'Laparoscopic surgeon specialising in minimally invasive (keyhole) and general surgical procedures for faster recovery and better outcomes.',
+    bio: 'MBBS, MS (General Surgery), FNB (MAS), FMBS. Advanced Laparoscopic & Robotic Surgeon with 12 years of experience. Ex-Consultant at Indraprastha Apollo Hospital, New Delhi. Performs laparoscopic surgery for gallbladder, biliary and hydatid liver disease, hernia (inguinal, abdominal, hiatus), GERD, stomach and intestinal conditions, appendix, rectal prolapse, piles and fistula, plus bariatric (weight-loss) surgery.',
+    opd: 'Mon - Fri, 4:00 PM - 6:30 PM',
   },
   {
     slug: 'mohd-uwais',
     name: 'Mohd Uwais (PT)',
     title: 'Consultant Physiotherapist',
     specialtyTag: 'Physiotherapy',
+    department: 'physiotherapy',
     bio: 'BPT, MPT (Neuro). Certified Chiropractor and Wet Cupping Therapist (CMT, CKTI, CDNT, CIASTM, CCT, CSRS, BLS). Treats sciatica, frozen shoulder, arthritis, post-fracture and post-surgery rehabilitation, stroke, spinal cord injury, Bell’s palsy, vertigo, strains and sprains, with postural analysis and correction.',
     image: mohdUwais,
   },
@@ -123,6 +127,7 @@ export const doctors: Doctor[] = [
     name: 'Padma Rawat',
     title: 'Audiologist',
     specialtyTag: 'Audiology',
+    department: 'audiology',
     bio: 'Audiologist providing audiometry and hearing-aid services. Also associated with Nyra Speech & Hearing Care.',
   },
 ];

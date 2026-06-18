@@ -350,3 +350,42 @@
     }
   }
 }
+
+/* ==========================================================================
+   Mobile carousel: long card folds become a swipeable, snapping row on small
+   screens and revert to the normal grid at >=640px. Apply `.m-carousel` to the
+   grid container together with its `sm:grid-cols-*` utilities.
+   ========================================================================== */
+@layer components {
+  .m-carousel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+    /* let cards reach the screen edges within the padded container */
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+  }
+  .m-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .m-carousel > * {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+  @media (min-width: 640px) {
+    .m-carousel {
+      display: grid;
+      overflow: visible;
+      padding-bottom: 0;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+    .m-carousel > * {
+      flex: none;
+    }
+  }
+}

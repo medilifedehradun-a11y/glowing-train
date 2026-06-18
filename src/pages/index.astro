@@ -59,10 +59,10 @@ const faqSchema = {
     <div class="container-x">
       <SectionHeading
         eyebrow="Our Specialities"
-        title="Comprehensive care across 7 superspecialities"
+        title="Comprehensive care across every speciality"
         subtitle="From our flagship urology programme to ENT, cancer surgery, orthopedics and more - find expert, focused care for every member of your family."
       />
-      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="reveal m-carousel mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
         {departments.map((d) => <DepartmentCard dept={d} />)}
         <a
           href="/departments"
@@ -153,7 +153,7 @@ const faqSchema = {
         title="Dedication. Expertise. Passion."
         subtitle="Our team of doctors is a dedicated, expert ensemble of compassionate healers, several trained at leading institutions including AIIMS."
       />
-      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="reveal m-carousel mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
         {doctors.slice(0, 8).map((d) => <DoctorCard doctor={d} />)}
       </div>
       <div class="mt-8 text-center">
@@ -172,7 +172,7 @@ const faqSchema = {
         title="Comprehensive support, available 24/7"
         subtitle="From emergency response and intensive care to diagnostics, pharmacy and insurance support - everything you need, under one roof."
       />
-      <div class="reveal mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="reveal m-carousel mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
         {facilities.map((f) => (
           <div class="card card-hover flex flex-col p-6">
             <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
