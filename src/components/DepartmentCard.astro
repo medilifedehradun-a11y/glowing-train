@@ -6,8 +6,10 @@ import type { Department } from '../data/departments';
 interface Props {
   dept: Department;
   class?: string;
+  /** show the "Flagship" badge on featured departments (off on the homepage) */
+  showFlagship?: boolean;
 }
-const { dept, class: className = '' } = Astro.props;
+const { dept, class: className = '', showFlagship = true } = Astro.props;
 ---
 
 <a
@@ -17,7 +19,7 @@ const { dept, class: className = '' } = Astro.props;
     className,
   ]}
 >
-  {dept.featured && (
+  {dept.featured && showFlagship && (
     <span class="absolute right-4 top-4 z-10 rounded-full bg-accent-500 px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-white shadow">
       Flagship
     </span>

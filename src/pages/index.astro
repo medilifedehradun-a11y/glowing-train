@@ -63,7 +63,7 @@ const faqSchema = {
         subtitle="From our flagship urology programme to ENT, cancer surgery, orthopedics and more - find expert, focused care for every member of your family."
       />
       <div class="reveal m-carousel mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-        {departments.map((d) => <DepartmentCard dept={d} />)}
+        {departments.map((d) => <DepartmentCard dept={d} showFlagship={false} />)}
         <a
           href="/departments"
           class="card card-hover group flex flex-col items-center justify-center gap-3 bg-brand-700 p-8 text-center text-white"

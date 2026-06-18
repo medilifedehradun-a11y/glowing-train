@@ -16,6 +16,9 @@ const pageDescription =
 
 const featured = departments.find((d) => d.featured);
 
+// Display departments alphabetically by name on this page.
+const sortedDepartments = [...departments].sort((a, b) => a.name.localeCompare(b.name));
+
 const schema = [
   {
     '@context': 'https://schema.org',
@@ -62,7 +65,7 @@ const schema = [
       />
 
       <div class="reveal m-carousel mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-        {departments.map((d) => <DepartmentCard dept={d} />)}
+        {sortedDepartments.map((d) => <DepartmentCard dept={d} />)}
 
         <a
           href="/contact-us"
@@ -159,7 +162,7 @@ const schema = [
       />
 
       <div class="reveal mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {departments.map((d) => {
+        {sortedDepartments.map((d) => {
           const lead = doctors.find((doc) => doc.slug === d.leadDoctor);
           return (
             <a
@@ -190,7 +193,7 @@ const schema = [
       </div>
 
       <div class="mt-8 text-center">
-        <a href="/about" class="btn btn-ghost">
+        <a href="/doctors" class="btn btn-ghost">
           Meet the full medical team <Icon name="arrowRight" class="h-5 w-5" />
         </a>
       </div>
