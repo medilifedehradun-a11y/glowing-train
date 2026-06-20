@@ -10,12 +10,35 @@ interface Props {
   class?: string;
 }
 const { heading, department = '', class: className = '' } = Astro.props;
+
+// Country dial codes for the phone field (India default).
+const countryCodes = [
+  { iso: 'IN', code: '+91' },
+  { iso: 'US', code: '+1' },
+  { iso: 'GB', code: '+44' },
+  { iso: 'AE', code: '+971' },
+  { iso: 'SA', code: '+966' },
+  { iso: 'QA', code: '+974' },
+  { iso: 'KW', code: '+965' },
+  { iso: 'OM', code: '+968' },
+  { iso: 'BH', code: '+973' },
+  { iso: 'SG', code: '+65' },
+  { iso: 'MY', code: '+60' },
+  { iso: 'AU', code: '+61' },
+  { iso: 'NP', code: '+977' },
+  { iso: 'BD', code: '+880' },
+  { iso: 'LK', code: '+94' },
+  { iso: 'BT', code: '+975' },
+  { iso: 'DE', code: '+49' },
+  { iso: 'FR', code: '+33' },
+];
 ---
 
 <form
   class:list={['contact-form flex flex-col gap-4', className]}
-  action="/api/enquiry"
+  action={`https://formsubmit.co/${contact.email}`}
   method="post"
+  data-email={contact.email}
   data-phone-href={contact.phoneHref}
   data-phone-display={contact.phoneDisplay}
 >
@@ -37,8 +60,18 @@ const { heading, department = '', class: className = '' } = Astro.props;
   <div class="grid gap-4 sm:grid-cols-2">
     <div class="flex flex-col gap-1.5">
       <label for="cf-phone" class="text-sm font-semibold text-ink-700">Phone *</label>
-      <input id="cf-phone" name="phone" type="tel" required autocomplete="tel"
-        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+      <div class="flex gap-2">
+        <select name="countrycode" aria-label="Country dial code" autocomplete="tel-country-code"
+          class="w-[5.75rem] shrink-0 rounded-xl border border-ink-200 bg-white px-2 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+          {countryCodes.map((c) => (
+            <option value={c.code} selected={c.iso === 'IN'}>{c.iso} {c.code}</option>
+          ))}
+        </select>
+        <input id="cf-phone" name="phone" type="tel" required inputmode="numeric"
+          pattern="[0-9]{10}" autocomplete="tel-national"
+          placeholder="10-digit number" title="Enter a 10-digit phone number"
+          class="w-full flex-1 rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+      </div>
     </div>
     <div class="flex flex-col gap-1.5">
       <label for="cf-email" class="text-sm font-semibold text-ink-700">Email</label>
@@ -66,8 +99,12 @@ const { heading, department = '', class: className = '' } = Astro.props;
       class="resize-y rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200"></textarea>
   </div>
 
-  {/* Spam honeypot - hidden from real users */}
-  <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  {/* FormSubmit options (used on the no-JS fallback POST) */}
+  <input type="hidden" name="_subject" value="New enquiry from medilifesuperspeciality.com" />
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_captcha" value="false" />
+  {/* Spam honeypot - hidden from real users (FormSubmit reads _honey) */}
+  <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
   <button type="submit" class="btn btn-primary w-full sm:w-auto">
     <Icon name="mail" class="h-5 w-5" /> <span class="cf-btn-label">Send Enquiry</span>
@@ -87,11 +124,18 @@ const { heading, department = '', class: className = '' } = Astro.props;
       if (form.dataset.bound === 'true') return;
       form.dataset.bound = 'true';
 
+      const email = form.dataset.email || '';
       const status = form.querySelector<HTMLParagraphElement>('.cf-status');
       const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
       const btnLabel = form.querySelector<HTMLSpanElement>('.cf-btn-label');
       const phoneHref = form.dataset.phoneHref || '#';
       const phoneDisplay = form.dataset.phoneDisplay || 'us';
+
+      // Keep the phone field to digits only, max 10.
+      const phoneInput = form.querySelector<HTMLInputElement>('input[name="phone"]');
+      phoneInput?.addEventListener('input', () => {
+        phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+      });
 
       const setStatus = (html: string, ok: boolean) => {
         if (!status) return;
@@ -105,12 +149,13 @@ const { heading, department = '', class: className = '' } = Astro.props;
         if (!form.reportValidity()) return;
 
         const d = new FormData(form);
-        if (d.get('botcheck')) return; // spam bot tripped the honeypot
+        if (d.get('_honey')) return; // spam bot tripped the honeypot
 
-        const payload = {
-          first: d.get('first'), last: d.get('last'), phone: d.get('phone'),
-          email: d.get('email'), department: d.get('department'), message: d.get('message'),
-        };
+        const g = (k: string) => String(d.get(k) || '').trim();
+        const name = [g('first'), g('last')].filter(Boolean).join(' ');
+        const dept = g('department');
+        const visitorEmail = g('email');
+        const phone = `${g('countrycode') || '+91'} ${g('phone').replace(/\D/g, '')}`;
 
         const original = btnLabel?.textContent || 'Send Enquiry';
         if (btn) btn.disabled = true;
@@ -118,17 +163,27 @@ const { heading, department = '', class: className = '' } = Astro.props;
         setStatus('Submitting your enquiry...', true);
 
         try {
-          const res = await fetch('/api/enquiry', {
+          const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              name,
+              phone,
+              email: visitorEmail || 'Not provided',
+              department: dept || 'Not specified',
+              message: g('message') || 'No message',
+              _subject: dept ? `New enquiry (${dept}) - Medilife website` : 'New enquiry - Medilife website',
+              _template: 'table',
+              _captcha: 'false',
+              ...(visitorEmail ? { _replyto: visitorEmail } : {}),
+            }),
           });
           const data = await res.json().catch(() => ({}));
-          if (res.ok && data.ok) {
+          if (res.ok && String(data.success) === 'true') {
             form.reset();
             setStatus('Submitted. Thank you - our team will contact you shortly.', true);
           } else {
-            throw new Error(data.error || 'failed');
+            throw new Error('failed');
           }
         } catch (err) {
           setStatus(
