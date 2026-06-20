@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { contact, integrations } from '../data/site';
+import { contact } from '../data/site';
 import { departments } from '../data/departments';
 
 interface Props {
@@ -10,14 +10,18 @@ interface Props {
   class?: string;
 }
 const { heading, department = '', class: className = '' } = Astro.props;
+
+// Hospital WhatsApp number (digits only) for click-to-chat (wa.me).
+const waNumber = contact.phoneRaw.replace(/\D/g, '');
 ---
 
 <form
   class:list={['contact-form flex flex-col gap-4', className]}
-  action={contact.emailHref}
-  method="post"
-  data-email={contact.email}
-  data-web3key={integrations.web3formsKey}
+  action={`https://wa.me/${waNumber}`}
+  method="get"
+  target="_blank"
+  rel="noopener"
+  data-whatsapp={waNumber}
 >
   {heading && <h3 class="text-xl font-bold text-ink-900">{heading}</h3>}
 
@@ -36,13 +40,13 @@ const { heading, department = '', class: className = '' } = Astro.props;
 
   <div class="grid gap-4 sm:grid-cols-2">
     <div class="flex flex-col gap-1.5">
-      <label for="cf-email" class="text-sm font-semibold text-ink-700">Email *</label>
-      <input id="cf-email" name="email" type="email" required autocomplete="email"
+      <label for="cf-phone" class="text-sm font-semibold text-ink-700">Phone *</label>
+      <input id="cf-phone" name="phone" type="tel" required autocomplete="tel"
         class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
     </div>
     <div class="flex flex-col gap-1.5">
-      <label for="cf-phone" class="text-sm font-semibold text-ink-700">Phone *</label>
-      <input id="cf-phone" name="phone" type="tel" required autocomplete="tel"
+      <label for="cf-email" class="text-sm font-semibold text-ink-700">Email</label>
+      <input id="cf-email" name="email" type="email" autocomplete="email"
         class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
     </div>
   </div>
@@ -70,12 +74,13 @@ const { heading, department = '', class: className = '' } = Astro.props;
   <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
   <button type="submit" class="btn btn-primary w-full sm:w-auto">
-    <Icon name="mail" class="h-5 w-5" /> <span class="cf-btn-label">Send Enquiry</span>
+    <Icon name="whatsapp" class="h-5 w-5" /> <span class="cf-btn-label">Send via WhatsApp</span>
   </button>
 
   <p class="cf-status hidden text-sm font-medium" role="status" aria-live="polite"></p>
   <p class="text-xs text-ink-600">
-    Prefer to talk? Call <a href={contact.phoneHref} class="font-semibold text-brand-700">{contact.phoneDisplay}</a>
+    Tapping send opens WhatsApp with your enquiry ready to send to our team. Prefer to talk?
+    Call <a href={contact.phoneHref} class="font-semibold text-brand-700">{contact.phoneDisplay}</a>
     - we are available 24/7 for emergencies.
   </p>
 </form>
@@ -86,96 +91,46 @@ const { heading, department = '', class: className = '' } = Astro.props;
       if (form.dataset.bound === 'true') return;
       form.dataset.bound = 'true';
 
-      const email = form.dataset.email || '';
-      const web3key = form.dataset.web3key || '';
+      const number = form.dataset.whatsapp || '';
       const status = form.querySelector<HTMLParagraphElement>('.cf-status');
-      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
-      const btnLabel = form.querySelector<HTMLSpanElement>('.cf-btn-label');
 
-      const setStatus = (msg: string, ok: boolean) => {
+      const setStatus = (msg: string) => {
         if (!status) return;
         status.textContent = msg;
-        status.classList.remove('hidden', 'text-brand-700', 'text-accent-600');
-        status.classList.add(ok ? 'text-brand-700' : 'text-accent-600');
+        status.classList.remove('hidden', 'text-accent-600');
+        status.classList.add('text-brand-700');
       };
 
-      const fields = () => {
-        const d = new FormData(form);
-        const g = (k: string) => String(d.get(k) || '').trim();
-        const name = [g('first'), g('last')].filter(Boolean).join(' ');
-        const dept = g('department');
-        return { name, dept, ...{
-          email: g('email'), phone: g('phone'), message: g('message'),
-          botcheck: d.get('botcheck') ? true : false,
-        } };
-      };
-
-      const mailtoFallback = () => {
-        const f = fields();
-        const subject = f.dept ? `Appointment Enquiry - ${f.dept}` : 'Appointment Enquiry';
-        const body = [
-          `Name: ${f.name}`, `Email: ${f.email}`, `Phone: ${f.phone}`,
-          f.dept ? `Department: ${f.dept}` : '', '', f.message || '(no message)',
-        ].filter((l) => l !== '').join('\n');
-        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        setStatus('Opening your email app... if nothing happens, email us directly at ' + email + '.', true);
-      };
-
-      form.addEventListener('submit', async (e) => {
+      form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (!form.reportValidity()) return;
 
-        const f = fields();
-        if (f.botcheck) return; // spam bot tripped the honeypot
+        const d = new FormData(form);
+        const g = (k: string) => String(d.get(k) || '').trim();
+        if (d.get('botcheck')) return; // spam bot tripped the honeypot
 
-        const subject = f.dept ? `Appointment Enquiry - ${f.dept}` : 'Appointment Enquiry';
-        const original = btnLabel?.textContent || 'Send Enquiry';
-        if (btn) btn.disabled = true;
-        if (btnLabel) btnLabel.textContent = 'Sending...';
-        setStatus('Sending your enquiry...', true);
+        const name = [g('first'), g('last')].filter(Boolean).join(' ');
+        const dept = g('department');
+        const email = g('email');
+        const message = g('message');
 
-        try {
-          let ok = false;
-          if (web3key) {
-            // Optional: Web3Forms (if a key is configured)
-            const res = await fetch('https://api.web3forms.com/post', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-              body: JSON.stringify({
-                access_key: web3key, from_name: 'Medilife Website', subject,
-                name: f.name, email: f.email, phone: f.phone,
-                department: f.dept || 'Not specified', message: f.message || '(no message)', botcheck: '',
-              }),
-            });
-            ok = !!(await res.json()).success;
-          } else {
-            // Default: FormSubmit.co - no key/signup needed. The first submission
-            // sends a one-time activation email to the hospital inbox to confirm.
-            const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-              body: JSON.stringify({
-                name: f.name, email: f.email, phone: f.phone,
-                department: f.dept || 'Not specified', message: f.message || '(no message)',
-                _subject: subject, _replyto: f.email, _template: 'table', _captcha: 'false',
-              }),
-            });
-            ok = String((await res.json()).success) === 'true';
-          }
+        const parts = [
+          'New appointment enquiry (Medilife website)',
+          '',
+          `Name: ${name}`,
+          `Phone: ${g('phone')}`,
+        ];
+        if (email) parts.push(`Email: ${email}`);
+        if (dept) parts.push(`Department: ${dept}`);
+        parts.push('', 'Message:', message || '(no message)');
 
-          if (ok) {
-            form.reset();
-            setStatus('Thank you. Your enquiry has been sent - our team will get back to you shortly.', true);
-          } else {
-            mailtoFallback();
-          }
-        } catch {
-          // Network/service issue -> never lose the enquiry: open email app.
-          mailtoFallback();
-        } finally {
-          if (btn) btn.disabled = false;
-          if (btnLabel) btnLabel.textContent = original;
-        }
+        const text = parts.join('\n');
+        const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+
+        // Open WhatsApp (app on mobile, WhatsApp Web on desktop) with the
+        // enquiry pre-filled to the hospital. The visitor just taps send.
+        window.open(url, '_blank', 'noopener');
+        setStatus('Opening WhatsApp with your enquiry... just tap send and our team will receive it.');
       });
     });
   }
