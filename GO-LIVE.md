@@ -4,6 +4,9 @@ The code is production-ready. The remaining steps are account/DNS actions that m
 be done in the Vercel and Wix dashboards. Do them in this order.
 
 ## 0. Before you start
+- **Vercel plan:** the free **Hobby** plan is for non-commercial use only. A hospital
+  business site should be on **Vercel Pro** (~$20/mo) to comply with Vercel's terms and
+  avoid throttling/suspension. Upgrade the project's team to Pro before/at launch.
 - The current Wix site keeps serving until DNS is repointed, so there is no downtime
   and a safe rollback (just revert DNS to Wix).
 - The domain (medilifesuperspeciality.com) is staying the same, only the host changes.
