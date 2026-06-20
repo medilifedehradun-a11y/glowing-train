@@ -10,18 +10,14 @@ interface Props {
   class?: string;
 }
 const { heading, department = '', class: className = '' } = Astro.props;
-
-// Hospital WhatsApp number (digits only) for click-to-chat (wa.me).
-const waNumber = contact.phoneRaw.replace(/\D/g, '');
 ---
 
 <form
   class:list={['contact-form flex flex-col gap-4', className]}
-  action={`https://wa.me/${waNumber}`}
-  method="get"
-  target="_blank"
-  rel="noopener"
-  data-whatsapp={waNumber}
+  action="/api/enquiry"
+  method="post"
+  data-phone-href={contact.phoneHref}
+  data-phone-display={contact.phoneDisplay}
 >
   {heading && <h3 class="text-xl font-bold text-ink-900">{heading}</h3>}
 
@@ -74,13 +70,13 @@ const waNumber = contact.phoneRaw.replace(/\D/g, '');
   <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
   <button type="submit" class="btn btn-primary w-full sm:w-auto">
-    <Icon name="whatsapp" class="h-5 w-5" /> <span class="cf-btn-label">Send via WhatsApp</span>
+    <Icon name="mail" class="h-5 w-5" /> <span class="cf-btn-label">Send Enquiry</span>
   </button>
 
   <p class="cf-status hidden text-sm font-medium" role="status" aria-live="polite"></p>
   <p class="text-xs text-ink-600">
-    Tapping send opens WhatsApp with your enquiry ready to send to our team. Prefer to talk?
-    Call <a href={contact.phoneHref} class="font-semibold text-brand-700">{contact.phoneDisplay}</a>
+    We will get back to you shortly. Prefer to talk? Call
+    <a href={contact.phoneHref} class="font-semibold text-brand-700">{contact.phoneDisplay}</a>
     - we are available 24/7 for emergencies.
   </p>
 </form>
@@ -91,46 +87,59 @@ const waNumber = contact.phoneRaw.replace(/\D/g, '');
       if (form.dataset.bound === 'true') return;
       form.dataset.bound = 'true';
 
-      const number = form.dataset.whatsapp || '';
       const status = form.querySelector<HTMLParagraphElement>('.cf-status');
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
+      const btnLabel = form.querySelector<HTMLSpanElement>('.cf-btn-label');
+      const phoneHref = form.dataset.phoneHref || '#';
+      const phoneDisplay = form.dataset.phoneDisplay || 'us';
 
-      const setStatus = (msg: string) => {
+      const setStatus = (html: string, ok: boolean) => {
         if (!status) return;
-        status.textContent = msg;
-        status.classList.remove('hidden', 'text-accent-600');
-        status.classList.add('text-brand-700');
+        status.innerHTML = html;
+        status.classList.remove('hidden', 'text-brand-700', 'text-accent-600');
+        status.classList.add(ok ? 'text-brand-700' : 'text-accent-600');
       };
 
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!form.reportValidity()) return;
 
         const d = new FormData(form);
-        const g = (k: string) => String(d.get(k) || '').trim();
         if (d.get('botcheck')) return; // spam bot tripped the honeypot
 
-        const name = [g('first'), g('last')].filter(Boolean).join(' ');
-        const dept = g('department');
-        const email = g('email');
-        const message = g('message');
+        const payload = {
+          first: d.get('first'), last: d.get('last'), phone: d.get('phone'),
+          email: d.get('email'), department: d.get('department'), message: d.get('message'),
+        };
 
-        const parts = [
-          'New appointment enquiry (Medilife website)',
-          '',
-          `Name: ${name}`,
-          `Phone: ${g('phone')}`,
-        ];
-        if (email) parts.push(`Email: ${email}`);
-        if (dept) parts.push(`Department: ${dept}`);
-        parts.push('', 'Message:', message || '(no message)');
+        const original = btnLabel?.textContent || 'Send Enquiry';
+        if (btn) btn.disabled = true;
+        if (btnLabel) btnLabel.textContent = 'Submitting...';
+        setStatus('Submitting your enquiry...', true);
 
-        const text = parts.join('\n');
-        const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
-
-        // Open WhatsApp (app on mobile, WhatsApp Web on desktop) with the
-        // enquiry pre-filled to the hospital. The visitor just taps send.
-        window.open(url, '_blank', 'noopener');
-        setStatus('Opening WhatsApp with your enquiry... just tap send and our team will receive it.');
+        try {
+          const res = await fetch('/api/enquiry', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.ok) {
+            form.reset();
+            setStatus('Submitted. Thank you - our team will contact you shortly.', true);
+          } else {
+            throw new Error(data.error || 'failed');
+          }
+        } catch (err) {
+          setStatus(
+            'Sorry, we could not submit your enquiry just now. Please call us at ' +
+            '<a class="font-semibold underline" href="' + phoneHref + '">' + phoneDisplay + '</a>.',
+            false
+          );
+        } finally {
+          if (btn) btn.disabled = false;
+          if (btnLabel) btnLabel.textContent = original;
+        }
       });
     });
   }
