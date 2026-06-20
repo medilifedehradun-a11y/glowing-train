@@ -3,6 +3,12 @@
   "framework": "astro",
   "buildCommand": "astro build",
   "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/post/:slug*", "destination": "/blog/:slug*", "permanent": true },
+    { "source": "/category/:path*", "destination": "/", "permanent": true },
+    { "source": "/members", "destination": "/", "permanent": true },
+    { "source": "/members/:path*", "destination": "/", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/_astro/(.*)",
