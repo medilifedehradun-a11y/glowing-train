@@ -7,7 +7,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FloatingActions from '../components/FloatingActions.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
-import { site, contact, social } from '../data/site';
+import { site, contact, social, integrations } from '../data/site';
 import { departments } from '../data/departments';
 
 interface Props {
@@ -123,6 +123,9 @@ const schemas = [orgSchema, ...jsonLd];
 
     <meta name="theme-color" content="#2461a6" />
     <meta name="author" content={site.name} />
+    {integrations.googleSiteVerification && (
+      <meta name="google-site-verification" content={integrations.googleSiteVerification} />
+    )}
     <meta name="geo.region" content="IN-UT" />
     <meta name="geo.placename" content="Dehradun" />
 

@@ -58,6 +58,14 @@ export const contact = {
 export const integrations = {
   gtmId: 'GTM-T882DX8',
   metaPixelId: '258130693596440',
+  // Microsoft Clarity project (carried over from the original Wix site).
+  clarityId: 'n0i07usbn0',
+  // GA4 Measurement ID (G-XXXXXXXXXX). Leave empty if you run GA4 through the GTM
+  // container instead (recommended), to avoid double-counting.
+  ga4Id: '',
+  // Google Search Console verification token (carried over from the Wix site so the
+  // existing GSC property stays verified after the move).
+  googleSiteVerification: 'Ahycx9PizF7wAJCQYlYuU9v9pbZKLZfXt3IPHyL54Do',
   web3formsKey: '',
   reviewsWidgetEmbed: '',
 } as const;
