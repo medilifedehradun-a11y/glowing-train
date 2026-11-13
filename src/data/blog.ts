@@ -54,7 +54,7 @@ export const posts: BlogPost[] = [
       },
       {
         heading: 'A Glimpse of Our Services',
-        text: "At Medilife, we're proud to offer an array of specialised services spanning various medical disciplines. From ENT and Onco-Surgery to Orthopaedics, General Surgery, Physiotherapy, Audiology, Pathology, and Pharmacy, we have all your healthcare needs covered. We're also a leading centre in ENT and Urology, offering a host of treatments such as Thyroid Surgery, FESS, Mastoid Surgery, Parotid Surgery, Head & Neck Onco-Surgery, Urethroplasty, PCNL, RIRS, URS, TURP, TURBT, and many more.",
+        text: "At Medilife, we're proud to offer an array of specialised services spanning various medical disciplines. From ENT and Onco-Surgery to Orthopaedics, General Surgery, Physiotherapy, Audiology, Pathology, and Pharmacy, we have all your healthcare needs covered. ENT and Urology are among our core specialities, with treatments such as Thyroid Surgery, FESS, Mastoid Surgery, Parotid Surgery, Head & Neck Onco-Surgery, Urethroplasty, PCNL, RIRS, URS, TURP, TURBT, and many more.",
       },
       {
         heading: 'Care, Cure, Comfort: Our Guiding Principles',

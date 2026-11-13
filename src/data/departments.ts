@@ -61,7 +61,7 @@ export const departments: Department[] = [
       'Advanced urological care - uroflowmetry, cystoscopy, HOLEP, TURP, TURBT, RIRS, URS, PCNL, urethroplasty, laparoscopic surgery, AV fistula and CAPD.',
     overview: [
       'Medilife is a dedicated urology centre in Dehradun, offering the full spectrum of endourology, laparoscopic and reconstructive urology under one roof.',
-      'Led by experienced endo-urologists, our department combines laser technology, minimally invasive techniques and dedicated dialysis support to treat kidney stones, prostate disease, urinary obstruction and complex urological conditions with faster recovery and better outcomes.',
+      'Led by our endo-urologist, the department combines laser technology, minimally invasive techniques and dedicated dialysis support to treat kidney stones, prostate disease, urinary obstruction and $1, often with a shorter recovery than open surgery.',
     ],
     highlights: [
       'Laser treatment for kidney stones (RIRS, PCNL)',
@@ -116,7 +116,7 @@ export const departments: Department[] = [
       'Nasal endoscopy, laryngoscopy, otoendoscopy, FESS, mastoid surgery, head & neck oncological surgery, and thyroid & parotid surgeries.',
     overview: [
       'Our ENT department, led by our Director and senior ENT surgeon, delivers comprehensive diagnostic and surgical care for ear, nose, throat, and head & neck conditions.',
-      'From endoscopic sinus surgery and microscopic ear surgery to thyroid, parotid and head & neck cancer surgery, procedures are performed using advanced endoscopic techniques - many without any external incision or scar.',
+      'From endoscopic sinus surgery and microscopic ear surgery to thyroid, parotid and head & neck cancer surgery, procedures are performed using endoscopic techniques - many performed through the nose or ear canal rather than through an external incision.',
     ],
     highlights: [
       'Functional Endoscopic Sinus Surgery (FESS)',
@@ -321,7 +321,7 @@ export const departments: Department[] = [
       'Appendectomy, cholecystectomy, hernia repair, colectomy, gastrectomy, splenectomy, laser haemorrhoidectomy, piles & fistula care.',
     overview: [
       'Our general surgery department delivers comprehensive open and laparoscopic surgical care with a focus on minimally invasive techniques and rapid recovery.',
-      'From day-care laparoscopic procedures to complex abdominal surgery and painless laser treatment for piles and fistula, our surgeons ensure safe, modern and patient-centred care.',
+      'From day-care laparoscopic procedures to complex abdominal surgery and laser treatment for piles and fistula, our surgeons focus on careful, modern and patient-centred care.',
     ],
     highlights: [
       'Laparoscopic (keyhole) surgery',
@@ -369,7 +369,7 @@ export const departments: Department[] = [
       'Aesthetic, reconstructive and trauma surgery - gynecomastia, liposuction, hair transplant, facial rejuvenation, burns and scar correction.',
     overview: [
       'Our plastic surgery department offers a full range of aesthetic, reconstructive and trauma procedures performed by an experienced plastic surgeon.',
-      'Whether it is post-burn reconstruction, cosmetic enhancement or scar and contracture correction, treatments are tailored to each patient for natural-looking, confidence-building results.',
+      'Whether it is post-burn reconstruction, cosmetic enhancement or scar and contracture correction, treatments are planned with each patient around realistic, agreed goals.',
     ],
     highlights: [
       'Cosmetic & aesthetic surgery',

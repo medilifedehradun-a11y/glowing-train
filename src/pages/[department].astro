@@ -85,7 +85,7 @@ const schema = [
         <span class="eyebrow" style={`color:${dept.colorDark};background:${dept.bg};border-color:${dept.bg}`}>
           <Icon name={dept.icon} class="h-4 w-4" /> {dept.name}
         </span>
-        <h2 class="mt-4 text-3xl font-bold text-ink-900">Expert {dept.name.toLowerCase()} care in Dehradun</h2>
+        <h2 class="mt-4 text-3xl font-bold text-ink-900">{dept.name} care in Dehradun</h2>
         {dept.overview.map((p) => (
           <p class="mt-4 text-lg leading-relaxed text-ink-600">{p}</p>
         ))}
@@ -122,7 +122,7 @@ const schema = [
         </div>
         <div class="rounded-3xl p-6 text-white shadow-card" style={`background:${dept.colorDark}`}>
           <h3 class="text-lg font-bold text-white">Book a consultation</h3>
-          <p class="mt-2 text-sm text-white/85">Speak with our {dept.name.toLowerCase()} specialists. We are available 24/7 for emergencies.</p>
+          <p class="mt-2 text-sm text-white/85">Speak with our {dept.name} team. We are available 24/7 for emergencies.</p>
           <div class="mt-5 flex flex-col gap-2.5">
             <a href={`/book-online?department=${dept.slug}#appointment-form`} class="btn btn-white w-full">
               <Icon name="calendar" class="h-5 w-5" /> Book Appointment
@@ -142,7 +142,7 @@ const schema = [
       <span class="eyebrow">Treatments & Procedures</span>
       <h2 class="mt-4 text-3xl font-bold text-ink-900">What we offer</h2>
       <p class="mt-3 max-w-2xl text-lg text-ink-600">
-        {dept.proceduresIntro ?? `Our ${dept.name.toLowerCase()} department provides a comprehensive range of diagnostic and surgical procedures.`}
+        {dept.proceduresIntro ?? `Our ${dept.name} department offers the consultations, tests and treatments below.`}
       </p>
       <div class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {dept.procedures.map((p) => (
@@ -250,7 +250,7 @@ const schema = [
     <div class="container-x grid gap-12 lg:grid-cols-2">
       <div>
         <span class="eyebrow">Enquire Now</span>
-        <h2 class="mt-4 text-3xl font-bold text-ink-900">Have a question about {dept.name.toLowerCase()}?</h2>
+        <h2 class="mt-4 text-3xl font-bold text-ink-900">Have a question about {dept.name}?</h2>
         <p class="mt-4 text-lg leading-relaxed text-ink-600">
           Send us your details and our team will get back to you. For urgent help, call us any time.
         </p>

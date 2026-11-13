@@ -43,7 +43,7 @@ export const facilities: Facility[] = [
   {
     name: 'ICU',
     description:
-      'Advanced critical care with 24/7 monitoring, state-of-the-art life support systems and expert intensivists for critically ill patients.',
+      'Critical care with 24/7 monitoring and life support for critically ill patients.',
     icon: 'heartPulse',
   },
   {
@@ -100,13 +100,13 @@ export const whyChoose: WhyChoose[] = [
   {
     title: 'Experienced Doctors & Surgeons',
     description:
-      'A team of highly qualified specialists trained at top institutions, ensuring accurate diagnosis and effective treatment.',
+      'Qualified specialists, including consultants who have served at AIIMS Bhopal and Himalayan Institute, Jolly Grant.',
     icon: 'award',
   },
   {
     title: 'Latest Medical Technology',
     description:
-      'Advanced diagnostic tools and minimally invasive procedures for faster recovery and better outcomes.',
+      'Modern diagnostics and minimally invasive procedures, which often mean a shorter hospital stay.',
     icon: 'scan',
   },
   {
@@ -184,7 +184,7 @@ export const faqs: Faq[] = [
   {
     question: 'How experienced is the medical team?',
     answer:
-      'Our team of doctors is a dedicated, expert ensemble of compassionate healers, several with 30+ years of experience and training at leading institutions including AIIMS.',
+      'Our consultants have served at institutions including AIIMS Bhopal, Himalayan Institute of Medical Sciences (Jolly Grant) and Government Doon Medical College, Dehradun. You can read each doctor\'s background on our Doctors page.',
   },
   {
     question: 'Do you accept insurance and Ayushman Bharat?',
@@ -196,8 +196,8 @@ export const faqs: Faq[] = [
 /** Mission & vision content (About page). */
 export const mission = {
   vision:
-    'To be the most trusted and preferred healthcare destination in North India, recognized for clinical excellence, compassionate care and innovative medical solutions that transform lives.',
-  missionIntro: 'To deliver world-class, patient-centric healthcare through:',
+    'To be a trusted healthcare destination for families across Uttarakhand, known for compassionate care and sound clinical practice.',
+  missionIntro: 'To deliver high-quality, patient-centric healthcare through:',
   missionPoints: [
     'Advanced medical technology and evidence-based treatment protocols',
     'A team of highly skilled specialists committed to clinical excellence',
