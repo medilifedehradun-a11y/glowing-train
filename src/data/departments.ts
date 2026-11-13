@@ -15,6 +15,8 @@ export interface Department {
   name: string;
   /** Heading used on the department page */
   pageTitle: string;
+  /** <title> override for search (local intent, ~50 chars) */
+  seoTitle?: string;
   /** Short label for chips/cards */
   shortName: string;
   icon: string;
@@ -48,6 +50,7 @@ export const departments: Department[] = [
     slug: 'urology',
     name: 'Urology',
     pageTitle: 'Urology & Kidney Care',
+    seoTitle: 'Urologist in Dehradun: Kidney Stones & Prostate',
     shortName: 'Urology',
     icon: 'urology',
     color: '#2461a6',
@@ -96,12 +99,13 @@ export const departments: Department[] = [
     featured: true,
     order: 1,
     metaDescription:
-      'Advanced urology care in Dehradun. Medilife offers laser kidney stone treatment, prostate surgery (HOLEP, TURP), RIRS, PCNL, urethroplasty, laparoscopic urology and dialysis access.',
+      'Urology care in Dehradun: laser kidney stone treatment (RIRS, PCNL), prostate surgery (HOLEP, TURP), urethroplasty and dialysis access at Medilife.',
   },
   {
     slug: 'ent',
     name: 'ENT',
     pageTitle: 'ENT & Head-Neck Surgery',
+    seoTitle: 'ENT Specialist in Dehradun: Sinus, Ear & Thyroid',
     shortName: 'ENT',
     icon: 'ent',
     color: '#7c3aed',
@@ -154,12 +158,13 @@ export const departments: Department[] = [
     leadDoctor: 'dr-rikta-roy',
     order: 2,
     metaDescription:
-      'ENT & head-neck surgery in Dehradun - FESS, septoplasty, tympanoplasty, mastoid surgery, thyroid and parotid surgery, and head & neck cancer surgery at Medilife Superspeciality Hospital.',
+      'ENT and head-neck surgery in Dehradun: FESS, septoplasty, tympanoplasty, mastoid, thyroid and parotid surgery, and allergy testing at Medilife.',
   },
   {
     slug: 'oncology',
     name: 'Onco-Surgery',
     pageTitle: 'Onco-Surgery',
+    seoTitle: 'Cancer Surgeon in Dehradun: Onco-Surgery',
     shortName: 'Onco-Surgery',
     icon: 'oncology',
     color: '#e11d48',
@@ -204,12 +209,13 @@ export const departments: Department[] = [
     leadDoctor: 'dr-navneet-jain',
     order: 3,
     metaDescription:
-      'Surgical oncology in Dehradun - breast, gastrointestinal, gynaecological, head & neck, urological and thoracic cancer surgery at Medilife Superspeciality Hospital.',
+      'Surgical oncology in Dehradun: breast, gastrointestinal, gynaecological, head and neck, urological and thoracic cancer surgery at Medilife.',
   },
   {
     slug: 'orthopedics',
     name: 'Orthopaedics',
     pageTitle: 'Orthopaedics & Joint Replacement',
+    seoTitle: 'Orthopaedic Surgeon in Dehradun: Knee & Hip',
     shortName: 'Orthopaedics',
     icon: 'ortho',
     color: '#d97706',
@@ -254,12 +260,13 @@ export const departments: Department[] = [
     leadDoctor: 'dr-vishnu-vajpai',
     order: 4,
     metaDescription:
-      'Orthopaedics & joint replacement in Dehradun - fracture care, ORIF, total hip and knee replacement and sports injury management at Medilife Superspeciality Hospital.',
+      'Orthopaedics in Dehradun: fracture care, total hip and knee replacement and sports injury management at Medilife Superspeciality Hospital.',
   },
   {
     slug: 'general-medicine',
     name: 'General Medicine',
     pageTitle: 'General Medicine',
+    seoTitle: 'General Physician in Dehradun',
     shortName: 'Medicine',
     icon: 'medicine',
     color: '#1c5cf5',
@@ -303,6 +310,7 @@ export const departments: Department[] = [
     slug: 'general-surgery',
     name: 'General Surgery',
     pageTitle: 'General & Laparoscopic Surgery',
+    seoTitle: 'Laparoscopic & General Surgery in Dehradun',
     shortName: 'Surgery',
     icon: 'surgery',
     color: '#0891b2',
@@ -350,6 +358,7 @@ export const departments: Department[] = [
     slug: 'plastic-surgery',
     name: 'Plastic Surgery',
     pageTitle: 'Plastic & Reconstructive Surgery',
+    seoTitle: 'Plastic & Cosmetic Surgeon in Dehradun',
     shortName: 'Plastic Surgery',
     icon: 'plastic',
     color: '#c026d3',
@@ -390,12 +399,13 @@ export const departments: Department[] = [
     leadDoctor: 'dr-shivam-dang',
     order: 7,
     metaDescription:
-      'Plastic & reconstructive surgery in Dehradun - gynecomastia, liposuction, hair transplant, facial rejuvenation, burns and scar correction at Medilife Superspeciality Hospital.',
+      'Plastic and reconstructive surgery in Dehradun: gynecomastia, liposuction, hair transplant, burns and scar correction at Medilife.',
   },
   {
     slug: 'pediatric-cardiology',
     name: 'Pediatric Cardiology',
     pageTitle: 'Pediatric Cardiology & Child Heart Care',
+    seoTitle: 'Pediatric Cardiologist in Dehradun',
     shortName: 'Pediatric Cardiology',
     icon: 'heartPulse',
     color: '#be123c',
@@ -443,6 +453,7 @@ export const departments: Department[] = [
     slug: 'physiotherapy',
     name: 'Physiotherapy',
     pageTitle: 'Physiotherapy & Rehabilitation',
+    seoTitle: 'Physiotherapy in Dehradun: Pain & Rehab',
     shortName: 'Physiotherapy',
     icon: 'physio',
     color: '#0d9488',
@@ -487,12 +498,13 @@ export const departments: Department[] = [
     leadDoctor: 'mohd-uwais',
     order: 9,
     metaDescription:
-      'Physiotherapy & rehabilitation in Dehradun - sciatica, frozen shoulder, arthritis, post-surgery and stroke rehab, sports injuries and manual therapy at Medilife Superspeciality Hospital.',
+      'Physiotherapy in Dehradun: sciatica, frozen shoulder, arthritis, post-surgery and stroke rehabilitation and sports injuries at Medilife.',
   },
   {
     slug: 'audiology',
     name: 'Audiology',
     pageTitle: 'Audiology & Hearing Care',
+    seoTitle: 'Hearing Test & Hearing Aids in Dehradun',
     shortName: 'Audiology',
     icon: 'hearing',
     color: '#0369a1',

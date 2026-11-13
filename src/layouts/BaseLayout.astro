@@ -12,6 +12,8 @@ import { departments } from '../data/departments';
 
 interface Props {
   title?: string;
+  /** Use this exact <title> (no brand suffix appended) */
+  fullTitle?: string;
   description?: string;
   /** Path-relative OG image, defaults to the site social card */
   image?: string;
@@ -23,6 +25,7 @@ interface Props {
 
 const {
   title,
+  fullTitle,
   description = site.description,
   image = '/og-default.png',
   noindex = false,
@@ -32,9 +35,17 @@ const {
 // Sitewide noindex for staging deployments: set NOINDEX=true in the build env.
 const noIndexPage = noindex || process.env.NOINDEX === 'true';
 
-const pageTitle = title
-  ? `${title} | ${site.name}`
-  : `${site.name} - ${site.tagline}`;
+// Keep titles near 60 chars and always local: add the city only when the
+// page title does not already carry it, and skip the brand when present.
+const pageTitle =
+  fullTitle ??
+  (title
+    ? /medilife/i.test(title)
+      ? title
+      : /dehradun/i.test(title)
+        ? `${title} | Medilife`
+        : `${title} | Medilife Hospital, Dehradun`
+    : `${site.name}, Dehradun | 24×7 Emergency`);
 
 const canonical = new URL(Astro.url.pathname, site.url).href.replace(/\/$/, '') || site.url;
 const ogImage = new URL(image, site.url).href;

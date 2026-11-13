@@ -15,6 +15,9 @@ export interface BlogSection {
 export interface BlogPost {
   slug: string;
   title: string;
+  /** Optional <title> / meta description overrides for search */
+  seoTitle?: string;
+  seoDescription?: string;
   excerpt: string;
   /** ISO date string, e.g. '2023-06-24'. */
   date: string;
@@ -32,6 +35,9 @@ export const posts: BlogPost[] = [
     slug: 'introducing-medilife-superspeciality-hospital-your-partner-in-health-and-wellness',
     title:
       'Introducing Medilife Superspeciality Hospital: Your Partner in Health and Wellness',
+    seoTitle: 'Introducing Medilife Superspeciality Hospital, Dehradun',
+    seoDescription:
+      'Meet Medilife Superspeciality Hospital in Dehradun: our specialities, our specialists and our commitment to compassionate, patient-first care.',
     excerpt:
       "Discover Medilife Superspeciality Hospital's commitment to health, wellness, and compassionate care. Explore our diverse services and join us on a journey towards better health.",
     date: '2023-06-24',

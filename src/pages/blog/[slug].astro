@@ -55,8 +55,9 @@ const breadcrumbSchema = {
 ---
 
 <BaseLayout
+  fullTitle={post.seoTitle}
   title={post.title}
-  description={post.excerpt}
+  description={post.seoDescription ?? post.excerpt}
   jsonLd={[articleSchema, breadcrumbSchema]}
 >
   <PageHero
