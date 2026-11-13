@@ -36,8 +36,9 @@ export const contact = {
   lng: 78.0293774,
   mapUrl:
     'https://www.google.com/maps/place/Medilife+Superspeciality+Hospital:+Premier+Multispeciality+Hospital+and+Private+Hospital/@30.2882763,78.0268025,17z/data=!3m1!4b1!4m6!3m5!1s0x390929ac43be0aad:0xc8ab6ce1e5205997!8m2!3d30.2882763!4d78.0293774!16s%2Fg%2F11kpy2_fz3',
+  // Pinned to the Google Business Profile listing (ftid), not a text search.
   mapEmbed:
-    'https://www.google.com/maps?q=Medilife+Superspeciality+Hospital,+Haridwar+Bypass+Road,+Dehradun&z=16&hl=en&output=embed',
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3443.5!2d78.0268025!3d30.2882763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390929ac43be0aad%3A0xc8ab6ce1e5205997!2sMedilife%20Superspeciality%20Hospital!5e0!3m2!1sen!2sin!4v1731500000000!5m2!1sen!2sin',
   googleReviewsUrl:
     'https://www.google.com/maps/place/Medilife+Superspeciality+Hospital:+Premier+Multispeciality+Hospital+and+Private+Hospital/@30.2882763,78.0268025,17z/data=!4m8!3m7!1s0x390929ac43be0aad:0xc8ab6ce1e5205997!9m1!1b1!16s%2Fg%2F11kpy2_fz3',
   // Opens Google's 'write a review' dialog for our listing (ftid from mapUrl).
