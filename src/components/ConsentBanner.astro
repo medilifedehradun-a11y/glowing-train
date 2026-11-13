@@ -36,6 +36,21 @@ window.__mlLoadAnalytics=function(){
   ${ga4}
 };
 try{ if(localStorage.getItem('ml-consent')==='accepted' && localStorage.getItem('ml-consent-v')==='${CONSENT_VERSION}'){ window.__mlLoadAnalytics(); } }catch(e){}
+// Conversion events (only once trackers are loaded, i.e. after consent).
+// Data minimisation: event name + page area only; never department, doctor or message text.
+if(!window.__mlConvBound){ window.__mlConvBound=true;
+  var mlTrack=function(name,params,metaEvent){ if(!window.__mlAnalyticsLoaded)return; params=params||{}; params.page_path=location.pathname;
+    if(window.dataLayer)window.dataLayer.push(Object.assign({event:name},params));
+    if(window.gtag)window.gtag('event',name,params);
+    if(metaEvent&&window.fbq)window.fbq('track',metaEvent); };
+  var area=function(el){ if(el.closest('header'))return 'header'; if(el.closest('footer'))return 'footer'; if(el.closest('[data-floating]'))return 'floating'; return 'content'; };
+  document.addEventListener('click',function(e){ var a=e.target&&e.target.closest&&e.target.closest('a[href]'); if(!a)return; var h=a.getAttribute('href')||'';
+    if(h.indexOf('tel:')===0) mlTrack('click_to_call',{link_area:area(a)},'Contact');
+    else if(h.indexOf('wa.me/')>-1) mlTrack('whatsapp_click',{link_area:area(a)},'Contact');
+    else if(h.indexOf('/book-online')===0) mlTrack('book_cta_click',{link_area:area(a)});
+  },true);
+  document.addEventListener('ml:lead',function(e){ mlTrack('generate_lead',{form_type:(e.detail&&e.detail.form)||'enquiry'},'Lead'); });
+}
 if(!window.__mlSwapBound){ window.__mlSwapBound=true; document.addEventListener('astro:after-swap',function(){ if(window.__mlAnalyticsLoaded){ if(window.dataLayer)window.dataLayer.push({event:'pageview',page_path:location.pathname}); if(window.fbq)window.fbq('track','PageView'); if(window.gtag)window.gtag('event','page_view',{page_path:location.pathname}); } }); }
 `;
 
