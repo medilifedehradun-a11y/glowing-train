@@ -9,6 +9,7 @@ import FloatingActions from '../components/FloatingActions.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { site, contact, social, integrations } from '../data/site';
 import { departments } from '../data/departments';
+import { HOSPITAL_ID } from '../data/schema';
 
 interface Props {
   title?: string;
@@ -54,6 +55,7 @@ const ogImage = new URL(image, site.url).href;
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Hospital',
+  '@id': HOSPITAL_ID,
   name: site.name,
   url: site.url,
   logo: new URL('/logo.png', site.url).href,

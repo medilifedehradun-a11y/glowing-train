@@ -5,6 +5,7 @@ import ContactForm from '../components/ContactForm.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
 import { site, contact, social } from '../data/site';
+import { HOSPITAL_ID } from '../data/schema';
 
 const socialLinks = [
   { name: 'Facebook', href: social.facebook, icon: 'facebook' },
@@ -60,21 +61,7 @@ const contactSchema = {
   name: `Contact Us - ${site.name}`,
   url: new URL('/contact-us', site.url).href,
   description,
-  mainEntity: {
-    '@type': 'Hospital',
-    name: site.name,
-    telephone: contact.phoneRaw,
-    email: contact.email,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: `${contact.addressLine1}, ${contact.addressLine2}`,
-      addressLocality: contact.addressCity,
-      addressRegion: contact.addressState,
-      postalCode: contact.addressPostal,
-      addressCountry: 'IN',
-    },
-    openingHours: 'Mo-Su 00:00-23:59',
-  },
+  mainEntity: { '@id': HOSPITAL_ID },
 };
 
 const breadcrumbSchema = {

@@ -18,6 +18,12 @@ export interface Doctor {
   name: string;
   title: string;
   specialtyTag: string;
+  /** Degrees as published by the hospital, e.g. "MBBS, MS (General Surgery), DNB (Urology)" */
+  qualifications?: string;
+  /** Visiting consultant (not full-time at Medilife) */
+  visiting?: boolean;
+  /** "therapist" for physiotherapists / audiologists (not medical doctors) */
+  role?: 'physician' | 'therapist';
   /** related department slug, if the person maps to a department page */
   department?: string;
   bio: string;
@@ -35,6 +41,7 @@ export const doctors: Doctor[] = [
     name: 'Dr. Rikta Roy',
     title: 'Director & Senior ENT Consultant',
     specialtyTag: 'ENT',
+    qualifications: 'MS (ENT)',
     department: 'ent',
     bio: 'Director of Medilife Superspeciality Hospital and a senior ENT surgeon. Ex-ENT Consultant at AIIMS Bhopal, Himalayan Hospital (Jolly Grant) and Government Doon Medical College, Dehradun.',
     image: riktaRoy,
@@ -46,6 +53,7 @@ export const doctors: Doctor[] = [
     name: 'Dr. Manoj Biswas',
     title: 'Senior Consultant Urologist',
     specialtyTag: 'Urology',
+    qualifications: 'MBBS, MS (General Surgery), DNB (Urology)',
     department: 'urology',
     bio: 'Endo-Urologist and Laparoscopic & Urethral Reconstructive Urologist. Formerly Consultant at AIIMS Bhopal and Himalayan Institute of Medical Sciences, Jolly Grant.',
     image: manojBiswas,
@@ -66,6 +74,7 @@ export const doctors: Doctor[] = [
     name: 'Dr. Narayan Jeet Singh',
     title: 'Senior Consultant Physician',
     specialtyTag: 'General Medicine',
+    qualifications: 'MBBS, MD (General Medicine)',
     department: 'general-medicine',
     bio: 'Ex-Professor and Head, Government Doon Medical College and Ex-Consultant at Himalayan Institute of Medical Sciences, with decades of experience in internal medicine.',
     image: narayanJeetSingh,
@@ -85,6 +94,7 @@ export const doctors: Doctor[] = [
     name: 'Dr. Sanket Narayan Singh',
     title: 'Consultant - General & Laparoscopic Surgery',
     specialtyTag: 'General Surgery',
+    qualifications: 'MBBS, MS (General Surgery)',
     department: 'general-surgery',
     bio: '9 years of experience as Associate Consultant in General & Laparoscopic Surgery. Proctologist treating piles, fistula, circumcision, hernia, gallstones and varicose veins.',
     image: sanketNarayanSingh,
@@ -103,6 +113,7 @@ export const doctors: Doctor[] = [
     name: 'Dr. Sunny Dua',
     title: 'Consultant Orthopaedic Surgeon | Bone & Joint Replacement',
     specialtyTag: 'Orthopaedics',
+    qualifications: 'MBBS, MS (Orthopaedics)',
     department: 'orthopedics',
     bio: 'Consultant Orthopaedic and Bone & Joint Replacement Surgeon. Treats fractures and trauma, arthritis, sports injuries and spine disorders, with joint replacement, arthroscopy, PRP therapy and paediatric orthopaedics.',
     image: sunnyDua,
@@ -112,6 +123,7 @@ export const doctors: Doctor[] = [
     name: 'Dr. Shah T. Arajmand',
     title: 'Consultant Minimal Access Surgeon | Laparoscopic & Robotic',
     specialtyTag: 'Laparoscopic Surgery',
+    qualifications: 'MBBS, MS (General Surgery), FNB (MAS), FMBS',
     department: 'general-surgery',
     bio: 'MBBS, MS (General Surgery), FNB (MAS), FMBS. Advanced Laparoscopic & Robotic Surgeon with 12 years of experience. Ex-Consultant at Indraprastha Apollo Hospital, New Delhi. Performs laparoscopic surgery for gallbladder, biliary and hydatid liver disease, hernia (inguinal, abdominal, hiatus), GERD, stomach and intestinal conditions, appendix, rectal prolapse, piles and fistula, plus bariatric (weight-loss) surgery.',
     image: shahArajmand,
@@ -122,6 +134,8 @@ export const doctors: Doctor[] = [
     name: 'Dr. Gaurav Kumar',
     title: 'Visiting Consultant - Pediatric Cardiologist',
     specialtyTag: 'Pediatric Cardiology',
+    qualifications: 'MBBS, MD (Pediatrics), DNB (Pediatrics), FNB (Pediatric Cardiology)',
+    visiting: true,
     department: 'pediatric-cardiology',
     bio: 'MBBS (MAMC, Delhi), MD (Pediatrics), DNB (Pediatrics), FNB (Pediatric Cardiology, Apollo Children’s Hospital, Chennai). Senior Consultant, Pediatric & Adult Congenital Cardiology at Yashoda Medicity, Ghaziabad, and formerly Senior Consultant, Pediatric Cardiology at Max Super Speciality Hospital, Saket. Over a decade of experience in congenital heart disease, fetal echocardiography and pediatric cardiac interventions such as device closures, balloon valvuloplasty and stenting.',
     image: gauravKumar,
@@ -132,6 +146,8 @@ export const doctors: Doctor[] = [
     name: 'Mohd Uwais (PT)',
     title: 'Consultant Physiotherapist',
     specialtyTag: 'Physiotherapy',
+    qualifications: 'BPT, MPT (Neuro)',
+    role: 'therapist',
     department: 'physiotherapy',
     bio: 'BPT, MPT (Neuro). Certified Chiropractor and Wet Cupping Therapist (CMT, CKTI, CDNT, CIASTM, CCT, CSRS, BLS). Treats sciatica, frozen shoulder, arthritis, post-fracture and post-surgery rehabilitation, stroke, spinal cord injury, Bell’s palsy, vertigo, strains and sprains, with postural analysis and correction.',
     image: mohdUwais,
@@ -141,6 +157,7 @@ export const doctors: Doctor[] = [
     name: 'Padma Rawat',
     title: 'Audiologist',
     specialtyTag: 'Audiology',
+    role: 'therapist',
     department: 'audiology',
     bio: 'Audiologist providing audiometry and hearing-aid services. Also associated with Nyra Speech & Hearing Care.',
     image: padmaRawat,

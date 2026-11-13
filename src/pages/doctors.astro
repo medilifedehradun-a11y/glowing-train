@@ -7,24 +7,13 @@ import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
 import { doctors } from '../data/doctors';
 import { site, contact } from '../data/site';
+import { doctorNode } from '../data/schema';
 
 const pageTitle = 'Our Doctors';
 const metaDescription =
   'Meet the specialists at Medilife Superspeciality Hospital, Dehradun, across urology, ENT, onco-surgery, orthopaedics, surgery, medicine and more.';
 
-const physicianSchema = doctors.map((d) => {
-  const node: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'Physician',
-    name: d.name,
-    medicalSpecialty: d.specialtyTag,
-    description: d.bio,
-    worksFor: { '@type': 'Hospital', name: site.name, url: site.url },
-  };
-  if (d.image) node.image = new URL(d.image.src, site.url).href;
-  if (d.department) node.url = new URL(`/${d.department}`, site.url).href;
-  return node;
-});
+const physicianSchema = doctors.map((d) => doctorNode(d, { withContext: true }));
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
