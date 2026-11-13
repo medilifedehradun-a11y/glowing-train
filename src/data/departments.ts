@@ -31,6 +31,8 @@ export interface Department {
   highlights: string[];
   /** Treatments & procedures offered */
   procedures: string[];
+  /** Optional intro above the procedures grid (defaults to a generic line) */
+  proceduresIntro?: string;
   /** Common conditions treated */
   conditions?: string[];
   /** optional - cards/headers fall back to an icon panel when absent */
@@ -77,6 +79,7 @@ export const departments: Department[] = [
       'OIU (Optical Internal Urethrotomy)',
       'Urethroplasty',
       'Advanced Laparoscopic Surgery',
+      'Stapler circumcision',
       'AV Fistula creation',
       'CAPD (Peritoneal Dialysis)',
     ],
@@ -135,6 +138,7 @@ export const departments: Department[] = [
       'Foreign body removal (Ear / Nose / Throat)',
       'Tinnitus management',
       'Ear lobe repair & ear piercing',
+      'Skin prick allergy testing',
       'Allergy & keloid treatment',
       'Oral cavity lesion management',
     ],
@@ -389,6 +393,53 @@ export const departments: Department[] = [
       'Plastic & reconstructive surgery in Dehradun - gynecomastia, liposuction, hair transplant, facial rejuvenation, burns and scar correction at Medilife Superspeciality Hospital.',
   },
   {
+    slug: 'pediatric-cardiology',
+    name: 'Pediatric Cardiology',
+    pageTitle: 'Pediatric Cardiology & Child Heart Care',
+    shortName: 'Pediatric Cardiology',
+    icon: 'heartPulse',
+    color: '#be123c',
+    colorDark: '#9f1239',
+    bg: '#fff1f2',
+    tagline: 'Child & Congenital Heart Care',
+    excerpt:
+      'Monthly pediatric cardiology OPD for congenital heart disease, irregular heartbeat, chest pain or fainting in children, with Dr. Gaurav Kumar of Yashoda Medicity.',
+    overview: [
+      'Medilife runs a pediatric cardiology OPD in Dehradun in association with Yashoda Medicity, Ghaziabad, so families in Uttarakhand can consult a children’s heart specialist without travelling to Delhi-NCR.',
+      'Dr. Gaurav Kumar, Senior Consultant in Pediatric & Adult Congenital Cardiology, sees newborns, children, teenagers and expectant parents on the 1st and 3rd Thursday of every month (10:00 AM - 1:00 PM). Each consultation includes a detailed clinical evaluation, a review of previous reports, guidance on the tests that are needed, and clear recommendations for treatment and follow-up.',
+    ],
+    highlights: [
+      'Congenital heart disease evaluation',
+      'Irregular heartbeat (arrhythmia) in children',
+      'Chest pain or fainting episodes in children',
+      'Heart conditions affecting growth & development',
+      'Second opinions & review of previous reports',
+    ],
+    procedures: [
+      'Detailed pediatric cardiac consultation',
+      'Review of previous echo, ECG & medical reports',
+      'Guidance on required investigations',
+      'Treatment & follow-up planning',
+      'Counselling for expectant parents (fetal heart concerns)',
+      'Advice on catheter-based procedures & heart surgery, when needed',
+    ],
+    proceduresIntro:
+      'Our pediatric cardiology OPD offers specialist consultation, report review and treatment planning for children with heart conditions.',
+    conditions: [
+      'Congenital heart defects (ASD, VSD, PDA)',
+      'Heart murmurs in children',
+      'Arrhythmia (irregular heartbeat)',
+      'Chest pain or fainting in children',
+      'Pediatric pulmonary hypertension',
+      'Cardiomyopathy in children',
+      'Poor weight gain linked to heart problems',
+    ],
+    leadDoctor: 'dr-gaurav-kumar',
+    order: 8,
+    metaDescription:
+      'Pediatric cardiologist in Dehradun: monthly OPD at Medilife with Dr. Gaurav Kumar (Yashoda Medicity) for congenital heart disease and child heart problems.',
+  },
+  {
     slug: 'physiotherapy',
     name: 'Physiotherapy',
     pageTitle: 'Physiotherapy & Rehabilitation',
@@ -434,7 +485,7 @@ export const departments: Department[] = [
     ],
     image: physiotherapyImg,
     leadDoctor: 'mohd-uwais',
-    order: 8,
+    order: 9,
     metaDescription:
       'Physiotherapy & rehabilitation in Dehradun - sciatica, frozen shoulder, arthritis, post-surgery and stroke rehab, sports injuries and manual therapy at Medilife Superspeciality Hospital.',
   },
@@ -477,7 +528,7 @@ export const departments: Department[] = [
     ],
     image: audiologyImg,
     leadDoctor: 'padma-rawat',
-    order: 9,
+    order: 10,
     metaDescription:
       'Audiology & hearing care in Dehradun - audiometry, hearing tests and hearing-aid fitting for all ages at Medilife Superspeciality Hospital.',
   },

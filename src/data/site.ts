@@ -8,7 +8,7 @@ export const site = {
   shortName: 'Medilife',
   tagline: 'Advanced Urology & Superspeciality Care in Dehradun',
   description:
-    'Medilife Superspeciality Hospital in Dehradun offers advanced urology, orthopaedics, general surgery, ENT, onco-surgery, plastic surgery, general medicine, physiotherapy and audiology care with experienced specialists, modern operation theatres and round-the-clock emergency services.',
+    'Medilife Superspeciality Hospital in Dehradun offers advanced urology, orthopaedics, general surgery, ENT, onco-surgery, plastic surgery, general medicine, pediatric cardiology, physiotherapy and audiology care with experienced specialists, modern operation theatres and round-the-clock emergency services.',
   url: 'https://www.medilifesuperspeciality.com',
   locale: 'en_IN',
   foundingYear: 2023,
@@ -86,6 +86,7 @@ export const departmentNav = [
   { slug: 'general-surgery', name: 'General Surgery', icon: 'surgery' },
   { slug: 'oncology', name: 'Onco-Surgery', icon: 'oncology' },
   { slug: 'orthopedics', name: 'Orthopaedics', icon: 'ortho' },
+  { slug: 'pediatric-cardiology', name: 'Pediatric Cardiology', icon: 'heartPulse' },
   { slug: 'physiotherapy', name: 'Physiotherapy', icon: 'physio' },
   { slug: 'plastic-surgery', name: 'Plastic Surgery', icon: 'plastic' },
   { slug: 'urology', name: 'Urology', icon: 'urology' },

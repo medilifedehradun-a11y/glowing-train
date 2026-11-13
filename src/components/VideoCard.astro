@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+import type { Video } from '../data/videos';
+import { doctors } from '../data/doctors';
+
+interface Props {
+  video: Video;
+  class?: string;
+}
+
+const { video, class: className } = Astro.props;
+const doctor = video.doctor ? doctors.find((d) => d.slug === video.doctor) : undefined;
+const portrait = video.orientation === 'portrait';
+---
+
+<figure
+  class:list={[
+    'flex flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink-100',
+    !portrait && 'sm:col-span-2',
+    className,
+  ]}
+>
+  <div class="bg-ink-900">
+    <video
+      class:list={['mx-auto block w-full', portrait ? 'aspect-[9/16] max-w-[19rem]' : 'aspect-video']}
+      controls
+      playsinline
+      preload="none"
+      poster={video.poster.src}
+      width={video.poster.width}
+      height={video.poster.height}
+      aria-label={video.title}
+    >
+      <source src={video.src} type="video/mp4" />
+      <a href={video.src}>Download the video: {video.title}</a>
+    </video>
+  </div>
+  <figcaption class="flex flex-1 flex-col gap-2 p-5">
+    <h3 class="text-lg font-bold leading-snug text-ink-900">{video.title}</h3>
+    <p class="text-sm leading-relaxed text-ink-600">{video.description}</p>
+    <p class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 text-xs font-semibold text-ink-600">
+      <span class="inline-flex items-center gap-1.5"><Icon name="clock" class="h-3.5 w-3.5" /> {video.durationLabel}</span>
+      {video.inLanguage === 'hi' && <span>In Hindi</span>}
+      {doctor && <span class="text-brand-700">{doctor.name}</span>}
+    </p>
+  </figcaption>
+</figure>

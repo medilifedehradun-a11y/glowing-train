@@ -4,11 +4,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import DoctorCard from '../components/DoctorCard.astro';
 import ContactForm from '../components/ContactForm.astro';
+import VideoCard from '../components/VideoCard.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
 import { departments } from '../data/departments';
 import { doctors } from '../data/doctors';
 import { site, contact } from '../data/site';
+import { videosForDepartment } from '../data/videos';
 
 export function getStaticPaths() {
   return departments.map((d) => ({ params: { department: d.slug }, props: { dept: d } }));
@@ -21,6 +23,7 @@ const deptDoctors = doctors
   .sort((a, b) => (a.slug === dept.leadDoctor ? -1 : b.slug === dept.leadDoctor ? 1 : 0));
 const lead = deptDoctors.find((doc) => doc.slug === dept.leadDoctor) ?? deptDoctors[0];
 const others = departments.filter((d) => d.slug !== dept.slug).slice(0, 3);
+const deptVideos = videosForDepartment(dept.slug);
 
 const schema = [
   {
@@ -48,6 +51,18 @@ const schema = [
       { '@type': 'ListItem', position: 3, name: dept.name, item: new URL(`/${dept.slug}`, site.url).href },
     ],
   },
+  ...deptVideos.map((v) => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: v.title,
+    description: v.description,
+    thumbnailUrl: new URL(v.poster.src, site.url).href,
+    contentUrl: new URL(v.src, site.url).href,
+    uploadDate: v.uploadDate,
+    duration: v.duration,
+    ...(v.inLanguage ? { inLanguage: v.inLanguage } : {}),
+    publisher: { '@type': 'Organization', name: site.name, url: site.url },
+  })),
 ];
 ---
 
@@ -127,7 +142,7 @@ const schema = [
       <span class="eyebrow">Treatments & Procedures</span>
       <h2 class="mt-4 text-3xl font-bold text-ink-900">What we offer</h2>
       <p class="mt-3 max-w-2xl text-lg text-ink-600">
-        Our {dept.name.toLowerCase()} department provides a comprehensive range of diagnostic and surgical procedures.
+        {dept.proceduresIntro ?? `Our ${dept.name.toLowerCase()} department provides a comprehensive range of diagnostic and surgical procedures.`}
       </p>
       <div class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {dept.procedures.map((p) => (
@@ -152,6 +167,19 @@ const schema = [
       )}
     </div>
   </section>
+
+  <!-- Patient-education videos -->
+  {deptVideos.length > 0 && (
+    <section class="section bg-ink-50/50">
+      <div class="container-x">
+        <span class="eyebrow">Watch & Learn</span>
+        <h2 class="mt-4 text-3xl font-bold text-ink-900">Videos from our specialists</h2>
+        <div class="reveal mt-8 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {deptVideos.map((v) => <VideoCard video={v} />)}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Consultants -->
   {deptDoctors.length > 0 && (

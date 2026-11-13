@@ -11,6 +11,7 @@ import sunnyDua from '../assets/doctors/sunny-dua.png';
 import mohdUwais from '../assets/doctors/mohd-uwais.png';
 import shahArajmand from '../assets/doctors/shah-arajmand.png';
 import padmaRawat from '../assets/doctors/padma-rawat.png';
+import gauravKumar from '../assets/doctors/gaurav-kumar.webp';
 
 export interface Doctor {
   slug: string;
@@ -115,6 +116,16 @@ export const doctors: Doctor[] = [
     bio: 'MBBS, MS (General Surgery), FNB (MAS), FMBS. Advanced Laparoscopic & Robotic Surgeon with 12 years of experience. Ex-Consultant at Indraprastha Apollo Hospital, New Delhi. Performs laparoscopic surgery for gallbladder, biliary and hydatid liver disease, hernia (inguinal, abdominal, hiatus), GERD, stomach and intestinal conditions, appendix, rectal prolapse, piles and fistula, plus bariatric (weight-loss) surgery.',
     image: shahArajmand,
     opd: 'Mon - Fri, 4:00 PM - 6:30 PM',
+  },
+  {
+    slug: 'dr-gaurav-kumar',
+    name: 'Dr. Gaurav Kumar',
+    title: 'Visiting Consultant - Pediatric Cardiologist',
+    specialtyTag: 'Pediatric Cardiology',
+    department: 'pediatric-cardiology',
+    bio: 'MBBS (MAMC, Delhi), MD (Pediatrics), DNB (Pediatrics), FNB (Pediatric Cardiology, Apollo Children’s Hospital, Chennai). Senior Consultant, Pediatric & Adult Congenital Cardiology at Yashoda Medicity, Ghaziabad, and formerly Senior Consultant, Pediatric Cardiology at Max Super Speciality Hospital, Saket. Over a decade of experience in congenital heart disease, fetal echocardiography and pediatric cardiac interventions such as device closures, balloon valvuloplasty and stenting.',
+    image: gauravKumar,
+    opd: '1st & 3rd Thursday of every month, 10:00 AM - 1:00 PM',
   },
   {
     slug: 'mohd-uwais',

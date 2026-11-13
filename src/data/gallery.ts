@@ -45,8 +45,18 @@ export const galleryPhotos = gallery.filter((g) => g.kind === 'photo');
 import awarenessSummerFatigue from '../assets/campaigns/awareness-summer-fatigue.webp';
 import awarenessAcidity from '../assets/campaigns/awareness-acidity.webp';
 import awarenessKneePain from '../assets/campaigns/awareness-knee-pain.webp';
+import awarenessBloodPressure from '../assets/campaigns/awareness-blood-pressure.webp';
+import awarenessPreventiveCheckup from '../assets/campaigns/awareness-preventive-checkup.webp';
 
 export const campaigns: { src: ImageMetadata; alt: string }[] = [
+  {
+    src: awarenessBloodPressure,
+    alt: 'Medilife health awareness poster (Hindi): keep blood pressure under control to protect your heart - eat a balanced low-salt diet, exercise regularly, keep a healthy weight, avoid smoking and sleep well. Department of Medicine OPD, Monday to Saturday, 4 PM - 7 PM',
+  },
+  {
+    src: awarenessPreventiveCheckup,
+    alt: 'Medilife health awareness poster (Hindi): regular preventive health check-ups detect disease early, assess heart, diabetes and blood-pressure risk and help prevent complications. Department of Medicine OPD, Monday to Saturday, 4 PM - 7 PM',
+  },
   {
     src: awarenessSummerFatigue,
     alt: 'Medilife health awareness poster: spotting summer fatigue and weakness, with General Physician OPD timings',

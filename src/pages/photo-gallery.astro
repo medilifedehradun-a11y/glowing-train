@@ -5,11 +5,13 @@ import PageHero from '../components/PageHero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
+import VideoCard from '../components/VideoCard.astro';
 import { site, contact } from '../data/site';
 import { gallery, campaigns } from '../data/gallery';
+import { videos } from '../data/videos';
 
 const galleryDescription =
-  'Take a visual tour of Medilife Superspeciality Hospital in Dehradun - real photographs of our hospital premises, facilities, medical team and patient care.';
+  'Take a visual tour of Medilife Superspeciality Hospital in Dehradun - real photographs of our hospital premises, facilities, medical team and patient care, plus short videos from our specialists.';
 
 const overview = [
   { icon: 'building', label: `${gallery.length} photos`, sub: 'Real hospital images' },
@@ -104,6 +106,23 @@ const breadcrumbSchema = {
       </p>
     </div>
   </section>
+
+  <!-- Patient-education videos -->
+  {videos.length > 0 && (
+    <section class="section">
+      <div class="container-x">
+        <SectionHeading
+          eyebrow="Videos"
+          title="Watch our specialists explain"
+          subtitle="Short videos from our doctors on common procedures and tests, recorded at Medilife Superspeciality Hospital, Dehradun."
+        />
+
+        <div class="reveal mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {videos.map((v) => <VideoCard video={v} />)}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Health awareness campaigns -->
   {campaigns.length > 0 && (

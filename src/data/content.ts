@@ -14,7 +14,7 @@ export interface Stat {
 export const stats: Stat[] = [
   { value: '1,00,000+', to: 100000, suffix: '+', label: 'Patients treated' },
   { value: '30+', to: 30, suffix: '+', label: 'Years of doctor experience' },
-  { value: '9', to: 9, label: 'Clinical departments' },
+  { value: '10', to: 10, label: 'Clinical departments' },
   { value: '24×7', label: 'Emergency & ambulance' },
 ];
 
@@ -154,7 +154,7 @@ export const faqs: Faq[] = [
   {
     question: 'What specialities does Medilife Superspeciality Hospital offer?',
     answer:
-      'Medilife offers comprehensive care including Urology, ENT, Onco-Surgery, General Medicine, General Surgery, Orthopaedics, Plastic Surgery, Physiotherapy and Audiology, supported by an in-house Pharmacy and NABL-accredited Pathology lab.',
+      'Medilife offers comprehensive care including Urology, ENT, Onco-Surgery, General Medicine, General Surgery, Orthopaedics, Plastic Surgery, Pediatric Cardiology, Physiotherapy and Audiology, supported by an in-house Pharmacy and NABL-accredited Pathology lab.',
   },
   {
     question: 'Where is Medilife Superspeciality Hospital located?',
