@@ -1,19 +1,24 @@
 ---
 /**
- * Cookie-consent banner. Analytics (GTM + Meta Pixel) load ONLY after the
- * visitor accepts, or automatically on return visits if they accepted before.
- * Declining keeps tracking off. Choice stored in localStorage ('ml-consent').
+ * Cookie-consent banner. Analytics/marketing tags (GTM, Meta Pixel, Microsoft
+ * Clarity, GA4) load ONLY after the visitor accepts, or automatically on return
+ * visits if they accepted the current consent version. Declining keeps them
+ * off. "Cookie settings" (footer, [data-cookie-settings]) reopens the banner;
+ * declining after an earlier accept clears tracker cookies and reloads.
+ * Stored in localStorage: ml-consent (accepted|declined), ml-consent-v, ml-consent-at.
+ * Bump CONSENT_VERSION whenever the trackers or their purposes change.
  */
 import Icon from './Icon.astro';
 import { integrations } from '../data/site';
 const { gtmId, metaPixelId, clarityId, ga4Id } = integrations;
 const enabled = !!(gtmId || metaPixelId || clarityId || ga4Id);
+const CONSENT_VERSION = '2';
 
 const gtm = gtmId
   ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`
   : '';
 const pixel = metaPixelId
-  ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${metaPixelId}');fbq('track','PageView');`
+  ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('set','autoConfig',false,'${metaPixelId}');fbq('init','${metaPixelId}');fbq('track','PageView');`
   : '';
 const clarity = clarityId
   ? `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,'clarity','script','${clarityId}');`
@@ -30,19 +35,42 @@ window.__mlLoadAnalytics=function(){
   ${clarity}
   ${ga4}
 };
-try{ if(localStorage.getItem('ml-consent')==='accepted'){ window.__mlLoadAnalytics(); } }catch(e){}
+try{ if(localStorage.getItem('ml-consent')==='accepted' && localStorage.getItem('ml-consent-v')==='${CONSENT_VERSION}'){ window.__mlLoadAnalytics(); } }catch(e){}
 if(!window.__mlSwapBound){ window.__mlSwapBound=true; document.addEventListener('astro:after-swap',function(){ if(window.__mlAnalyticsLoaded){ if(window.dataLayer)window.dataLayer.push({event:'pageview',page_path:location.pathname}); if(window.fbq)window.fbq('track','PageView'); if(window.gtag)window.gtag('event','page_view',{page_path:location.pathname}); } }); }
 `;
 
 const bannerJs = `
 (function(){
+  var V='${CONSENT_VERSION}';
+  function save(v){ try{ localStorage.setItem('ml-consent',v); localStorage.setItem('ml-consent-v',V); localStorage.setItem('ml-consent-at',new Date().toISOString()); }catch(e){} }
+  function clearTrackers(){
+    var host=location.hostname, parts=host.split('.'), domains=['',host,'.'+host];
+    if(parts.length>2) domains.push('.'+parts.slice(-2).join('.'));
+    document.cookie.split(';').forEach(function(c){
+      var n=c.split('=')[0].trim();
+      if(/^(_ga|_gid|_gat|_gcl|_fbp|_fbc|_clck|_clsk|CLID|MUID)/.test(n)){
+        domains.forEach(function(d){ document.cookie=n+'=; Max-Age=0; path=/'+(d?'; domain='+d:''); });
+      }
+    });
+  }
   function init(){
     var bar=document.getElementById('cookie-bar'); if(!bar||bar.dataset.bound)return; bar.dataset.bound='1';
-    var choice=null; try{choice=localStorage.getItem('ml-consent');}catch(e){}
-    if(!choice) bar.removeAttribute('hidden');
+    var choice=null, ver=null; try{choice=localStorage.getItem('ml-consent'); ver=localStorage.getItem('ml-consent-v');}catch(e){}
+    if(!choice || ver!==V) bar.removeAttribute('hidden');
     var accept=bar.querySelector('[data-accept]'), decline=bar.querySelector('[data-decline]');
-    accept&&accept.addEventListener('click',function(){ try{localStorage.setItem('ml-consent','accepted');}catch(e){} if(window.__mlLoadAnalytics)window.__mlLoadAnalytics(); bar.setAttribute('hidden',''); });
-    decline&&decline.addEventListener('click',function(){ try{localStorage.setItem('ml-consent','declined');}catch(e){} bar.setAttribute('hidden',''); });
+    accept&&accept.addEventListener('click',function(){ save('accepted'); if(window.__mlLoadAnalytics)window.__mlLoadAnalytics(); bar.setAttribute('hidden',''); });
+    decline&&decline.addEventListener('click',function(){
+      var wasLoaded=!!window.__mlAnalyticsLoaded; save('declined'); clearTrackers(); bar.setAttribute('hidden','');
+      if(wasLoaded) location.reload();
+    });
+  }
+  if(!window.__mlConsentUiBound){
+    window.__mlConsentUiBound=true;
+    document.addEventListener('click',function(e){
+      var t=e.target&&e.target.closest&&e.target.closest('[data-cookie-settings]'); if(!t)return;
+      e.preventDefault(); var bar=document.getElementById('cookie-bar'); if(!bar)return;
+      bar.removeAttribute('hidden'); var b=bar.querySelector('[data-accept]'); if(b)b.focus();
+    });
   }
   document.addEventListener('astro:page-load',init);
 })();
@@ -65,7 +93,10 @@ const bannerJs = `
         <div>
           <p class="text-sm font-bold text-ink-900">We value your privacy</p>
           <p class="mt-1 text-[0.85rem] leading-relaxed text-ink-600">
-            We use cookies to analyse traffic and improve your experience. You can accept or decline analytics cookies.
+            With your consent we use cookies for site analytics (Google), session recordings
+            with form fields masked (Microsoft Clarity) and ad measurement (Meta). Nothing
+            loads unless you accept, and you can change your choice any time under
+            "Cookie settings" in the footer.
             <a href="/privacy-policy" class="font-semibold text-brand-700 underline">Learn more</a>.
           </p>
         </div>

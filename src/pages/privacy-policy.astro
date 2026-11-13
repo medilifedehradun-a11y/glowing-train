@@ -3,7 +3,53 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import { site, contact } from '../data/site';
 
-const updated = 'June 2026';
+const updated = 'November 2026';
+
+/** Third parties that receive data through this website. Keep in sync with ConsentBanner. */
+const processors = [
+  {
+    name: 'FormSubmit (formsubmit.co) and Google Gmail',
+    data: 'What you type into our enquiry and appointment forms, plus the page you sent it from',
+    purpose: 'Delivering your enquiry to our hospital inbox so we can call you back',
+    when: 'Only when you submit a form',
+    where: 'United States',
+  },
+  {
+    name: 'Google Tag Manager / Google Analytics',
+    data: 'Pages visited, device and browser details, approximate location, cookie identifiers',
+    purpose: 'Understanding how visitors use the site',
+    when: 'Only after you accept cookies',
+    where: 'United States',
+  },
+  {
+    name: 'Microsoft Clarity',
+    data: 'Session recordings of clicks, scrolling and page layout (form fields are masked)',
+    purpose: 'Finding and fixing usability problems',
+    when: 'Only after you accept cookies',
+    where: 'United States',
+  },
+  {
+    name: 'Meta Pixel (Facebook / Instagram)',
+    data: 'Pages visited and cookie identifiers; automatic collection of button text and form details is switched off',
+    purpose: 'Measuring our advertising',
+    when: 'Only after you accept cookies',
+    where: 'United States',
+  },
+  {
+    name: 'Google Maps',
+    data: 'Standard technical data such as your IP address and browser details',
+    purpose: 'Showing our location map',
+    when: 'When a page with a map loads',
+    where: 'United States',
+  },
+  {
+    name: 'Vercel (website hosting)',
+    data: 'Standard server logs such as IP address and pages requested',
+    purpose: 'Serving and securing the website',
+    when: 'Every visit',
+    where: 'United States and other regions',
+  },
+];
 ---
 
 <BaseLayout
@@ -22,44 +68,76 @@ const updated = 'June 2026';
       <p>
         {site.name} ("we", "us", "our") respects your privacy and is committed to protecting the
         personal information you share with us. This policy explains what we collect through this
-        website, how we use it, and the choices you have.
+        website, how we use it, who we share it with, and the choices you have under India's Digital
+        Personal Data Protection Act, 2023 and other applicable law.
       </p>
 
       <h2>Information we collect</h2>
       <ul>
         <li>
           <strong>Information you provide.</strong> When you use our appointment or enquiry forms we
-          collect your name, email address, phone number, the department you select and any message
-          you send us.
+          collect your name, phone number, email address (optional), the department, doctor, date and
+          time you prefer (optional) and any message you write. Please do not include medical reports
+          or other sensitive details in the form; our team will discuss your concern with you directly.
         </li>
         <li>
-          <strong>Information collected automatically.</strong> Like most websites, we may collect
-          standard technical data such as your IP address, browser type, device information and pages
-          visited, through cookies and analytics tools.
+          <strong>Information collected automatically.</strong> Standard technical data such as your
+          IP address, browser type and device information is processed by our hosting provider. With
+          your consent, analytics tools also collect the pages you visit and how you use them (see
+          below).
         </li>
       </ul>
 
       <h2>How we use your information</h2>
       <ul>
         <li>To respond to your enquiries and schedule or confirm appointments.</li>
-        <li>To provide, maintain and improve our website and services.</li>
-        <li>To understand how visitors use our site, with your consent, through analytics.</li>
+        <li>To provide, maintain, secure and improve our website.</li>
+        <li>With your consent, to understand how visitors use the site and to measure our advertising.</li>
         <li>To meet legal, regulatory and record-keeping obligations.</li>
       </ul>
 
-      <h2>Cookies and analytics</h2>
+      <h2>Cookies, analytics and your consent</h2>
       <p>
-        We use cookies and similar technologies. Analytics and marketing tools (such as Google Tag
-        Manager and the Meta Pixel) load only after you accept analytics cookies through our consent
-        banner. You can decline at any time, and declining will not affect your ability to use the
-        site or contact us.
+        Analytics, session-recording and advertising tools load only after you choose
+        <strong>Accept</strong> on our cookie banner. If you choose <strong>Decline</strong>, none
+        of them load and you can still use the site and contact us normally. You can change or
+        withdraw your choice at any time using <strong>Cookie settings</strong> at the bottom of
+        every page; withdrawing removes their cookies from your browser and stops further collection.
       </p>
 
-      <h2>How we share information</h2>
+      <h2>Who we share information with</h2>
       <p>
-        We do not sell your personal information. We may share it with trusted service providers who
-        help us operate the website and analytics (who process it on our behalf), and where required
-        by law or to protect the rights and safety of our patients and staff.
+        We do not sell your personal information. The service providers below process data on our
+        behalf for the purposes shown. Some are located outside India, so your data may be
+        transferred to and stored in other countries.
+      </p>
+      <div class="not-prose my-6 overflow-x-auto rounded-2xl ring-1 ring-ink-100">
+        <table class="w-full min-w-[40rem] text-left text-sm">
+          <thead class="bg-ink-50 text-ink-700">
+            <tr>
+              <th scope="col" class="px-4 py-3 font-semibold">Provider</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Data</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Purpose</th>
+              <th scope="col" class="px-4 py-3 font-semibold">When</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Location</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-ink-100 text-ink-700">
+            {processors.map((p) => (
+              <tr>
+                <th scope="row" class="px-4 py-3 font-semibold text-ink-900">{p.name}</th>
+                <td class="px-4 py-3">{p.data}</td>
+                <td class="px-4 py-3">{p.purpose}</td>
+                <td class="px-4 py-3">{p.when}</td>
+                <td class="px-4 py-3">{p.where}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p>
+        We may also disclose information where required by law, or to protect the rights and safety
+        of our patients and staff.
       </p>
 
       <h2>Medical confidentiality</h2>
@@ -71,28 +149,44 @@ const updated = 'June 2026';
 
       <h2>Data security and retention</h2>
       <p>
-        We take reasonable technical and organisational measures to protect your information and
-        retain it only for as long as necessary for the purposes described above or as required by
-        law.
+        We take reasonable technical and organisational measures to protect your information. We keep
+        website enquiries only as long as needed to respond and follow up, and no longer than 12
+        months, unless they become part of your medical record at the hospital or the law requires us
+        to keep them longer. Analytics data is kept according to each provider's retention settings.
       </p>
 
       <h2>Your rights</h2>
+      <p>Subject to applicable law, including the Digital Personal Data Protection Act, 2023, you can:</p>
+      <ul>
+        <li>ask what personal information we hold about you and how it is used;</li>
+        <li>ask us to correct, complete, update or erase it;</li>
+        <li>withdraw your consent at any time (for cookies, use <strong>Cookie settings</strong>);</li>
+        <li>nominate another person to exercise these rights on your behalf in case of death or incapacity;</li>
+        <li>
+          raise a grievance with us, and if you are not satisfied with our response, complain to the
+          Data Protection Board of India.
+        </li>
+      </ul>
+
+      <h2>Grievance Officer</h2>
       <p>
-        Subject to applicable law, including India's Digital Personal Data Protection Act, you may
-        request access to, correction of, or deletion of your personal information. To make a request,
-        contact us using the details below.
+        For privacy requests or complaints, contact our Grievance Officer (Hospital Administration),
+        {site.name}, at <a href={contact.emailHref}>{contact.email}</a> or
+        <a href={contact.phoneHref}>{contact.phoneDisplay}</a>, or write to {contact.addressFull}. We
+        will respond within the time required by law.
       </p>
 
       <h2>Children's privacy</h2>
       <p>
-        Our website is not directed at children, and we do not knowingly collect personal information
-        from children without the involvement of a parent or guardian.
+        Our website is not directed at children. If you are making an enquiry or appointment for a
+        child, please do so as their parent or lawful guardian.
       </p>
 
       <h2>Changes to this policy</h2>
       <p>
-        We may update this policy from time to time. The latest version will always be available on
-        this page with its revision date.
+        We may update this policy from time to time, for example when we change the tools listed
+        above. The latest version will always be available on this page with its revision date, and
+        we will ask for your cookie consent again when the tools or their purposes change.
       </p>
 
       <h2>Contact us</h2>
