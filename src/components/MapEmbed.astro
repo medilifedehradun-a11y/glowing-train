@@ -1,0 +1,63 @@
+---
+/**
+ * Click-to-load Google Map. Nothing is requested from google.com (no cookies,
+ * no IP or referrer sent) until the visitor chooses to show the map.
+ */
+import Icon from './Icon.astro';
+import { contact } from '../data/site';
+
+interface Props {
+  height?: number;
+  class?: string;
+}
+const { height = 300, class: className = '' } = Astro.props;
+---
+
+<div
+  class:list={['map-embed relative grid place-items-center bg-brand-50 text-center', className]}
+  style={`min-height:${height}px`}
+  data-src={contact.mapEmbed}
+  data-height={height}
+>
+  <div class="flex flex-col items-center gap-3 p-6">
+    <span class="grid h-12 w-12 place-items-center rounded-full bg-white text-brand-600 shadow-soft">
+      <Icon name="pin" class="h-6 w-6" />
+    </span>
+    <p class="max-w-sm text-sm text-ink-700">
+      {contact.addressFull}
+    </p>
+    <div class="flex flex-wrap justify-center gap-2">
+      <button type="button" class="btn btn-primary py-2.5 text-sm" data-map-load>
+        Show map
+      </button>
+      <a href={contact.mapUrl} target="_blank" rel="noopener" class="btn btn-ghost py-2.5 text-sm">
+        Open in Google Maps
+      </a>
+    </div>
+    <p class="text-xs text-ink-600">The map is provided by Google and loads only when you choose to show it.</p>
+  </div>
+</div>
+
+<script>
+  function initMaps() {
+    document.querySelectorAll<HTMLElement>('.map-embed').forEach((box) => {
+      const btn = box.querySelector<HTMLButtonElement>('[data-map-load]');
+      if (!btn || btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', () => {
+        const f = document.createElement('iframe');
+        f.title = 'Medilife Superspeciality Hospital location map';
+        f.src = box.dataset.src || '';
+        f.width = '100%';
+        f.height = box.dataset.height || '300';
+        f.style.border = '0';
+        f.style.display = 'block';
+        f.referrerPolicy = 'strict-origin-when-cross-origin';
+        f.loading = 'lazy';
+        box.replaceChildren(f);
+        f.focus();
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initMaps);
+</script>

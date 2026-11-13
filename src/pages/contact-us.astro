@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import ContactForm from '../components/ContactForm.astro';
+import MapEmbed from '../components/MapEmbed.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
 import { site, contact, social } from '../data/site';
@@ -230,15 +231,7 @@ const breadcrumbSchema = {
         Convenient parking and round-the-clock access for emergencies.
       </p>
       <div class="mt-8 overflow-hidden rounded-3xl border border-ink-100 shadow-card">
-        <iframe
-          title="Medilife Superspeciality Hospital location map"
-          src={contact.mapEmbed}
-          width="100%"
-          height="360"
-          style="border:0; display:block;"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+        <MapEmbed height={360} />
       </div>
       <div class="mt-6">
         <a href={contact.mapUrl} target="_blank" rel="noopener" class="btn btn-ghost">
