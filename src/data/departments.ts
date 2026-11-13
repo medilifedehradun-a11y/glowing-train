@@ -9,6 +9,7 @@ import surgeryImg from '../assets/departments/general-surgery.webp';
 import plasticImg from '../assets/departments/plastic-surgery.webp';
 import physiotherapyImg from '../assets/departments/physiotherapy.webp';
 import audiologyImg from '../assets/departments/audiology.webp';
+import pediatricCardiologyImg from '../assets/departments/pediatric-cardiology.webp';
 
 export interface Department {
   slug: string;
@@ -412,6 +413,7 @@ export const departments: Department[] = [
     seoTitle: 'Pediatric Cardiologist in Dehradun',
     shortName: 'Pediatric Cardiology',
     icon: 'heartPulse',
+    image: pediatricCardiologyImg,
     color: '#be123c',
     colorDark: '#9f1239',
     bg: '#fff1f2',
