@@ -105,7 +105,7 @@ const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
           <Icon name="calendar" class="h-4 w-4" /> Book Appointment
         </a>
 
-        <a href="/book-online#appointment-form" class="btn btn-accent px-3.5 py-2 text-sm md:hidden" aria-label="Book an appointment">
+        <a href="/book-online#appointment-form" class="btn btn-accent hidden px-3.5 py-2 text-sm min-[375px]:inline-flex md:hidden" aria-label="Book an appointment">
           <Icon name="calendar" class="h-4 w-4" /> Book
         </a>
 
@@ -202,6 +202,10 @@ const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
       };
       toggle.addEventListener('click', () => {
         setOpen(menu.classList.contains('hidden'), true);
+      });
+      const xl = window.matchMedia('(min-width: 1280px)');
+      xl.addEventListener('change', (e) => {
+        if (e.matches && !menu.classList.contains('hidden')) setOpen(false);
       });
       menu.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') setOpen(false, true);

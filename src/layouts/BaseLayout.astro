@@ -66,7 +66,7 @@ const orgSchema = {
   name: site.name,
   url: site.url,
   logo: new URL('/logo.png', site.url).href,
-  image: ogImage,
+  image: new URL('/og-default.png', site.url).href,
   description: site.description,
   telephone: contact.phoneRaw,
   email: contact.email,

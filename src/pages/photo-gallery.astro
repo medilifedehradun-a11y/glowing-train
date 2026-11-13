@@ -93,7 +93,7 @@ const breadcrumbSchema = {
           <figure class="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-soft ring-1 ring-ink-100">
             <button
               type="button"
-              class="block h-full w-full cursor-zoom-in"
+              class="block h-full w-full cursor-zoom-in focus-visible:outline-offset-[-4px] focus-visible:shadow-[inset_0_0_0_6px_#fff]"
               data-lightbox-open={i}
               data-full={fullSrc[i]}
               data-alt={item.alt}
@@ -107,14 +107,14 @@ const breadcrumbSchema = {
               class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
               loading={i < 4 ? 'eager' : 'lazy'}
             />
-            <div
-              class="pointer-events-none absolute inset-0 flex items-center justify-center bg-brand-900/0 opacity-0 transition group-hover:bg-brand-900/30 group-hover:opacity-100"
+            <span
+              class="pointer-events-none absolute inset-0 flex items-center justify-center bg-brand-900/0 opacity-0 transition group-hover:bg-brand-900/30 group-hover:opacity-100 group-focus-within:bg-brand-900/30 group-focus-within:opacity-100"
               aria-hidden="true"
             >
               <span class="grid h-11 w-11 place-items-center rounded-full bg-white/90 text-brand-700">
                 <Icon name="plus" class="h-5 w-5" />
               </span>
-            </div>
+            </span>
             </button>
           </figure>
         ))}
@@ -131,7 +131,7 @@ const breadcrumbSchema = {
         class="m-auto w-[min(96vw,72rem)] max-w-none rounded-2xl bg-ink-950 p-0 text-white shadow-2xl backdrop:bg-ink-950/80"
       >
         <figure class="flex flex-col">
-          <img data-lightbox-img src="" alt="" class="max-h-[78vh] w-full object-contain" />
+          <img data-lightbox-img alt="" class="max-h-[78vh] w-full object-contain" />
           <figcaption class="flex items-center gap-3 p-4 text-sm text-white/90">
             <span data-lightbox-caption class="flex-1"></span>
             <span data-lightbox-count class="shrink-0 text-white/70"></span>

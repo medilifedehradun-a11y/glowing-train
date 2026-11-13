@@ -61,7 +61,7 @@ export const departments: Department[] = [
       'Advanced urological care - uroflowmetry, cystoscopy, HOLEP, TURP, TURBT, RIRS, URS, PCNL, urethroplasty, laparoscopic surgery, AV fistula and CAPD.',
     overview: [
       'Medilife is a dedicated urology centre in Dehradun, offering the full spectrum of endourology, laparoscopic and reconstructive urology under one roof.',
-      'Led by our endo-urologist, the department combines laser technology, minimally invasive techniques and dedicated dialysis support to treat kidney stones, prostate disease, urinary obstruction and $1, often with a shorter recovery than open surgery.',
+      'Led by our endo-urologist, the department combines laser technology, minimally invasive techniques and dedicated dialysis support to treat kidney stones, prostate disease, urinary obstruction and complex urological conditions, often with a shorter recovery than open surgery.',
     ],
     highlights: [
       'Laser treatment for kidney stones (RIRS, PCNL)',

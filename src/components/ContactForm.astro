@@ -41,8 +41,11 @@ const countryCodes = [
 ];
 
 const waBase = contact.whatsappHref.split('?')[0];
-const fieldClass =
-  'rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition placeholder:text-ink-600 focus:border-brand-600 focus:ring-2 focus:ring-brand-600';
+// Base field style without width; fieldClass is full-width (min-w-0 so long
+// <select> options can never widen the layout on phones).
+const fieldBase =
+  'rounded-xl border border-ink-200 bg-white py-3 text-ink-900 outline-none transition placeholder:text-ink-600 focus:border-brand-600 focus:ring-2 focus:ring-brand-600';
+const fieldClass = `w-full min-w-0 px-4 ${fieldBase}`;
 ---
 
 <form
@@ -74,7 +77,7 @@ const fieldClass =
       <label for="cf-phone" class="text-sm font-semibold text-ink-700">Phone *</label>
       <div class="flex gap-2">
         <select name="countrycode" aria-label="Country dial code" autocomplete="tel-country-code"
-          class:list={[fieldClass, 'w-[5.75rem] shrink-0 px-2']}>
+          class:list={[fieldBase, 'w-[5.75rem] shrink-0 px-2']}>
           {countryCodes.map((c) => (
             <option value={c.code} data-min={c.min} data-max={c.max} selected={c.iso === 'IN'}>{c.iso} {c.code}</option>
           ))}
@@ -82,7 +85,7 @@ const fieldClass =
         <input id="cf-phone" name="phone" type="tel" required inputmode="tel"
           pattern="[0-9]{6,14}" autocomplete="tel-national"
           aria-describedby="cf-phone-hint"
-          class:list={[fieldClass, 'w-full min-w-0 flex-1']} />
+          class:list={[fieldBase, 'w-full min-w-0 flex-1 px-4']} />
       </div>
       <p id="cf-phone-hint" class="text-xs text-ink-600">10-digit mobile number</p>
     </div>
@@ -267,12 +270,12 @@ const fieldClass =
           ? doctorSelect && Array.from(doctorSelect.options).find((o) => o.dataset.slug === docSlug)
           : undefined;
         const wantDept = deptSlug || docOpt?.dataset.dept;
-        if (wantDept && deptSelect) {
+        if (wantDept && deptSelect && deptSelect.value === '') {
           const o = Array.from(deptSelect.options).find((x) => x.dataset.slug === wantDept);
           if (o) deptSelect.value = o.value;
         }
         filterDoctors();
-        if (docOpt && doctorSelect) doctorSelect.value = docOpt.value;
+        if (docOpt && doctorSelect && doctorSelect.value === '') doctorSelect.value = docOpt.value;
         deptSelect?.addEventListener('change', filterDoctors);
       }
 

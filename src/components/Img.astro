@@ -48,7 +48,9 @@ let imgSrc = src.src;
 let srcset: string | undefined;
 
 if (import.meta.env.PROD && src.format !== 'svg') {
-  const targets = [...new Set([boxW, boxW * 1.5, boxW * 2].map((w) => Math.min(Math.round(w), src.width)))];
+  // With object-cover the image must be at least this wide to fill the box at 1x.
+  const coverW = height ? Math.max(boxW, Math.ceil((boxH * src.width) / src.height)) : boxW;
+  const targets = [...new Set([coverW, coverW * 1.5, coverW * 2].map((w) => Math.min(Math.round(w), src.width)))];
   const out = await Promise.all(targets.map((w) => getImage({ src, width: w, format: 'webp', quality: 78 })));
   imgSrc = out[0].src;
   srcset = targets.length > 1 ? out.map((o, i) => `${o.src} ${targets[i]}w`).join(', ') : undefined;

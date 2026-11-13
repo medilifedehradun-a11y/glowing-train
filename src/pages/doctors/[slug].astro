@@ -10,6 +10,7 @@ import { departments } from '../../data/departments';
 import { videos } from '../../data/videos';
 import { site, contact } from '../../data/site';
 import { doctorNode } from '../../data/schema';
+import { getImage } from 'astro:assets';
 
 export function getStaticPaths() {
   return doctors.map((d) => ({ params: { slug: d.slug }, props: { doctor: d } }));
@@ -36,7 +37,7 @@ const firstName = doctor.name.split(' ').slice(0, 2).join(' ');
 
 const descriptionFull = [
   `${doctor.name}, ${role.toLowerCase().startsWith('ent') ? role : role.toLowerCase()} at Medilife Superspeciality Hospital, Dehradun.`,
-  doctor.qualifications,
+  doctor.qualifications ? `${doctor.qualifications}.` : undefined,
   doctor.opd ? `OPD: ${doctor.opd}.` : 'Book an appointment online or call us.',
 ]
   .filter(Boolean)
@@ -49,6 +50,11 @@ const description =
 // "<Name>, <Role> in Dehradun | Medilife", dropping the brand when it would pass ~62 chars.
 const baseTitle = `${doctor.name}, ${role} in Dehradun`;
 const pageTitle = baseTitle.length + 11 <= 62 ? `${baseTitle} | Medilife` : baseTitle;
+
+// Social cards need JPEG/PNG (X, WhatsApp, Facebook, LinkedIn ignore AVIF).
+const ogImg = doctor.image
+  ? await getImage({ src: doctor.image, format: 'jpg', width: Math.min(1200, doctor.image.width), quality: 82 })
+  : undefined;
 
 const colleagues = doctors.filter((d) => d.department === doctor.department && d.slug !== doctor.slug);
 const doctorVideos = videos.filter((v) => v.doctor === doctor.slug);
@@ -73,7 +79,7 @@ const initials = ((parts[0]?.[0] ?? '') + (parts.length > 1 ? parts[parts.length
 <BaseLayout
   fullTitle={pageTitle}
   description={description}
-  image={doctor.image ? doctor.image.src : undefined}
+  image={ogImg?.src}
   jsonLd={schema}
 >
   <PageHero
@@ -176,8 +182,8 @@ const initials = ((parts[0]?.[0] ?? '') + (parts.length > 1 ? parts[parts.length
             </ul>
           </>
         )}
-        <a href={`/${dept.slug}`} class="btn btn-ghost mt-8">
-          About the {dept.name} department <Icon name="arrowRight" class="h-5 w-5" />
+        <a href={`/${dept.slug}`} class="btn btn-ghost mt-8 whitespace-normal text-left">
+          {dept.name} department <Icon name="arrowRight" class="h-5 w-5 shrink-0" />
         </a>
       </div>
     </section>

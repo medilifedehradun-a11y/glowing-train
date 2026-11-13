@@ -117,20 +117,6 @@
     text-wrap: pretty;
   }
 
-  /* Two-tone focus ring: the white halo shows on dark brand sections, the
-     dark outline shows on light ones (>=3:1 against either). */
-  :focus-visible {
-    outline: 3px solid var(--color-brand-800);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px #fff;
-    border-radius: 4px;
-  }
-
-  /* <main> receives programmatic focus (back-to-top, skip link); no ring on the whole page. */
-  main[tabindex="-1"]:focus {
-    outline: none;
-    box-shadow: none;
-  }
 
   ::selection {
     background-color: var(--color-brand-200);
@@ -394,5 +380,34 @@
     .m-carousel > * {
       flex: none;
     }
+  }
+}
+
+/* Two-tone focus ring: a white halo (visible on dark brand sections) inside a
+   dark outline (visible on light ones). In the utilities layer so component
+   box-shadows (.btn-*, .card) cannot override the halo. */
+@layer utilities {
+  :focus-visible {
+    outline: 3px solid var(--color-brand-900);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #fff;
+  }
+  /* <main> receives programmatic focus (back-to-top, skip link); no ring on the whole page. */
+  main[tabindex="-1"]:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+/* Long unbreakable strings (email addresses, URLs) must wrap on 320px phones. */
+@layer base {
+  a[href^="mailto:"],
+  a[href^="mailto:"] * {
+    overflow-wrap: anywhere;
+  }
+  /* Grid items default to min-width:auto, so one long word, button or select can
+     widen a single-column grid past the screen. Let them shrink instead. */
+  .grid > * {
+    min-width: 0;
   }
 }

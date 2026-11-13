@@ -29,7 +29,9 @@ const ga4 = ga4Id
 
 const loaderJs = `
 window.__mlLoadAnalytics=function(){
-  if(window.__mlAnalyticsLoaded)return; window.__mlAnalyticsLoaded=true;
+  if(window.__mlAnalyticsLoaded)return;
+  try{ if(localStorage.getItem('ml-consent')!=='accepted'||localStorage.getItem('ml-consent-v')!=='${CONSENT_VERSION}')return; }catch(e){ return; }
+  window.__mlAnalyticsLoaded=true;
   ${gtm}
   ${pixel}
   ${clarity}

@@ -39,8 +39,15 @@ const processors = [
     name: 'Google Maps',
     data: 'Standard technical data such as your IP address and browser details',
     purpose: 'Showing our location map',
-    when: 'When a page with a map loads',
+    when: 'Only if you choose "Show map" on the Home or Contact page',
     where: 'United States',
+  },
+  {
+    name: 'WhatsApp (Meta)',
+    data: 'Whatever you send us on WhatsApp, including enquiry details our form pre-fills if online submission fails',
+    purpose: 'Talking with you about your enquiry or appointment',
+    when: 'Only if you choose to message us on WhatsApp',
+    where: 'Outside India',
   },
   {
     name: 'Vercel (website hosting)',
@@ -102,7 +109,7 @@ const processors = [
         <strong>Accept</strong> on our cookie banner. If you choose <strong>Decline</strong>, none
         of them load and you can still use the site and contact us normally. You can change or
         withdraw your choice at any time using <strong>Cookie settings</strong> at the bottom of
-        every page; withdrawing removes their cookies from your browser and stops further collection.
+        every page; withdrawing deletes the cookies these tools set on our website and stops further collection.
       </p>
 
       <h2>Who we share information with</h2>
