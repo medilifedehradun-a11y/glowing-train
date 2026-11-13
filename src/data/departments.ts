@@ -51,11 +51,11 @@ export const departments: Department[] = [
     color: '#2461a6',
     colorDark: '#1f4f87',
     bg: '#eef5fc',
-    tagline: 'Best Urology Hospital in Dehradun',
+    tagline: 'Advanced Urology Care in Dehradun',
     excerpt:
       'Advanced urological care - uroflowmetry, cystoscopy, HOLEP, TURP, TURBT, RIRS, URS, PCNL, urethroplasty, laparoscopic surgery, AV fistula and CAPD.',
     overview: [
-      'Medilife is widely regarded as one of the best urology hospitals in Dehradun, offering the full spectrum of endourology, laparoscopic and reconstructive urology under one roof.',
+      'Medilife is a dedicated urology centre in Dehradun, offering the full spectrum of endourology, laparoscopic and reconstructive urology under one roof.',
       'Led by experienced endo-urologists, our department combines laser technology, minimally invasive techniques and dedicated dialysis support to treat kidney stones, prostate disease, urinary obstruction and complex urological conditions with faster recovery and better outcomes.',
     ],
     highlights: [
@@ -93,7 +93,7 @@ export const departments: Department[] = [
     featured: true,
     order: 1,
     metaDescription:
-      'Best urology hospital in Dehradun. Medilife offers laser kidney stone treatment, prostate surgery (HOLEP, TURP), RIRS, PCNL, urethroplasty, laparoscopic urology and dialysis access.',
+      'Advanced urology care in Dehradun. Medilife offers laser kidney stone treatment, prostate surgery (HOLEP, TURP), RIRS, PCNL, urethroplasty, laparoscopic urology and dialysis access.',
   },
   {
     slug: 'ent',

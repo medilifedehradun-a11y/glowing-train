@@ -6,7 +6,7 @@
 export const site = {
   name: 'Medilife Superspeciality Hospital',
   shortName: 'Medilife',
-  tagline: 'Best Urology & Superspeciality Hospital in Dehradun',
+  tagline: 'Advanced Urology & Superspeciality Care in Dehradun',
   description:
     'Medilife Superspeciality Hospital in Dehradun offers advanced urology, orthopaedics, general surgery, ENT, onco-surgery, plastic surgery, general medicine, physiotherapy and audiology care with experienced specialists, modern operation theatres and round-the-clock emergency services.',
   url: 'https://www.medilifesuperspeciality.com',
