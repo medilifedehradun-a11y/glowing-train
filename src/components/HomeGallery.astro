@@ -1,13 +1,13 @@
 ---
 import SectionHeading from './SectionHeading.astro';
 import Icon from './Icon.astro';
+import Img from './Img.astro';
 import { galleryPhotos } from '../data/gallery';
 
 import exterior1 from '../assets/hospital/exterior-1.jpg';
 
-// Curated genuine photographs of the hospital. We reference the imported asset
-// URLs directly with a plain <img> (no on-the-fly transform) so every tile
-// loads reliably in both dev and production, even with many tiles at once.
+// Curated genuine photographs of the hospital. Tiles are rendered through Img,
+// which ships tile-sized WebP (not the 1400px originals) and loads lazily.
 const curated = [
   { img: exterior1, alt: 'Medilife Superspeciality Hospital building, Dehradun' },
   ...galleryPhotos.map((g) => ({ img: g.src, alt: g.alt })),
@@ -41,14 +41,14 @@ const dirClass = ['marquee-left', 'marquee-right'];
         <ul class:list={['marquee-track', dirClass[ri]]}>
           {[...row, ...row].map((it, i) => (
             <li class="marquee-item">
-              <img
-                src={it.img.src}
-                width={it.img.width}
-                height={it.img.height}
+              <Img
+                src={it.img}
+                width={304}
+                height={208}
+                sizes="(min-width: 640px) 19rem, 16rem"
                 alt={i < row.length ? it.alt : ''}
                 class="h-full w-full object-cover"
-                loading="eager"
-                decoding="async"
+                loading="lazy"
                 aria-hidden={i >= row.length ? 'true' : undefined}
               />
             </li>

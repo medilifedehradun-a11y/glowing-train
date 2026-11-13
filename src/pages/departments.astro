@@ -5,6 +5,7 @@ import SectionHeading from '../components/SectionHeading.astro';
 import DepartmentCard from '../components/DepartmentCard.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
+import Img from '../components/Img.astro';
 import { departments } from '../data/departments';
 import { doctors } from '../data/doctors';
 import { facilities } from '../data/content';
@@ -131,14 +132,14 @@ const schema = [
                 Flagship
               </span>
               {featured.image ? (
-                <img
-                  src={featured.image.src}
-                  width={featured.image.width}
-                  height={featured.image.height}
+                <Img
+                  src={featured.image}
+                  width={720}
+                  height={480}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
                   alt={`${featured.name} department at ${site.name}`}
                   class="h-full w-full object-cover"
                   loading="lazy"
-                  decoding="async"
                 />
               ) : (
                 <div class="grid h-full w-full place-items-center" style={`background:${featured.bg}`}>
