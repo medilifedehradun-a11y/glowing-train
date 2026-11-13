@@ -237,7 +237,11 @@ export const departments: Department[] = [
     ],
     procedures: [
       'Joint Replacement Surgery',
+      'Total Hip Replacement',
+      'Total Knee Replacement',
       'Fracture & Trauma Care',
+      'Fracture fixation (nailing, plating, ORIF)',
+      'Trauma amputation & fasciotomy',
       'Arthroscopy & Sports Injuries',
       'Spine Disorders',
       'Arthritis Management',

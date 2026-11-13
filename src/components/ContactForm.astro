@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { contact } from '../data/site';
+import { contact, site } from '../data/site';
 import { departments } from '../data/departments';
 import { doctors } from '../data/doctors';
 
@@ -145,6 +145,7 @@ const fieldClass =
   <input type="hidden" name="_subject" value="New enquiry from medilifesuperspeciality.com" />
   <input type="hidden" name="_template" value="table" />
   <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_next" value={new URL('/thank-you', site.url).href} />
   {/* Spam honeypot - hidden from real users (FormSubmit reads _honey) */}
   <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 

@@ -21,18 +21,9 @@ import aboutImg from '../assets/gallery/g31.jpg';
 
 const homeFaqs = faqs.slice(0, 6);
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: homeFaqs.map((f) => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
-};
 ---
 
-<BaseLayout jsonLd={[faqSchema]}>
+<BaseLayout>
   <HomeHero />
 
   <!-- Accreditation / trust strip -->

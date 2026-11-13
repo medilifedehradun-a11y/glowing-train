@@ -35,7 +35,11 @@ window.__mlLoadAnalytics=function(){
   ${clarity}
   ${ga4}
 };
-try{ if(localStorage.getItem('ml-consent')==='accepted' && localStorage.getItem('ml-consent-v')==='${CONSENT_VERSION}'){ window.__mlLoadAnalytics(); } }catch(e){}
+try{ if(localStorage.getItem('ml-consent')==='accepted' && localStorage.getItem('ml-consent-v')==='${CONSENT_VERSION}'){
+  // Returning visitor: wait for load + idle so trackers do not compete with the LCP image.
+  var mlGo=function(){ (window.requestIdleCallback||function(cb){setTimeout(cb,1)})(function(){ window.__mlLoadAnalytics(); }); };
+  if(document.readyState==='complete') mlGo(); else window.addEventListener('load',mlGo,{once:true});
+} }catch(e){}
 // Conversion events (only once trackers are loaded, i.e. after consent).
 // Data minimisation: event name + page area only; never department, doctor or message text.
 if(!window.__mlConvBound){ window.__mlConvBound=true;

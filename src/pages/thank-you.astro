@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { contact } from '../data/site';
+---
+
+<BaseLayout title="Thank You" description="Your enquiry has reached Medilife Superspeciality Hospital, Dehradun." noindex>
+  <PageHero
+    eyebrow="Enquiry received"
+    title="Thank you"
+    subtitle="Your enquiry has reached our team. We will call you back shortly."
+    crumbs={[{ label: 'Thank you' }]}
+  />
+  <section class="section">
+    <div class="container-x mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
+      <p class="text-lg leading-relaxed text-ink-600">
+        If your concern is urgent, please call us now. Our emergency team is available 24×7.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href={contact.phoneHref} class="btn btn-accent"><Icon name="phone" class="h-5 w-5" /> {contact.phoneDisplay}</a>
+        <a href="/" class="btn btn-ghost">Back to home</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

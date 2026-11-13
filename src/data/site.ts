@@ -37,7 +37,7 @@ export const contact = {
   mapUrl:
     'https://www.google.com/maps/place/Medilife+Superspeciality+Hospital:+Premier+Multispeciality+Hospital+and+Private+Hospital/@30.2882763,78.0268025,17z/data=!3m1!4b1!4m6!3m5!1s0x390929ac43be0aad:0xc8ab6ce1e5205997!8m2!3d30.2882763!4d78.0293774!16s%2Fg%2F11kpy2_fz3',
   mapEmbed:
-    'https://www.google.com/maps?q=30.2882763,78.0293774&z=16&hl=en&output=embed',
+    'https://www.google.com/maps?q=Medilife+Superspeciality+Hospital,+Haridwar+Bypass+Road,+Dehradun&z=16&hl=en&output=embed',
   googleReviewsUrl:
     'https://www.google.com/maps/place/Medilife+Superspeciality+Hospital:+Premier+Multispeciality+Hospital+and+Private+Hospital/@30.2882763,78.0268025,17z/data=!4m8!3m7!1s0x390929ac43be0aad:0xc8ab6ce1e5205997!9m1!1b1!16s%2Fg%2F11kpy2_fz3',
   // Opens Google's 'write a review' dialog for our listing (ftid from mapUrl).
@@ -127,6 +127,7 @@ export const footerNav = {
     { label: 'Departments', href: '/departments' },
     { label: 'Our Doctors', href: '/doctors' },
     { label: 'Facilities', href: '/facilities' },
+    { label: 'Our Services', href: '/services' },
     { label: 'Patient FAQ', href: '/faq' },
     { label: 'Photo Gallery', href: '/photo-gallery' },
     { label: 'Health Blog', href: '/blog' },

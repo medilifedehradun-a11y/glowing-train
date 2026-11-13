@@ -7,6 +7,7 @@ import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
 import { facilities, accreditations } from '../data/content';
 import { site, contact } from '../data/site';
+import { departments } from '../data/departments';
 
 // Top feature tiles - faithful to the live site's three-column strip.
 const featureTiles = [
@@ -33,159 +34,15 @@ const featureTiles = [
   },
 ];
 
-// Per-department procedure breakdown, faithful to the scrape of the live
-// Facilities page. Each block keeps the original headings and procedure lists.
+// Department procedure blocks come from departments.ts (one source of truth),
+// plus the in-house pharmacy and pathology services.
 const medicalFacilities: {
   title: string;
   icon: string;
   note?: string;
   procedures: string[];
 }[] = [
-  {
-    title: 'Ear, Nose & Throat (ENT)',
-    icon: 'ent',
-    procedures: [
-      'Diagnostic Nasal Endoscopy',
-      'Laryngoscopy',
-      'Otoendoscopy',
-      'FESS',
-      'Fracture nasal bone reduction',
-      'Mastoid surgery',
-      'Head and Neck onco-surgery',
-      'Parotid surgery',
-      'Thyroid surgery',
-      'Submandibular gland surgery',
-      'Sialolithiasis',
-      'Foreign body Ear / Nose / Throat',
-      'Tinnitus',
-      'Ear piercing',
-      'Ear lobe repair',
-      'Allergy',
-      'Keloid',
-      'Oral cavity lesion',
-      'Laryngeal endoscopy',
-    ],
-  },
-  {
-    title: 'Onco-Surgery',
-    icon: 'oncology',
-    procedures: [
-      'Breast cancer',
-      'Gastrectomy',
-      'Oophorectomy / Hysterectomy',
-      'Oesophagectomy',
-      'Pancreatectomy',
-      'Laryngectomy',
-      'Head and Neck cancer surgery',
-    ],
-  },
-  {
-    title: 'Urology',
-    icon: 'urology',
-    procedures: [
-      'Uroflowmetry',
-      'Cystoscopy',
-      'HOLEP',
-      'TURP',
-      'TURBT',
-      'RIRS',
-      'URS',
-      'PCNL',
-      'OIU',
-      'Urethroplasty',
-      'Advanced Laparoscopic Surgery',
-      'AV Fistula',
-      'CAPD',
-    ],
-  },
-  {
-    title: 'General Medicine',
-    icon: 'medicine',
-    procedures: [
-      'Fever',
-      'Blood pressure',
-      'Diabetes',
-      'Thyroid',
-      'Joint pains',
-      'Arthritis',
-      'Whole body checkup',
-    ],
-  },
-  {
-    title: 'General Surgery',
-    icon: 'surgery',
-    procedures: [
-      'Appendectomy (Lap / Open)',
-      'Cholecystectomy (Lap / Open)',
-      'Hernia repair',
-      'Colectomy',
-      'Gastrectomy',
-      'Splenectomy',
-      'Haemorrhoidectomy (Open / Laser)',
-      'Piles and Fistula',
-      'Varicose veins',
-      'Circumcision',
-    ],
-  },
-  {
-    title: 'Orthopaedics',
-    icon: 'ortho',
-    procedures: [
-      'Fractured bone nailing / plating',
-      'ORIF',
-      'Total Hip Replacement',
-      'Total Knee Replacement',
-      'Amputation',
-      'Fasciotomy',
-    ],
-  },
-  {
-    title: 'Plastic Surgery',
-    icon: 'plastic',
-    procedures: [
-      'Burn cases',
-      'Rhinoplasty',
-      'Otoplasty',
-      'Scar removal',
-      'Contracture release',
-    ],
-  },
-  {
-    title: 'Pediatric Cardiology',
-    icon: 'heartPulse',
-    procedures: [
-      'Pediatric cardiac consultation',
-      'Congenital heart disease evaluation',
-      'Arrhythmia assessment in children',
-      'Review of previous echo & ECG reports',
-      'Fetal heart concern counselling',
-      'Treatment & follow-up planning',
-    ],
-  },
-  {
-    title: 'Physiotherapy',
-    icon: 'physio',
-    procedures: [
-      'Sciatica & back pain therapy',
-      'Frozen shoulder rehabilitation',
-      'Post-surgery & post-fracture rehab',
-      'Stroke & neuro rehabilitation',
-      'Manual therapy & dry needling',
-      'Postural analysis & correction',
-    ],
-  },
-  {
-    title: 'Audiology',
-    icon: 'hearing',
-    procedures: [
-      'Pure tone audiometry',
-      'Impedance audiometry / tympanometry',
-      'Speech audiometry',
-      'Hearing-aid selection & fitting',
-      'Tinnitus assessment',
-      'Paediatric hearing screening',
-    ],
-  },
+  ...departments.map((d) => ({ title: d.name, icon: d.icon, procedures: d.procedures })),
   {
     title: 'Pharmacy',
     icon: 'pill',

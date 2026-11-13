@@ -58,6 +58,9 @@ const breadcrumbSchema = {
   fullTitle={post.seoTitle}
   title={post.title}
   description={post.seoDescription ?? post.excerpt}
+  image={post.image.src}
+  ogType="article"
+  article={{ published: post.date, section: post.category }}
   jsonLd={[articleSchema, breadcrumbSchema]}
 >
   <PageHero

@@ -12,10 +12,12 @@ export default defineConfig({
   trailingSlash: 'never',
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'viewport',
+    // 'hover' (also tap/focus) instead of 'viewport', which fetched ~20 pages per visit.
+    defaultStrategy: 'hover',
   },
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [sitemap()],
+  // Keep the noindexed thank-you page out of the sitemap.
+  integrations: [sitemap({ filter: (page) => !page.includes('/thank-you') })],
 });
