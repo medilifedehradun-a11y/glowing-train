@@ -117,10 +117,19 @@
     text-wrap: pretty;
   }
 
+  /* Two-tone focus ring: the white halo shows on dark brand sections, the
+     dark outline shows on light ones (>=3:1 against either). */
   :focus-visible {
-    outline: 3px solid var(--color-brand-500);
+    outline: 3px solid var(--color-brand-800);
     outline-offset: 2px;
+    box-shadow: 0 0 0 2px #fff;
     border-radius: 4px;
+  }
+
+  /* <main> receives programmatic focus (back-to-top, skip link); no ring on the whole page. */
+  main[tabindex="-1"]:focus {
+    outline: none;
+    box-shadow: none;
   }
 
   ::selection {

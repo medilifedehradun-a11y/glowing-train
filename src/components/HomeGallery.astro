@@ -28,14 +28,19 @@ const dirClass = ['marquee-left', 'marquee-right'];
         align="left"
         class="max-w-xl"
       />
-      <a href="/photo-gallery" class="btn btn-ghost">
-        View full gallery <Icon name="arrowRight" class="h-5 w-5" />
-      </a>
+      <div class="flex flex-wrap gap-3">
+        <button type="button" class="btn btn-ghost" data-marquee-toggle aria-pressed="false">
+          <span data-label>Pause photos</span>
+        </button>
+        <a href="/photo-gallery" class="btn btn-ghost">
+          View full gallery <Icon name="arrowRight" class="h-5 w-5" />
+        </a>
+      </div>
     </div>
   </div>
 
   <!-- Continuous marquee (full-bleed) -->
-  <div class="reveal mt-10 flex flex-col gap-4">
+  <div class="reveal mt-10 flex flex-col gap-4" data-marquee-group>
     {rows.map((row, ri) => (
       <div class="marquee" tabindex="0" role="group" aria-label={`Medilife hospital photos, row ${ri + 1}`}>
         <ul class:list={['marquee-track', dirClass[ri]]}>
@@ -58,6 +63,25 @@ const dirClass = ['marquee-left', 'marquee-right'];
     ))}
   </div>
 </section>
+
+<script>
+  // WCAG 2.2.2: let everyone (keyboard and touch included) pause the moving photos.
+  function initMarqueeToggle() {
+    document.querySelectorAll<HTMLButtonElement>('[data-marquee-toggle]').forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      const group = btn.closest('section')?.querySelector<HTMLElement>('[data-marquee-group]');
+      const label = btn.querySelector('[data-label]');
+      btn.addEventListener('click', () => {
+        const paused = !group?.classList.contains('marquee-paused');
+        group?.classList.toggle('marquee-paused', paused);
+        btn.setAttribute('aria-pressed', String(paused));
+        if (label) label.textContent = paused ? 'Play photos' : 'Pause photos';
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initMarqueeToggle);
+</script>
 
 <style>
   .marquee {
@@ -104,7 +128,9 @@ const dirClass = ['marquee-left', 'marquee-right'];
   .marquee-right {
     animation: marquee-right 55s linear infinite;
   }
-  .marquee:hover .marquee-track {
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track,
+  .marquee-paused .marquee-track {
     animation-play-state: paused;
   }
   @keyframes marquee-left {

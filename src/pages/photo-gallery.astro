@@ -1,5 +1,6 @@
 ---
 import Img from '../components/Img.astro';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
@@ -9,6 +10,15 @@ import VideoCard from '../components/VideoCard.astro';
 import { site, contact } from '../data/site';
 import { gallery, campaigns } from '../data/gallery';
 import { videos } from '../data/videos';
+
+// Large versions for the lightbox (build-time WebP in production).
+const fullSrc = await Promise.all(
+  gallery.map(async (g) =>
+    import.meta.env.PROD
+      ? (await getImage({ src: g.src, width: Math.min(1400, g.src.width), format: 'webp', quality: 80 })).src
+      : g.src.src
+  )
+);
 
 const galleryDescription =
   'Photos and videos of Medilife Superspeciality Hospital, Dehradun: our premises, facilities and team, plus short explainers from our specialists.';
@@ -81,6 +91,14 @@ const breadcrumbSchema = {
       <div class="reveal mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
         {gallery.map((item, i) => (
           <figure class="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-soft ring-1 ring-ink-100">
+            <button
+              type="button"
+              class="block h-full w-full cursor-zoom-in"
+              data-lightbox-open={i}
+              data-full={fullSrc[i]}
+              data-alt={item.alt}
+              aria-label={`View larger: ${item.alt}`}
+            >
             <Img
               src={item.src}
               alt={item.alt}
@@ -97,6 +115,7 @@ const breadcrumbSchema = {
                 <Icon name="plus" class="h-5 w-5" />
               </span>
             </div>
+            </button>
           </figure>
         ))}
       </div>
@@ -104,6 +123,26 @@ const breadcrumbSchema = {
       <p class="mt-8 text-center text-sm text-ink-600">
         Photographs from Medilife Superspeciality Hospital, Dehradun.
       </p>
+
+      <!-- Lightbox: native modal dialog (focus trap, Escape and focus return built in) -->
+      <dialog
+        id="gallery-lightbox"
+        aria-label="Gallery image"
+        class="m-auto w-[min(96vw,72rem)] max-w-none rounded-2xl bg-ink-950 p-0 text-white shadow-2xl backdrop:bg-ink-950/80"
+      >
+        <figure class="flex flex-col">
+          <img data-lightbox-img src="" alt="" class="max-h-[78vh] w-full object-contain" />
+          <figcaption class="flex items-center gap-3 p-4 text-sm text-white/90">
+            <span data-lightbox-caption class="flex-1"></span>
+            <span data-lightbox-count class="shrink-0 text-white/70"></span>
+          </figcaption>
+        </figure>
+        <div class="absolute right-3 top-3 flex gap-2">
+          <button type="button" data-lightbox-prev aria-label="Previous image" class="grid h-11 w-11 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"><Icon name="chevronDown" class="h-5 w-5 rotate-90" /></button>
+          <button type="button" data-lightbox-next aria-label="Next image" class="grid h-11 w-11 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"><Icon name="chevronDown" class="h-5 w-5 -rotate-90" /></button>
+          <button type="button" data-lightbox-close aria-label="Close" class="grid h-11 w-11 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"><Icon name="close" class="h-5 w-5" /></button>
+        </div>
+      </dialog>
     </div>
   </section>
 
@@ -213,3 +252,36 @@ const breadcrumbSchema = {
 
   <CtaBanner />
 </BaseLayout>
+
+<script>
+  function initLightbox() {
+    const dlg = document.getElementById('gallery-lightbox') as HTMLDialogElement | null;
+    if (!dlg || dlg.dataset.bound) return;
+    dlg.dataset.bound = '1';
+    const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]'));
+    const img = dlg.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+    const cap = dlg.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    const count = dlg.querySelector<HTMLElement>('[data-lightbox-count]')!;
+    let idx = 0;
+    const show = (i: number) => {
+      idx = (i + tiles.length) % tiles.length;
+      const t = tiles[idx];
+      img.src = t.dataset.full || '';
+      img.alt = t.dataset.alt || '';
+      cap.textContent = t.dataset.alt || '';
+      count.textContent = `${idx + 1} / ${tiles.length}`;
+    };
+    tiles.forEach((t, i) => t.addEventListener('click', () => { show(i); dlg.showModal(); }));
+    dlg.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => show(idx - 1));
+    dlg.querySelector('[data-lightbox-next]')?.addEventListener('click', () => show(idx + 1));
+    dlg.querySelector('[data-lightbox-close]')?.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+    // Click on the backdrop closes the dialog.
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', () => tiles[idx]?.focus());
+  }
+  document.addEventListener('astro:page-load', initLightbox);
+</script>

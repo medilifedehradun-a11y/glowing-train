@@ -26,6 +26,7 @@ import { contact } from '../data/site';
     id="back-to-top"
     type="button"
     aria-label="Back to top"
+    inert
     class="pointer-events-none grid translate-y-2 place-items-center rounded-full bg-white text-ink-700 opacity-0 shadow-lg ring-1 ring-ink-200 transition-all hover:bg-ink-50"
     style="height:3.25rem;width:3.25rem"
   >
@@ -42,10 +43,18 @@ import { contact } from '../data/site';
       btn.classList.toggle('opacity-0', !show);
       btn.classList.toggle('translate-y-2', !show);
       btn.classList.toggle('pointer-events-none', !show);
+      // Out of the tab order and accessibility tree while invisible.
+      btn.inert = !show;
     };
-    btn.addEventListener('click', () =>
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    );
+    btn.addEventListener('click', () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      const main = document.getElementById('main');
+      if (main) {
+        main.setAttribute('tabindex', '-1');
+        main.focus({ preventScroll: true });
+      }
+    });
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
