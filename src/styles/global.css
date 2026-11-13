@@ -291,19 +291,17 @@
 
 /* ==========================================================================
    Scroll-reveal animation system (progressive enhancement)
-   The hidden state applies ONLY when JS is active (.anim-ready on <html>) and
-   the visitor has not requested reduced motion, so content is never hidden
-   without JS and never animates for motion-sensitive users.
-   `.anim-ready` is set synchronously in <head> before paint, so there is no
-   flash of unstyled content.
+   Nothing is hidden by CSS alone. The reveal script adds `.reveal-pending`
+   only to blocks that start BELOW the fold, right before it observes them, so:
+   - above-the-fold content (hero, H1, CTAs, LCP image) paints immediately;
+   - if the script is slow, blocked or errors, every block stays visible;
+   - motion-sensitive visitors never get the hidden state (script skips it).
    ========================================================================== */
 @layer utilities {
   @media (prefers-reduced-motion: no-preference) {
     /* Uses the independent `translate`/`scale` properties (not `transform`) so
        reveal never conflicts with hover transforms / Tailwind hover utilities. */
-    .anim-ready .reveal,
-    .anim-ready [data-animate],
-    .anim-ready main section:not(.no-reveal) > .container-x > * {
+    .reveal-pending {
       opacity: 0;
       translate: 0 30px;
       transition:
@@ -313,26 +311,26 @@
     }
 
     /* Directional / scale variants (opt-in via data-animate="...") */
-    .anim-ready [data-animate='left'] {
+    .reveal-pending[data-animate='left'] {
       translate: -36px 0;
     }
-    .anim-ready [data-animate='right'] {
+    .reveal-pending[data-animate='right'] {
       translate: 36px 0;
     }
-    .anim-ready [data-animate='zoom'] {
+    .reveal-pending[data-animate='zoom'] {
       translate: 0 0;
       scale: 0.93;
     }
-    .anim-ready [data-animate='fade'] {
+    .reveal-pending[data-animate='fade'] {
       translate: 0 0;
     }
 
     /* A reveal group animates its CHILDREN (staggered), not the container */
-    .anim-ready .reveal-group {
+    .reveal-pending.reveal-group {
       opacity: 1 !important;
       translate: none !important;
     }
-    .anim-ready .reveal-group > * {
+    .reveal-pending.reveal-group > * {
       opacity: 0;
       translate: 0 26px;
       transition:
@@ -342,8 +340,8 @@
 
     /* Revealed state. !important on translate/scale only, so hover `transform`
        and Tailwind hover utilities on descendants keep working. */
-    .anim-ready .is-visible,
-    .anim-ready .reveal-group.is-visible > * {
+    .reveal-pending.is-visible,
+    .reveal-pending.reveal-group.is-visible > * {
       opacity: 1 !important;
       translate: none !important;
       scale: none !important;

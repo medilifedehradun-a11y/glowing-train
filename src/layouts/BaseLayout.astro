@@ -113,11 +113,6 @@ const schemas = [orgSchema, ...jsonLd];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Enable scroll-reveal hidden states only when JS runs (no flash, no-JS safe) -->
-    <script is:inline>
-      document.documentElement.classList.add('anim-ready');
-    </script>
-
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -195,10 +190,8 @@ const schemas = [orgSchema, ...jsonLd];
           if (isGrid(el)) el.classList.add('reveal-group');
         });
 
-        if (!motionOk || !('IntersectionObserver' in window)) {
-          blocks.forEach((el) => el.classList.add('is-visible'));
-          return;
-        }
+        // Reduced motion / no IntersectionObserver: never hide anything.
+        if (!motionOk || !('IntersectionObserver' in window)) return;
 
         // Stagger: between sibling blocks, and between a group's children.
         blocks.forEach((el) => {
@@ -230,12 +223,12 @@ const schemas = [orgSchema, ...jsonLd];
         );
         const vh = window.innerHeight;
         blocks.forEach((el) => {
-          // Already in view or scrolled past (deep link / refresh / fast scroll):
-          // reveal immediately so content is never left hidden. Only defer
-          // genuinely below-the-fold blocks to the scroll observer.
-          if (el.getBoundingClientRect().top < vh * 0.92) {
-            requestAnimationFrame(() => el.classList.add('is-visible'));
-          } else {
+          // Blocks already in view or scrolled past (hero, deep link, refresh)
+          // are left untouched so they paint immediately. Only genuinely
+          // below-the-fold blocks get the hidden state, and only from here, so
+          // a slow or failed script can never leave content invisible.
+          if (el.getBoundingClientRect().top >= vh * 0.92) {
+            el.classList.add('reveal-pending');
             io.observe(el);
           }
         });
