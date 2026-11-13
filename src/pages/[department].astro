@@ -124,7 +124,7 @@ const schema = [
           <h3 class="text-lg font-bold text-white">Book a consultation</h3>
           <p class="mt-2 text-sm text-white/85">Speak with our {dept.name.toLowerCase()} specialists. We are available 24/7 for emergencies.</p>
           <div class="mt-5 flex flex-col gap-2.5">
-            <a href="/book-online" class="btn btn-white w-full">
+            <a href={`/book-online?department=${dept.slug}#appointment-form`} class="btn btn-white w-full">
               <Icon name="calendar" class="h-5 w-5" /> Book Appointment
             </a>
             <a href={contact.phoneHref} class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
@@ -208,7 +208,7 @@ const schema = [
                 </p>
               )}
               <div class="mt-6">
-                <a href="/book-online" class="btn btn-primary">
+                <a href={`/book-online?doctor=${lead.slug}#appointment-form`} class="btn btn-primary">
                   <Icon name="calendar" class="h-5 w-5" /> Book with {lead.name.split(' ').slice(0, 2).join(' ')}
                 </a>
               </div>

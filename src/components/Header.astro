@@ -101,7 +101,7 @@ const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
             <span class="whitespace-nowrap text-[0.9rem] font-bold text-ink-900">{contact.phoneDisplay}</span>
           </span>
         </a>
-        <a href="/book-online" class="btn btn-accent hidden md:inline-flex">
+        <a href="/book-online#appointment-form" class="btn btn-accent hidden md:inline-flex">
           <Icon name="calendar" class="h-4 w-4" /> Book Appointment
         </a>
 
@@ -160,7 +160,7 @@ const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
       )}
     </ul>
     <div class="mt-5 flex flex-col gap-3">
-      <a href="/book-online" class="btn btn-accent w-full"><Icon name="calendar" class="h-5 w-5" /> Book Appointment</a>
+      <a href="/book-online#appointment-form" class="btn btn-accent w-full"><Icon name="calendar" class="h-5 w-5" /> Book Appointment</a>
       <a href={contact.phoneHref} class="btn btn-ghost w-full"><Icon name="phone" class="h-5 w-5" /> {contact.phoneDisplay}</a>
     </div>
   </div>

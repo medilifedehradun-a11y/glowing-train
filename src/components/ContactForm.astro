@@ -2,36 +2,47 @@
 import Icon from './Icon.astro';
 import { contact } from '../data/site';
 import { departments } from '../data/departments';
+import { doctors } from '../data/doctors';
 
 interface Props {
   heading?: string;
   /** Pre-select a department by slug */
   department?: string;
+  /**
+   * Booking variant: adds optional preferred doctor / date / time fields and
+   * pre-fills department + doctor from ?department=<slug>&doctor=<slug>.
+   */
+  booking?: boolean;
   class?: string;
 }
-const { heading, department = '', class: className = '' } = Astro.props;
+const { heading, department = '', booking = false, class: className = '' } = Astro.props;
 
-// Country dial codes for the phone field (India default).
+// Country dial codes for the phone field (India default), with the number of
+// digits a national number has (without the trunk 0), used for validation.
 const countryCodes = [
-  { iso: 'IN', code: '+91' },
-  { iso: 'US', code: '+1' },
-  { iso: 'GB', code: '+44' },
-  { iso: 'AE', code: '+971' },
-  { iso: 'SA', code: '+966' },
-  { iso: 'QA', code: '+974' },
-  { iso: 'KW', code: '+965' },
-  { iso: 'OM', code: '+968' },
-  { iso: 'BH', code: '+973' },
-  { iso: 'SG', code: '+65' },
-  { iso: 'MY', code: '+60' },
-  { iso: 'AU', code: '+61' },
-  { iso: 'NP', code: '+977' },
-  { iso: 'BD', code: '+880' },
-  { iso: 'LK', code: '+94' },
-  { iso: 'BT', code: '+975' },
-  { iso: 'DE', code: '+49' },
-  { iso: 'FR', code: '+33' },
+  { iso: 'IN', code: '+91', min: 10, max: 10 },
+  { iso: 'US', code: '+1', min: 10, max: 10 },
+  { iso: 'GB', code: '+44', min: 9, max: 10 },
+  { iso: 'AE', code: '+971', min: 8, max: 9 },
+  { iso: 'SA', code: '+966', min: 8, max: 9 },
+  { iso: 'QA', code: '+974', min: 8, max: 8 },
+  { iso: 'KW', code: '+965', min: 8, max: 8 },
+  { iso: 'OM', code: '+968', min: 8, max: 8 },
+  { iso: 'BH', code: '+973', min: 8, max: 8 },
+  { iso: 'SG', code: '+65', min: 8, max: 8 },
+  { iso: 'MY', code: '+60', min: 9, max: 10 },
+  { iso: 'AU', code: '+61', min: 9, max: 9 },
+  { iso: 'NP', code: '+977', min: 7, max: 10 },
+  { iso: 'BD', code: '+880', min: 10, max: 10 },
+  { iso: 'LK', code: '+94', min: 9, max: 9 },
+  { iso: 'BT', code: '+975', min: 7, max: 8 },
+  { iso: 'DE', code: '+49', min: 6, max: 11 },
+  { iso: 'FR', code: '+33', min: 9, max: 9 },
 ];
+
+const waBase = contact.whatsappHref.split('?')[0];
+const fieldClass =
+  'rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition placeholder:text-ink-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/40';
 ---
 
 <form
@@ -41,19 +52,20 @@ const countryCodes = [
   data-email={contact.email}
   data-phone-href={contact.phoneHref}
   data-phone-display={contact.phoneDisplay}
+  data-wa={waBase}
+  data-booking={booking ? 'true' : undefined}
+  data-clarity-mask="true"
 >
   {heading && <h3 class="text-xl font-bold text-ink-900">{heading}</h3>}
 
   <div class="grid gap-4 sm:grid-cols-2">
     <div class="flex flex-col gap-1.5">
       <label for="cf-first" class="text-sm font-semibold text-ink-700">First name *</label>
-      <input id="cf-first" name="first" type="text" required autocomplete="given-name"
-        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+      <input id="cf-first" name="first" type="text" required autocomplete="given-name" class={fieldClass} />
     </div>
     <div class="flex flex-col gap-1.5">
       <label for="cf-last" class="text-sm font-semibold text-ink-700">Last name</label>
-      <input id="cf-last" name="last" type="text" autocomplete="family-name"
-        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+      <input id="cf-last" name="last" type="text" autocomplete="family-name" class={fieldClass} />
     </div>
   </div>
 
@@ -62,41 +74,71 @@ const countryCodes = [
       <label for="cf-phone" class="text-sm font-semibold text-ink-700">Phone *</label>
       <div class="flex gap-2">
         <select name="countrycode" aria-label="Country dial code" autocomplete="tel-country-code"
-          class="w-[5.75rem] shrink-0 rounded-xl border border-ink-200 bg-white px-2 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+          class:list={[fieldClass, 'w-[5.75rem] shrink-0 px-2']}>
           {countryCodes.map((c) => (
-            <option value={c.code} selected={c.iso === 'IN'}>{c.iso} {c.code}</option>
+            <option value={c.code} data-min={c.min} data-max={c.max} selected={c.iso === 'IN'}>{c.iso} {c.code}</option>
           ))}
         </select>
-        <input id="cf-phone" name="phone" type="tel" required inputmode="numeric"
-          pattern="[0-9]{10}" autocomplete="tel-national"
-          placeholder="10-digit number" title="Enter a 10-digit phone number"
-          class="w-full flex-1 rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+        <input id="cf-phone" name="phone" type="tel" required inputmode="tel"
+          pattern="[0-9]{6,14}" autocomplete="tel-national"
+          aria-describedby="cf-phone-hint"
+          class:list={[fieldClass, 'w-full min-w-0 flex-1']} />
       </div>
+      <p id="cf-phone-hint" class="text-xs text-ink-600">10-digit mobile number</p>
     </div>
     <div class="flex flex-col gap-1.5">
       <label for="cf-email" class="text-sm font-semibold text-ink-700">Email</label>
-      <input id="cf-email" name="email" type="email" autocomplete="email"
-        class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200" />
+      <input id="cf-email" name="email" type="email" autocomplete="email" class={fieldClass} />
     </div>
   </div>
 
   <div class="flex flex-col gap-1.5">
     <label for="cf-dept" class="text-sm font-semibold text-ink-700">Department</label>
-    <select id="cf-dept" name="department"
-      class="rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+    <select id="cf-dept" name="department" class={fieldClass}>
       <option value="">Select a department (optional)</option>
       {departments.map((d) => (
-        <option value={d.name} selected={d.slug === department}>{d.name}</option>
+        <option value={d.name} data-slug={d.slug} selected={d.slug === department}>{d.name}</option>
       ))}
       <option value="General Enquiry">General Enquiry</option>
     </select>
   </div>
 
+  {booking && (
+    <>
+      <div class="flex flex-col gap-1.5">
+        <label for="cf-doctor" class="text-sm font-semibold text-ink-700">Preferred doctor</label>
+        <select id="cf-doctor" name="doctor" class={fieldClass}>
+          <option value="">Any available specialist</option>
+          {doctors.map((doc) => (
+            <option value={doc.name} data-slug={doc.slug} data-dept={doc.department ?? ''}>
+              {doc.name} - {doc.specialtyTag}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="flex flex-col gap-1.5">
+          <label for="cf-date" class="text-sm font-semibold text-ink-700">Preferred date</label>
+          <input id="cf-date" name="date" type="date" class={fieldClass} />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="cf-time" class="text-sm font-semibold text-ink-700">Preferred time</label>
+          <select id="cf-time" name="time" class={fieldClass}>
+            <option value="">Any time</option>
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Evening">Evening</option>
+          </select>
+        </div>
+      </div>
+    </>
+  )}
+
   <div class="flex flex-col gap-1.5">
     <label for="cf-message" class="text-sm font-semibold text-ink-700">Message</label>
     <textarea id="cf-message" name="message" rows="4"
       placeholder="Tell us briefly how we can help..."
-      class="resize-y rounded-xl border border-ink-200 bg-white px-4 py-3 text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200"></textarea>
+      class:list={[fieldClass, 'resize-y']}></textarea>
   </div>
 
   {/* FormSubmit options (used on the no-JS fallback POST) */}
@@ -111,8 +153,11 @@ const countryCodes = [
   </button>
 
   <p class="cf-status hidden text-sm font-medium" role="status" aria-live="polite"></p>
-  <p class="text-xs text-ink-600">
-    We will get back to you shortly. Prefer to talk? Call
+  <p class="text-xs leading-relaxed text-ink-600">
+    By submitting, you agree that we may contact you about your enquiry. Please do not include
+    medical reports or other sensitive details. See our
+    <a href="/privacy-policy" class="font-semibold text-brand-700 underline">Privacy Policy</a>.
+    Prefer to talk? Call
     <a href={contact.phoneHref} class="font-semibold text-brand-700">{contact.phoneDisplay}</a>
     - we are available 24/7 for emergencies.
   </p>
@@ -130,12 +175,105 @@ const countryCodes = [
       const btnLabel = form.querySelector<HTMLSpanElement>('.cf-btn-label');
       const phoneHref = form.dataset.phoneHref || '#';
       const phoneDisplay = form.dataset.phoneDisplay || 'us';
+      const waBase = form.dataset.wa || '';
 
-      // Keep the phone field to digits only, max 10.
+      // ---- Phone: per-country length rules, no silent truncation ----------
+      const ccSelect = form.querySelector<HTMLSelectElement>('select[name="countrycode"]');
       const phoneInput = form.querySelector<HTMLInputElement>('input[name="phone"]');
+      const phoneHint = form.querySelector<HTMLParagraphElement>('#cf-phone-hint');
+
+      const rule = () => {
+        const opt = ccSelect?.selectedOptions[0];
+        const code = (opt?.value || '+91').replace(/\D/g, '');
+        const min = Number(opt?.dataset.min || 10);
+        const max = Number(opt?.dataset.max || 10);
+        return { code, min, max, india: code === '91' };
+      };
+
+      /** Digits only; drop a pasted country code or trunk "0" when too long. */
+      const normalise = (raw: string) => {
+        const { code, max } = rule();
+        let d = raw.replace(/\D/g, '');
+        if (d.length > max && d.startsWith(code) && d.length - code.length <= max) d = d.slice(code.length);
+        if (d.length > max && d.startsWith('0')) d = d.replace(/^0+/, '');
+        return d;
+      };
+
+      const validatePhone = () => {
+        if (!phoneInput) return;
+        const { min, max, india } = rule();
+        const d = phoneInput.value;
+        let msg = '';
+        if (d && india && !/^[6-9]\d{9}$/.test(d)) msg = 'Enter a valid 10-digit Indian mobile number.';
+        else if (d && (d.length < min || d.length > max))
+          msg = min === max ? `Enter a ${min}-digit phone number.` : `Enter a phone number of ${min} to ${max} digits.`;
+        phoneInput.setCustomValidity(msg);
+      };
+
+      const updateHint = () => {
+        const { min, max, india } = rule();
+        if (phoneHint) {
+          phoneHint.textContent = india
+            ? '10-digit mobile number'
+            : min === max ? `${min}-digit number, without the country code` : `${min}-${max} digit number, without the country code`;
+        }
+        if (phoneInput) {
+          phoneInput.value = normalise(phoneInput.value);
+          validatePhone();
+        }
+      };
+
       phoneInput?.addEventListener('input', () => {
-        phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+        const pos = phoneInput.value.length;
+        const next = normalise(phoneInput.value);
+        if (next !== phoneInput.value) {
+          phoneInput.value = next;
+          phoneInput.setSelectionRange(Math.min(pos, next.length), Math.min(pos, next.length));
+        }
+        validatePhone();
       });
+      ccSelect?.addEventListener('change', updateHint);
+      updateHint();
+
+      // ---- Booking variant: prefill + doctor filter ------------------------
+      const deptSelect = form.querySelector<HTMLSelectElement>('select[name="department"]');
+      const doctorSelect = form.querySelector<HTMLSelectElement>('select[name="doctor"]');
+      const dateInput = form.querySelector<HTMLInputElement>('input[name="date"]');
+
+      if (dateInput) {
+        const t = new Date();
+        const iso = (x: Date) => new Date(x.getTime() - x.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        dateInput.min = iso(t);
+      }
+
+      const filterDoctors = () => {
+        if (!doctorSelect || !deptSelect) return;
+        const slug = deptSelect.selectedOptions[0]?.dataset.slug || '';
+        Array.from(doctorSelect.options).forEach((o) => {
+          if (!o.value) return;
+          const show = !slug || o.dataset.dept === slug;
+          o.hidden = !show;
+          o.disabled = !show;
+        });
+        if (doctorSelect.selectedOptions[0]?.disabled) doctorSelect.value = '';
+      };
+
+      if (form.dataset.booking === 'true') {
+        const params = new URLSearchParams(location.search);
+        const deptSlug = params.get('department');
+        const docSlug = params.get('doctor');
+        const docOpt = docSlug
+          ? doctorSelect && Array.from(doctorSelect.options).find((o) => o.dataset.slug === docSlug)
+          : undefined;
+        const wantDept = deptSlug || docOpt?.dataset.dept;
+        if (wantDept && deptSelect) {
+          const o = Array.from(deptSelect.options).find((x) => x.dataset.slug === wantDept);
+          if (o) deptSelect.value = o.value;
+        }
+        filterDoctors();
+        if (docOpt && doctorSelect) doctorSelect.value = docOpt.value;
+        deptSelect?.addEventListener('change', filterDoctors);
+      }
 
       const setStatus = (html: string, ok: boolean) => {
         if (!status) return;
@@ -146,6 +284,10 @@ const countryCodes = [
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (phoneInput) {
+          phoneInput.value = normalise(phoneInput.value);
+          validatePhone();
+        }
         if (!form.reportValidity()) return;
 
         const d = new FormData(form);
@@ -155,7 +297,12 @@ const countryCodes = [
         const name = [g('first'), g('last')].filter(Boolean).join(' ');
         const dept = g('department');
         const visitorEmail = g('email');
-        const phone = `${g('countrycode') || '+91'} ${g('phone').replace(/\D/g, '')}`;
+        const phone = `${g('countrycode') || '+91'} ${g('phone')}`;
+        const booking = {
+          ...(g('doctor') ? { preferred_doctor: g('doctor') } : {}),
+          ...(g('date') ? { preferred_date: g('date') } : {}),
+          ...(g('time') ? { preferred_time: g('time') } : {}),
+        };
 
         const original = btnLabel?.textContent || 'Send Enquiry';
         if (btn) btn.disabled = true;
@@ -171,7 +318,9 @@ const countryCodes = [
               phone,
               email: visitorEmail || 'Not provided',
               department: dept || 'Not specified',
+              ...booking,
               message: g('message') || 'No message',
+              page: location.pathname,
               _subject: dept ? `New enquiry (${dept}) - Medilife website` : 'New enquiry - Medilife website',
               _template: 'table',
               _captcha: 'false',
@@ -181,14 +330,34 @@ const countryCodes = [
           const data = await res.json().catch(() => ({}));
           if (res.ok && String(data.success) === 'true') {
             form.reset();
+            updateHint();
+            filterDoctors();
             setStatus('Submitted. Thank you - our team will contact you shortly.', true);
+            document.dispatchEvent(
+              new CustomEvent('ml:lead', { detail: { form: form.dataset.booking ? 'booking' : 'enquiry' } })
+            );
           } else {
             throw new Error('failed');
           }
         } catch (err) {
+          // Never lose the enquiry: offer the same details pre-filled on WhatsApp.
+          const lines = [
+            'Hello, I would like to make an enquiry at Medilife Superspeciality Hospital.',
+            `Name: ${name}`,
+            `Phone: ${phone}`,
+            dept && `Department: ${dept}`,
+            booking.preferred_doctor && `Preferred doctor: ${booking.preferred_doctor}`,
+            booking.preferred_date && `Preferred date: ${booking.preferred_date}`,
+            booking.preferred_time && `Preferred time: ${booking.preferred_time}`,
+            g('message') && `Message: ${g('message')}`,
+          ].filter(Boolean);
+          const wa = waBase ? `${waBase}?text=${encodeURIComponent(lines.join('\n'))}` : '';
           setStatus(
-            'Sorry, we could not submit your enquiry just now. Please call us at ' +
-            '<a class="font-semibold underline" href="' + phoneHref + '">' + phoneDisplay + '</a>.',
+            'Sorry, we could not submit your enquiry just now. ' +
+              (wa
+                ? '<a class="font-semibold underline" target="_blank" rel="noopener" href="' + wa + '">Send it on WhatsApp</a> (your details are filled in) or call us at '
+                : 'Please call us at ') +
+              '<a class="font-semibold underline" href="' + phoneHref + '">' + phoneDisplay + '</a>.',
             false
           );
         } finally {
