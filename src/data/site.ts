@@ -25,13 +25,13 @@ export const contact = {
   email: 'medilife.dehradun@gmail.com',
   emailHref: 'mailto:medilife.dehradun@gmail.com',
   addressLine1: 'Jai Krishan Tower, Haridwar Bypass Road',
-  addressLine2: 'near Kargi Chowk',
+  addressLine2: 'near Kargi Chowk, Kalagaon',
   addressCity: 'Dehradun',
   addressState: 'Uttarakhand',
-  addressPostal: '248001',
+  addressPostal: '248121',
   addressCountry: 'India',
   addressFull:
-    'Jai Krishan Tower, Haridwar Bypass Road, near Kargi Chowk, Dehradun, Uttarakhand 248001, India',
+    'Jai Krishan Tower, Haridwar Bypass Road, near Kargi Chowk, Kalagaon, Dehradun, Uttarakhand 248121, India',
   lat: 30.2882763,
   lng: 78.0293774,
   mapUrl:
