@@ -40,6 +40,10 @@ export const contact = {
     'https://www.google.com/maps?q=30.2882763,78.0293774&z=16&hl=en&output=embed',
   googleReviewsUrl:
     'https://www.google.com/maps/place/Medilife+Superspeciality+Hospital:+Premier+Multispeciality+Hospital+and+Private+Hospital/@30.2882763,78.0268025,17z/data=!4m8!3m7!1s0x390929ac43be0aad:0xc8ab6ce1e5205997!9m1!1b1!16s%2Fg%2F11kpy2_fz3',
+  // Opens Google's 'write a review' dialog for our listing (ftid from mapUrl).
+  // Replace with the GBP 'Ask for reviews' short link (g.page/r/.../review) if available.
+  googleWriteReviewUrl:
+    'https://www.google.com/search?q=Medilife+Superspeciality+Hospital+Dehradun#lrd=0x390929ac43be0aad:0xc8ab6ce1e5205997,3,,,',
   hoursWeekday: 'Mon - Sun: 24 Hours (Emergency)',
   opdHours: 'OPD: 9:00 AM - 7:00 PM',
 } as const;

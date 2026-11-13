@@ -191,11 +191,6 @@ export const faqs: Faq[] = [
     answer:
       'Yes. We are NABH-accredited and accept all major insurance providers, TPAs, ABHA and the Ayushman Bharat (PM-JAY) scheme for cashless treatment.',
   },
-  {
-    question: 'Is Medilife well-regarded by patients?',
-    answer:
-      'Yes - we have received consistently positive feedback from patients for our treatment, care and compassionate service.',
-  },
 ];
 
 /** Mission & vision content (About page). */

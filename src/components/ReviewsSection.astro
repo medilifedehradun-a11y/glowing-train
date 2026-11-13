@@ -19,8 +19,8 @@ const reExecScript =
   <div class="container-x">
     <SectionHeading
       eyebrow="Patient Reviews"
-      title="Trusted by patients across Dehradun"
-      subtitle="Real experiences from the people we care for. Read our reviews on Google, or share your own."
+      title="What our patients say"
+      subtitle="Read reviews from the people we care for on Google, or share your own experience."
       light={dark}
     />
 
@@ -43,19 +43,17 @@ const reExecScript =
                 <p class="text-sm text-ink-600">Medilife Superspeciality Hospital</p>
               </div>
             </div>
-            <div class="mt-4 flex items-center gap-1 text-accent-500" role="img" aria-label="Rated 5 out of 5 stars">
-              {Array.from({ length: 5 }).map(() => <Icon name="star" class="h-6 w-6" />)}
-            </div>
-            <p class="mt-4 text-[0.98rem] leading-relaxed text-ink-600">
-              Patients consistently praise our specialists, clean and well-equipped facilities,
-              and compassionate, professional care. See what people are saying on Google.
+            <p class="mt-5 text-[0.98rem] leading-relaxed text-ink-600">
+              Read what patients and families say about their care at Medilife on our Google
+              listing. If we treated you or a family member, a short review helps other families
+              in Dehradun choose their care.
             </p>
           </div>
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <a href={contact.googleReviewsUrl} target="_blank" rel="noopener" class="btn btn-primary w-full sm:w-auto">
               <Icon name="star" class="h-5 w-5" /> Read Google Reviews
             </a>
-            <a href={contact.googleReviewsUrl} target="_blank" rel="noopener" class="btn btn-ghost w-full sm:w-auto">
+            <a href={contact.googleWriteReviewUrl} target="_blank" rel="noopener" class="btn btn-ghost w-full sm:w-auto">
               <Icon name="plus" class="h-5 w-5" /> Write a Review
             </a>
           </div>
@@ -76,9 +74,6 @@ const reExecScript =
                 <span>
                   <span class="block font-bold text-ink-900">{t.author}</span>
                   {t.context && <span class="block text-sm text-ink-600">{t.context}</span>}
-                </span>
-                <span class="ml-auto flex gap-0.5 text-accent-500" role="img" aria-label="Rated 5 out of 5 stars">
-                  {Array.from({ length: 5 }).map(() => <Icon name="star" class="h-4 w-4" />)}
                 </span>
               </figcaption>
             </figure>
