@@ -45,6 +45,7 @@ export const doctors: Doctor[] = [
     department: 'ent',
     bio: 'Director of Medilife Superspeciality Hospital and a senior ENT surgeon. Ex-ENT Consultant at AIIMS Bhopal, Himalayan Hospital (Jolly Grant) and Government Doon Medical College, Dehradun.',
     image: riktaRoy,
+    opd: 'Mon - Sat, 10:00 AM - 2:00 PM & 5:00 PM - 7:00 PM',
     linkedin: 'https://www.linkedin.com/in/dr-rikta-roy-10264722/',
     facebook: 'https://www.facebook.com/rikta.roy.927',
   },
@@ -57,6 +58,7 @@ export const doctors: Doctor[] = [
     department: 'urology',
     bio: 'Endo-Urologist and Laparoscopic & Urethral Reconstructive Urologist. Formerly Consultant at AIIMS Bhopal and Himalayan Institute of Medical Sciences, Jolly Grant.',
     image: manojBiswas,
+    opd: 'Mon - Sat, 10:00 AM - 11:00 AM & 5:00 PM - 7:00 PM',
     linkedin: 'https://www.linkedin.com/in/manoj-biswas-04272521/',
     facebook: 'https://www.facebook.com/manoj.biswas.9026',
   },
@@ -78,6 +80,7 @@ export const doctors: Doctor[] = [
     department: 'general-medicine',
     bio: 'Ex-Professor and Head, Government Doon Medical College and Ex-Consultant at Himalayan Institute of Medical Sciences, with decades of experience in internal medicine.',
     image: narayanJeetSingh,
+    opd: 'Mon - Sat, 4:00 PM - 7:00 PM',
   },
   {
     slug: 'dr-vishnu-vajpai',

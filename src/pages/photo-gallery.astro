@@ -10,6 +10,7 @@ import VideoCard from '../components/VideoCard.astro';
 import { site, contact } from '../data/site';
 import { gallery, campaigns } from '../data/gallery';
 import { videos } from '../data/videos';
+import { departments } from '../data/departments';
 
 // Large versions for the lightbox (build-time WebP in production).
 const fullSrc = await Promise.all(
@@ -19,6 +20,21 @@ const fullSrc = await Promise.all(
       : g.src.src
   )
 );
+
+// Awareness posters grouped by department (in campaigns order), with large
+// versions for the shared lightbox.
+const campaignFull = await Promise.all(
+  campaigns.map(async (c) =>
+    import.meta.env.PROD
+      ? (await getImage({ src: c.src, width: Math.min(1080, c.src.width), format: 'webp', quality: 80 })).src
+      : c.src.src
+  )
+);
+const campaignGroups = [...new Set(campaigns.map((c) => c.department))].map((slug) => ({
+  dept: departments.find((d) => d.slug === slug),
+  slug,
+  items: campaigns.map((c, i) => ({ ...c, full: campaignFull[i] })).filter((c) => c.department === slug),
+}));
 
 const galleryDescription =
   'Photos and videos of Medilife Superspeciality Hospital, Dehradun: our premises, facilities and team, plus short explainers from our specialists.';
@@ -173,20 +189,41 @@ const breadcrumbSchema = {
           subtitle="Simple, shareable health guidance from our specialists, covering everyday symptoms and when to seek timely care."
         />
 
-        <div class="reveal mx-auto mt-12 grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {campaigns.map((item) => (
-            <figure class="overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink-100">
-              <Img
-                src={item.src}
-                alt={item.alt}
-                width={800}
-                height={1000}
-                class="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </figure>
-          ))}
-        </div>
+        {campaignGroups.map((g) => (
+          <div class="mt-12">
+            <div class="flex flex-wrap items-end justify-between gap-3">
+              <h3 class="text-xl font-bold text-ink-900">{g.dept?.name ?? g.slug}</h3>
+              {g.dept && (
+                <a href={`/${g.slug}`} class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800">
+                  {g.dept.name} department <Icon name="arrowRight" class="h-4 w-4" />
+                </a>
+              )}
+            </div>
+            <div class="reveal mt-5 grid grid-cols-2 items-start gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {g.items.map((item) => (
+                <figure class="overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink-100">
+                  <button
+                    type="button"
+                    class="block w-full cursor-zoom-in"
+                    data-lightbox-open
+                    data-full={item.full}
+                    data-alt={item.alt}
+                    aria-label={`View larger: ${item.alt}`}
+                  >
+                    <Img
+                      src={item.src}
+                      alt={item.alt}
+                      width={288}
+                      sizes="(min-width: 1024px) 288px, (min-width: 640px) 30vw, 46vw"
+                      class="h-auto w-full"
+                      loading="lazy"
+                    />
+                  </button>
+                </figure>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   )}

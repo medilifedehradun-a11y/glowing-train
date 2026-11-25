@@ -19,11 +19,11 @@ export const stats: Stat[] = [
 ];
 
 export const accreditations: { label: string; detail: string; icon: string }[] = [
-  { label: 'NABH Accredited', detail: 'National quality-accredited hospital', icon: 'shield' },
-  { label: 'NABL Lab', detail: 'Accredited pathology & diagnostics', icon: 'microscope' },
-  { label: 'Ayushman Bharat', detail: 'PM-JAY beneficiaries welcome', icon: 'heartPulse' },
+  { label: 'NABH Entry Level', detail: 'Certified for patient safety & quality of care', icon: 'shield' },
+  { label: 'CGHS, SGHS & CAPF', detail: 'Empanelled hospital', icon: 'award' },
+  { label: 'Ayushman Bharat', detail: 'PM-JAY / Ayushman card accepted', icon: 'heartPulse' },
+  { label: 'Insurance & TPA', detail: 'Cashless treatment available', icon: 'checkCircle' },
   { label: 'ABHA / ABDM', detail: 'Digital health records enabled', icon: 'scan' },
-  { label: 'All Insurance & TPA', detail: 'Cashless treatment available', icon: 'checkCircle' },
 ];
 
 export interface Facility {
@@ -55,7 +55,7 @@ export const facilities: Facility[] = [
   {
     name: 'Pathology',
     description:
-      'NABL-accredited diagnostic laboratory with advanced testing, accurate results and quick turnaround for comprehensive health screening.',
+      'In-house diagnostic laboratory with advanced testing, accurate results and quick turnaround for comprehensive health screening.',
     icon: 'flask',
   },
   {
@@ -67,7 +67,7 @@ export const facilities: Facility[] = [
   {
     name: 'Insurance & TPA',
     description:
-      'Hassle-free cashless treatment with all major insurance providers and TPA partners - our team handles the paperwork so you can focus on recovery.',
+      'Empanelled under CGHS, SGHS and CAPF (Golden Card), with Ayushman card (PM-JAY) and 30+ health insurers and TPAs accepted - our insurance desk handles the paperwork so you can focus on recovery.',
     icon: 'shield',
   },
   {
@@ -118,7 +118,7 @@ export const whyChoose: WhyChoose[] = [
   {
     title: 'Affordable & Accessible',
     description:
-      'NABH accreditation, Ayushman Bharat benefits and transparent pricing make quality healthcare available for all.',
+      'NABH Entry Level certification, CGHS, SGHS and CAPF empanelment, Ayushman Bharat and transparent pricing make quality healthcare available for all.',
     icon: 'checkCircle',
   },
   {
@@ -154,7 +154,7 @@ export const faqs: Faq[] = [
   {
     question: 'What specialities does Medilife Superspeciality Hospital offer?',
     answer:
-      'Medilife offers comprehensive care including Urology, ENT, Onco-Surgery, General Medicine, General Surgery, Orthopaedics, Plastic Surgery, Pediatric Cardiology, Physiotherapy and Audiology, supported by an in-house Pharmacy and NABL-accredited Pathology lab.',
+      'Medilife offers comprehensive care including Urology, ENT, Onco-Surgery, General Medicine, General Surgery, Orthopaedics, Plastic Surgery, Pediatric Cardiology, Physiotherapy and Audiology, supported by an in-house Pharmacy and Pathology lab.',
   },
   {
     question: 'Where is Medilife Superspeciality Hospital located?',
@@ -187,9 +187,9 @@ export const faqs: Faq[] = [
       'Our consultants have served at institutions including AIIMS Bhopal, Himalayan Institute of Medical Sciences (Jolly Grant) and Government Doon Medical College, Dehradun. You can read each doctor\'s background on our Doctors page.',
   },
   {
-    question: 'Do you accept insurance and Ayushman Bharat?',
+    question: 'Do you accept insurance, CGHS, SGHS, CAPF and Ayushman Bharat?',
     answer:
-      'Yes. We are NABH-accredited and accept all major insurance providers, TPAs, ABHA and the Ayushman Bharat (PM-JAY) scheme for cashless treatment.',
+      'Yes. Medilife is empanelled under CGHS, SGHS and CAPF (Golden Card), and accepts the Ayushman Bharat (PM-JAY) Ayushman card and private health insurance through TPAs for cashless treatment, subject to scheme rules and insurer approval. ABHA digital health IDs are supported. See our Insurance page for details.',
   },
 ];
 

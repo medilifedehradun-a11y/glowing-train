@@ -7,10 +7,14 @@ import ContactForm from '../components/ContactForm.astro';
 import VideoCard from '../components/VideoCard.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Icon from '../components/Icon.astro';
+import EventAnnouncement from '../components/EventAnnouncement.astro';
+import { getImage } from 'astro:assets';
 import { departments } from '../data/departments';
 import { doctors } from '../data/doctors';
 import { site, contact } from '../data/site';
 import { videosForDepartment } from '../data/videos';
+import { campaignsForDepartment } from '../data/gallery';
+import { eventsFor } from '../data/events';
 import { hospitalRef, specialtiesFor, doctorId } from '../data/schema';
 
 export function getStaticPaths() {
@@ -26,6 +30,16 @@ const lead = deptDoctors.find((doc) => doc.slug === dept.leadDoctor) ?? deptDoct
 const deptIndex = departments.findIndex((d) => d.slug === dept.slug);
 const others = [1, 2, 3].map((k) => departments[(deptIndex + k) % departments.length]);
 const deptVideos = videosForDepartment(dept.slug);
+const deptEvents = eventsFor(dept.slug);
+const deptPosters = campaignsForDepartment(dept.slug);
+// Full-size poster for "view larger" (build-time WebP in production).
+const posterFull = await Promise.all(
+  deptPosters.map(async (c) =>
+    import.meta.env.PROD
+      ? (await getImage({ src: c.src, width: Math.min(1080, c.src.width), format: 'webp', quality: 80 })).src
+      : c.src.src
+  )
+);
 
 const schema = [
   {
@@ -81,6 +95,8 @@ const schema = [
     subtitle={dept.tagline}
     crumbs={[{ label: 'Departments', href: '/departments' }, { label: dept.name }]}
   />
+
+  {deptEvents.map((e) => <EventAnnouncement event={e} />)}
 
   <!-- Overview -->
   <section class="section">
@@ -180,6 +196,36 @@ const schema = [
         <h2 class="mt-4 text-3xl font-bold text-ink-900">Videos from our specialists</h2>
         <div class="reveal mt-8 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {deptVideos.map((v) => <VideoCard video={v} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Health-awareness posters from this department -->
+  {deptPosters.length > 0 && (
+    <section class="section">
+      <div class="container-x">
+        <span class="eyebrow">Health Awareness</span>
+        <h2 class="mt-4 text-3xl font-bold text-ink-900">{dept.name} awareness posters</h2>
+        <p class="mt-3 max-w-2xl text-lg text-ink-600">Simple guidance from our {dept.name} team on symptoms, tests and treatment options. Tap a poster to view it full size.</p>
+        <div class="reveal mt-8 grid grid-cols-2 items-start gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {deptPosters.map((c, i) => (
+            <a
+              href={posterFull[i]}
+              target="_blank"
+              rel="noopener"
+              class="block overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink-100 transition hover:shadow-card"
+            >
+              <Img
+                src={c.src}
+                alt={c.alt}
+                width={288}
+                sizes="(min-width: 1024px) 288px, (min-width: 640px) 30vw, 46vw"
+                class="h-auto w-full"
+                loading="lazy"
+              />
+            </a>
+          ))}
         </div>
       </div>
     </section>

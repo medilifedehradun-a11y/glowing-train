@@ -9,7 +9,7 @@ import FloatingActions from '../components/FloatingActions.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { site, contact, social, integrations } from '../data/site';
 import { departments } from '../data/departments';
-import { HOSPITAL_ID } from '../data/schema';
+import { HOSPITAL_ID, NABH_CREDENTIAL } from '../data/schema';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import jakartaLatin from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
 
@@ -105,8 +105,10 @@ const orgSchema = {
     { '@type': 'City', name: 'Vikasnagar' },
     { '@type': 'State', name: 'Uttarakhand' },
   ],
+  hasCredential: NABH_CREDENTIAL,
   priceRange: '₹₹',
   currenciesAccepted: 'INR',
+  paymentAccepted: 'Health insurance (TPA), CGHS, SGHS, CAPF (Golden Card), Ayushman Bharat PM-JAY',
   isAcceptingNewPatients: true,
   availableService: [
     ...departments.map((d) => d.name),

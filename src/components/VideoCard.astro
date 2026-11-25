@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import Icon from './Icon.astro';
 import type { Video } from '../data/videos';
 import { doctors } from '../data/doctors';
@@ -11,6 +12,11 @@ interface Props {
 const { video, class: className } = Astro.props;
 const doctor = video.doctor ? doctors.find((d) => d.slug === video.doctor) : undefined;
 const portrait = video.orientation === 'portrait';
+// <video poster> is fetched on page load, so ship a resized WebP (2x the
+// rendered width) instead of the full-size source.
+const posterSrc = import.meta.env.PROD
+  ? (await getImage({ src: video.poster, width: Math.min(portrait ? 608 : 1280, video.poster.width), format: 'webp', quality: 72 })).src
+  : video.poster.src;
 ---
 
 <figure
@@ -26,7 +32,7 @@ const portrait = video.orientation === 'portrait';
       controls
       playsinline
       preload="none"
-      poster={video.poster.src}
+      poster={posterSrc}
       width={video.poster.width}
       height={video.poster.height}
       aria-label={video.title}

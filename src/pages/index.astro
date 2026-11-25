@@ -14,6 +14,9 @@ import Icon from '../components/Icon.astro';
 import Img from '../components/Img.astro';
 import CountUp from '../components/CountUp.astro';
 import AccreditationStrip from '../components/AccreditationStrip.astro';
+import EventAnnouncement from '../components/EventAnnouncement.astro';
+import InsuranceSection from '../components/InsuranceSection.astro';
+import { eventsFor } from '../data/events';
 import { departments } from '../data/departments';
 import { doctors } from '../data/doctors';
 import { facilities, accreditations, whyChoose, faqs, stats } from '../data/content';
@@ -21,11 +24,15 @@ import { contact } from '../data/site';
 import aboutImg from '../assets/gallery/g31.jpg';
 
 const homeFaqs = faqs.slice(0, 6);
+const homeEvents = eventsFor('home');
 
 ---
 
 <BaseLayout>
   <HomeHero />
+
+  <!-- Time-limited announcements (camps); hidden automatically after they end -->
+  {homeEvents.map((e) => <EventAnnouncement event={e} layout="banner" />)}
 
   <!-- Accreditation / trust strip -->
   <section class="border-y border-ink-100 bg-white">
@@ -99,7 +106,7 @@ const homeFaqs = faqs.slice(0, 6);
           Healing with heart, excellence by design
         </h2>
         <p class="mt-4 text-lg leading-relaxed text-ink-600">
-          As an NABH-accredited multi-speciality hospital, we combine advanced medical
+          As an NABH Entry Level certified multi-speciality hospital, we combine advanced medical
           technology with personalised, compassionate care to serve Dehradun and the
           wider Uttarakhand region.
         </p>
@@ -183,6 +190,10 @@ const homeFaqs = faqs.slice(0, 6);
     </div>
   </section>
 
+  <!-- Insurance & government schemes -->
+  <InsuranceSection />
+  <AccreditationStrip insuranceLink={false} carousel />
+
   <!-- Photo gallery fold -->
   <HomeGallery />
 
@@ -254,8 +265,6 @@ const homeFaqs = faqs.slice(0, 6);
       </div>
     </div>
   </section>
-
-  <AccreditationStrip />
 
   <CtaBanner />
 </BaseLayout>

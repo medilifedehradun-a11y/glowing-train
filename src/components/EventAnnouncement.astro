@@ -1,0 +1,131 @@
+---
+/**
+ * Time-limited event card (health camp). Renders the visible card, its Event
+ * JSON-LD and the expiry hook together, so all three disappear together:
+ * at build time via eventsFor(), and in the browser once data-event-end passes.
+ */
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+import { contact } from '../data/site';
+import { eventDateLabel, eventTimeLabel, type HospitalEvent } from '../data/events';
+import { eventNode } from '../data/schema';
+
+interface Props {
+  event: HospitalEvent;
+  /** 'banner' uses the landscape creative (homepage); 'poster' the portrait one. */
+  layout?: 'banner' | 'poster';
+}
+
+const { event, layout = 'poster' } = Astro.props;
+const whatsapp = `https://wa.me/${contact.phoneRaw.replace(/\D/g, '')}?text=${encodeURIComponent(event.whatsappText)}`;
+const bookHref = `/book-online${event.department ? `?department=${event.department}` : ''}#appointment-form`;
+const useBanner = layout === 'banner' && event.banner;
+const headingId = `event-${event.slug}`;
+---
+
+<section
+  class="border-b border-accent-100 bg-gradient-to-br from-accent-50 via-white to-brand-50"
+  data-event-end={event.end}
+  data-event-start={event.start}
+  aria-labelledby={headingId}
+>
+  <div
+    class:list={[
+      'container-x grid items-center gap-8 py-10',
+      useBanner ? 'lg:grid-cols-[1.1fr_1fr]' : 'md:grid-cols-[minmax(0,18rem)_1fr] lg:gap-12',
+    ]}
+  >
+    <div class="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-ink-100">
+      {useBanner ? (
+        <Img
+          src={event.banner!}
+          alt={event.posterAlt}
+          width={720}
+          height={360}
+          sizes="(min-width: 1024px) 40vw, 100vw"
+          class="h-auto w-full"
+          loading="eager"
+        />
+      ) : (
+        <Img
+          src={event.poster}
+          alt={event.posterAlt}
+          width={288}
+          height={360}
+          sizes="(min-width: 768px) 288px, 92vw"
+          class="h-auto w-full"
+          loading="eager"
+        />
+      )}
+    </div>
+
+    <div>
+      <p class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-accent-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white" data-event-badge>
+          <Icon name="calendar" class="h-3.5 w-3.5" /> Upcoming camp
+        </span>
+        {event.free && (
+          <span class="rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-700 ring-1 ring-accent-200">
+            Free
+          </span>
+        )}
+      </p>
+      <h2 id={headingId} class="mt-3 text-2xl font-bold leading-tight text-ink-900 sm:text-3xl">
+        {event.title}
+        {event.titleHi && <span class="mt-1 block text-lg font-semibold text-ink-600" lang="hi">{event.titleHi}</span>}
+      </h2>
+      <p class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-base font-semibold text-ink-800">
+        <span class="inline-flex items-center gap-1.5"><Icon name="calendar" class="h-4 w-4 text-accent-600" /> {eventDateLabel(event)}</span>
+        <span class="inline-flex items-center gap-1.5"><Icon name="clock" class="h-4 w-4 text-accent-600" /> {eventTimeLabel(event)}</span>
+        <span class="inline-flex items-center gap-1.5"><Icon name="pin" class="h-4 w-4 text-accent-600" /> At Medilife, Haridwar Bypass Road</span>
+      </p>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        {event.offers.map((o) => (
+          <li class="flex items-start gap-2 text-[0.95rem] text-ink-700">
+            <Icon name="checkCircle" class="mt-0.5 h-5 w-5 shrink-0 text-brand-600" /> {o}
+          </li>
+        ))}
+      </ul>
+      {event.note && <p class="mt-3 text-sm font-semibold text-accent-700">{event.note}</p>}
+      <p class="mt-3 text-sm text-ink-600">{event.booking}</p>
+      <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a href={contact.phoneHref} class="btn btn-accent">
+          <Icon name="phone" class="h-5 w-5" /> Call {contact.phoneDisplay}
+        </a>
+        <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-ghost">
+          <Icon name="whatsapp" class="h-5 w-5" /> Book on WhatsApp
+        </a>
+      </div>
+      <p class="mt-3 text-xs text-ink-600">
+        Prefer a regular appointment? <a href={bookHref} class="font-semibold text-brand-700 underline underline-offset-2">Book online</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(eventNode(event))} />
+</section>
+
+<script>
+  // Hide camp cards whose end time has passed (also after client-side
+  // navigation), and relabel them while the camp is running.
+  function syncEvents() {
+    const now = Date.now();
+    document.querySelectorAll<HTMLElement>('[data-event-end]').forEach((el) => {
+      const end = Date.parse(el.dataset.eventEnd || '');
+      const start = Date.parse(el.dataset.eventStart || '');
+      if (Number.isFinite(end) && now >= end) {
+        el.remove();
+        return;
+      }
+      const badge = el.querySelector<HTMLElement>('[data-event-badge]');
+      if (badge && Number.isFinite(start) && now >= start) badge.lastChild!.textContent = ' Happening now';
+      // Drop the card live if the tab stays open past the end time.
+      if (Number.isFinite(end) && !el.dataset.eventTimer) {
+        el.dataset.eventTimer = '1';
+        const wait = end - now;
+        if (wait < 2 ** 31 - 1) window.setTimeout(syncEvents, wait + 1000);
+      }
+    });
+  }
+  document.addEventListener('astro:page-load', syncEvents);
+</script>

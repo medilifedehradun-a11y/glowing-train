@@ -3,6 +3,10 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Self-hosted MP4s (filenames are not hashed: use a new name when replacing a video)
+/videos/*
+  Cache-Control: public, max-age=604800
+
 # Sensible security defaults for all pages
 /*
   X-Content-Type-Options: nosniff

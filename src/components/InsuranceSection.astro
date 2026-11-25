@@ -1,0 +1,45 @@
+---
+/** Homepage summary of insurance & government schemes; full details on /insurance. */
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { contact } from '../data/site';
+import { empanelmentLine, governmentSchemes } from '../data/insurance';
+---
+
+<section class="section bg-ink-50/50">
+  <div class="container-x">
+    <SectionHeading
+      eyebrow="Insurance Facilities"
+      title="Insurance, TPA & government health schemes"
+      subtitle={`${empanelmentLine}. We also accept Ayushman Bharat (PM-JAY) and private health insurance through TPAs, and our insurance desk helps with the paperwork.`}
+    />
+
+    <div class="reveal mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      {governmentSchemes.map((s) => (
+        <a href="/insurance" class="card card-hover group flex flex-col p-6">
+          <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+            <Icon name={s.icon} class="h-6 w-6" />
+          </span>
+          <h3 class="mt-4 text-xl font-bold text-ink-900 group-hover:text-brand-700">{s.short}</h3>
+          <p class="mt-1 text-sm leading-relaxed text-ink-600">{s.name}</p>
+        </a>
+      ))}
+      <a href="/insurance" class="card card-hover group flex flex-col p-6">
+        <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+          <Icon name="checkCircle" class="h-6 w-6" />
+        </span>
+        <h3 class="mt-4 text-xl font-bold text-ink-900 group-hover:text-brand-700">Insurance & TPA</h3>
+        <p class="mt-1 text-sm leading-relaxed text-ink-600">Cashless treatment with private health insurance, subject to insurer approval</p>
+      </a>
+    </div>
+
+    <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <a href="/insurance" class="btn btn-primary">
+        Insurance facilities <Icon name="arrowRight" class="h-5 w-5" />
+      </a>
+      <a href={contact.phoneHref} class="btn btn-ghost">
+        <Icon name="phone" class="h-5 w-5" /> <span class="sm:hidden">Call to check your cover</span><span class="hidden sm:inline">Check your cover: {contact.phoneDisplay}</span>
+      </a>
+    </div>
+  </div>
+</section>

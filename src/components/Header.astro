@@ -39,17 +39,17 @@ const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
   <!-- Main bar -->
   <div id="nav-bar" class="border-b border-ink-100 bg-white/95 backdrop-blur transition-shadow duration-300">
     <nav class="container-x flex h-[4.5rem] items-center justify-between gap-4" aria-label="Primary">
-      <Logo />
+      <Logo class="min-w-0 xl:shrink-0" />
 
       <!-- Desktop nav -->
-      <ul class="hidden items-center gap-1 xl:flex">
+      <ul class="hidden items-center gap-0.5 xl:flex">
         {mainNav.map((item) =>
           item.children ? (
             <li class="group relative" data-dropdown>
               <a
                 href={item.href}
                 class:list={[
-                  'flex items-center gap-1 rounded-lg px-3 py-2 text-[0.95rem] font-medium transition',
+                  'flex items-center gap-1 rounded-lg px-2.5 py-2 text-[0.9rem] font-medium transition',
                   deptActive ? 'text-brand-700' : 'text-ink-700 hover:text-brand-700',
                 ]}
                 aria-current={deptActive ? 'true' : undefined}
@@ -81,7 +81,7 @@ const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
               <a
                 href={item.href}
                 class:list={[
-                  'rounded-lg px-3 py-2 text-[0.95rem] font-medium transition',
+                  'rounded-lg px-2.5 py-2 text-[0.9rem] font-medium transition',
                   isActive(item.href) ? 'text-brand-700' : 'text-ink-700 hover:text-brand-700',
                 ]}
                 aria-current={isActive(item.href) ? 'page' : undefined}
@@ -94,7 +94,7 @@ const deptActive = departmentNav.some((d) => path === `/${d.slug}`);
       </ul>
 
       <div class="flex items-center gap-2.5">
-        <a href={contact.phoneHref} class="hidden shrink-0 items-center gap-2 rounded-xl border border-brand-200 px-3.5 py-2 transition hover:border-brand-300 hover:bg-brand-50 sm:flex xl:hidden 2xl:flex">
+        <a href={contact.phoneHref} class="hidden shrink-0 items-center gap-2 rounded-xl border border-brand-200 px-3.5 py-2 transition hover:border-brand-300 hover:bg-brand-50 sm:flex xl:hidden">
           <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600"><Icon name="phone" class="h-4 w-4" /></span>
           <span class="flex flex-col leading-tight">
             <span class="text-[0.68rem] font-medium uppercase tracking-wide text-ink-600">Call now</span>
