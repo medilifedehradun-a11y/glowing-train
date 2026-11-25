@@ -88,12 +88,13 @@ export const tpaServices: { title: string; text: string; icon: string }[] = [
  * their standard published form), shown alphabetically on /insurance.
  * Listed "GALAXY TPA", "MAGMA TPA" and "RELIANCE GENERAL INSURANCE INDUS" are
  * the insurers Galaxy Health, Magma General and IndusInd General (renamed from
- * Reliance General). "AKNA INSURANCE" is left out until the hospital confirms
- * the insurer's name. Logos: official sites (Wikimedia Commons for ICICI
+ * Reliance General); "AKNA INSURANCE" is AKNA Health Insurance TPA Pvt. Ltd.
+ * (aknatpa.com, confirmed by the hospital). Logos: official sites (Wikimedia Commons for ICICI
  * Lombard, Liberty and Star Health, whose sites block downloads), Nov 2026.
  */
 export const tpaList: string[] = [
   'ACKO Insurance',
+  'AKNA Health Insurance TPA',
   'Aditya Birla Health Insurance',
   'Bajaj General Insurance',
   'Chola MS General Insurance',
